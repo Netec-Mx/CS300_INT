@@ -33,7 +33,7 @@ references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
     url: https://docs.couchbase.com/server/current/rest-api/rest-intro.html
   - text: Puertos de Couchbase
     url: https://docs.couchbase.com/server/current/install/install-ports.html
-prev: / # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ATRAS        
+prev: /lab24/lab24/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ATRAS        
 next: /lab2/lab2/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 ---
 
