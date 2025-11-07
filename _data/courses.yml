@@ -1,0 +1,127 @@
+# _data/courses.yml
+Couchbase_Server_Administration: # Cambiar ID de CURSO
+  title: "CS300: Couchbase Server Administration" # COLOCAR EL NOMBRE DEL CURSO
+  intro: "DESCRIPCIÓN_DEL_CURSO_AQUI"
+  labs:
+      # EJEMPLO
+    - id: lab1 # ID DE LABORATORIO SIMPLE --> lab#
+      title: "Instalación de un nodo Couchbase en Docker" # NOMBRE DE LA PRACTICA 
+      url:  "/lab1/lab1/" # RUTA DEL DIRECTORIO DONDE SE ENCUENTRA LA PRACTICA --> lab1.md
+      duration: "15 min" # TIEMPO DE LA PRACTICA
+      desc: "Despliega Couchbase en Docker, inicializa por CLI/REST, crea un bucket y verifica servicios y salud." # DESCRIPCION BREVE DE LA PRACTICA 100-120 CARACTERES
+      # ESTRUCTURA COPIAR Y PEGAR CUANTAS VECES SEA NECESARIO
+    - id: lab2
+      title: "Clúster multinodo en Docker Compose"
+      url:  "/lab2/lab2/"
+      duration: "25 min"
+      desc: "Configura un clúster Couchbase de 3 nodos en Docker: puertos solo en nodo1; alta, rebalanceo y salud con couchbase-cli."
+    - id: lab3
+      title: "Creación y prueba de buckets"
+      url:  "/lab3/lab3/"
+      duration: "20 min"
+      desc: "Crea dos buckets (Couchbase y Ephemeral), configura memoria, réplicas, expulsión y compresión; gestiona scopes/collections y N1QL."
+    - id: lab4
+      title: "Creación de roles personalizados"
+      url:  "/lab4/lab4/"
+      duration: "25 min"
+      desc: "RBAC con roles predefinidos, alcance por colección: analyst_ro (lectura), writer_app (solo escribe) y dba_scope (índices + orders)."
+    - id: lab5
+      title: "Auditoría de accesos"
+      url:  "/lab5/lab5/"
+      duration: "25 min"
+      desc: "Activa Audit Logging; provoca eventos (login, roles, buckets, índices, consultas) y valida en logs y endpoints REST."
+    - id: lab6
+      title: "TLS con certificados autofirmados"
+      url:  "/lab6/lab6/"
+      duration: "25 min"
+      desc: "Implementa TLS end-to-end con Docker, Couchbase y OpenSSL: genera certificados autofirmados y asegura las conexiones."
+    - id: lab7
+      title: "Conexión de un SDK a Couchbase"
+      url:  "/lab7/lab7/"
+      duration: "20 min"
+      desc: "Levanta Couchbase con compose, inicializa datos y conecta una app Node.js. Valida con KV/N1QL y agrega checks y troubleshooting."
+    - id: lab8
+      title: "Inserción masiva de documentos"
+      url:  "/lab8/lab8/"
+      duration: "25 min"
+      desc: "Bulk load en Couchbase por dos vías: cbimport (NDJSON veloz) y SDK Node.js (control de claves, concurrencia y reintentos)."
+    - id: lab9
+      title: "Operaciones CRUD con SDK"
+      url:  "/lab9/lab9/"
+      duration: "25 min"
+      desc: "Levantarás entorno y código desde cero y practicarás CRUD con el SDK: upsert/insert/get, replace/remove con CAS, mutateIn/lookupIn y N1QL con parámetros, más validaciones y errores comunes."
+    - id: lab10
+      title: "Rack Awareness"
+      url:  "/lab10/lab10/"
+      duration: "25 min"
+      desc: "Rack Awareness con Server Groups: 3 nodos, 2–3 grupos (RackA/B/C); mueve nodos y rebalancea para distribuir réplicas/vBuckets."
+    - id: lab11
+      title: "Failover manual y automatico"
+      url:  "/lab11/lab11/"
+      duration: "30 min"
+      desc: "Auto-Failover y failover manual (graceful/force) para aislar nodos caídos; recupera (delta/full) y rebalancea vBuckets y réplicas."
+    - id: lab12
+      title: "Rebalance tras cambio de nodos"
+      url:  "/lab12/lab12/"
+      duration: "25 min"
+      desc: "Rebalancea vBuckets, réplicas e índices tras cambios de topología: inicia 3 nodos, carga datos, escala a 4 y vuelve a 3; verifica acceso y equilibrio."
+    - id: lab13
+      title: "Creación de índices secundarios/covering"
+      url:  "/lab13/lab13/"
+      duration: "25 min"
+      desc: "Crea índices N1QL: secundarios, covering (sin FETCH si todo está en el índice), parciales (WHERE) y funcionales; valida con EXPLAIN."
+    - id: lab14
+      title: "FTS y búsqueda textual"
+      url:  "/lab14/lab14/"
+      duration: "25 min"
+      desc: "Crea un índice FTS en products, consulta por frases y términos, aplica filtros y usa SEARCH() desde N1QL"
+    - id: lab15
+      title: "Eventing simple y consulta en Analytics"
+      url:  "/lab15/lab15/"
+      duration: "30 min"
+      desc: "Eventing + Analytics: al mutar, JS copia/enriquece app.products→audit.products_audit; consulta en Analytics. REST: 8095; Eventing /api/v1 (8096/8091)."
+    - id: lab16
+      title: "Replicación unidireccional"
+      url:  "/lab16/lab16/"
+      duration: "25 min"
+      desc: "Configura XDCR entre dos clústeres en Docker: crea bucket/colección, define referencia remota y replica unidireccional. Inserta en Origen y valida en Destino con N1QL."
+    - id: lab17
+      title: "Replicación bidireccional"
+      url:  "/lab17/lab17/"
+      duration: "35 min"
+      desc: "XDCR bidireccional: ambos clústeres replican; usa LWW para que, si la misma clave cambia en ambos, gane la versión con mayor timestamp."
+    - id: lab18
+      title: "Backup completo"
+      url:  "/lab18/lab18/"
+      duration: "25 min"
+      desc: "Con cbbackupmgr crearás el repositorio y harás un backup completo del bucket; archivos por archive/repo y restores granulares."
+    - id: lab19
+      title: "Backup incremental y restauración parcial"
+      url:  "/lab19/lab19/"
+      duration: "35 min"
+      desc: "Con cbbackupmgr organiza respaldos (archive→repo→backups), permite full+incrementales y restore parcial por colección/rango hacia un bucket destino."
+    - id: lab20
+      title: "Restore completo"
+      url:  "/lab20/lab20/"
+      duration: "35 min"
+      desc: "Realiza un backup full con cbbackupmgr, borra el bucket y restaura todo desde archive/repo; verifica conteo y que las consultas funcionen."
+    - id: lab21
+      title: "Integración con Prometheus y Grafana"
+      url:  "/lab21/lab21/"
+      duration: "45 min"
+      desc: "Levanta Prometheus/Grafana, valida el scraping, genera carga sintética y crea paneles con KPIs de KV/Query/recursos."
+    - id: lab22
+      title: "Compaction manual"
+      url:  "/lab22/lab22/"
+      duration: "25 min"
+      desc: "Genera fragmentación con mutaciones/eliminaciones y ejecuta compaction manual, valida antes/después por REST/N1QL"
+    - id: lab23
+      title: "Simulación de carga y ejection"
+      url:  "/lab23/lab23/"
+      duration: "25 min"
+      desc: "Genera carga hasta forzar ejection y valida con métricas (memoria, resident ratio, ejections, bg fetches)."
+    - id: lab24
+      title: "Paquete de soporte con cbcollect_info"
+      url:  "/lab24/lab24/"
+      duration: "20 min"
+      desc: "Prueba opciones clave, valida manifiesto/logs/diagnósticos y exporta el ZIP del contenedor al host."
