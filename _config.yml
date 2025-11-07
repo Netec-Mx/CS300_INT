@@ -5,7 +5,7 @@ url: https://netec-mx.github.io"
 baseurl: "/CS300_INT"   # DEFINIR EL NOMBRE DEL REPOSITORIO PARA LAS PRACTICAS
 
 # Nombre completo del repo (owner/repo)
-repository: netec-mx/CS300_INT # MISMO NOMBRE QUE EL DE LA LINEA 5
+repository: CS300_INT # MISMO NOMBRE QUE EL DE LA LINEA 5
 
 plugins:
   - jekyll-include-cache
