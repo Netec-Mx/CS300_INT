@@ -125,7 +125,7 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
 Generarás un archivo `.env` con variables (usuario, contraseña, tag de imagen, memoria) y un `compose.yaml` que mapea puertos, volúmenes y declara la política de healthcheck.
 
-- **Paso 1.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 16.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
   > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
@@ -144,11 +144,11 @@ Generarás un archivo `.env` con variables (usuario, contraseña, tag de imagen,
   EOF
   ```
 
-- **Paso 2.** El comando no dara salida pero debes de ver correctamente la creación del archivo `.env`.
+- **Paso 17.** El comando no dara salida pero debes de ver correctamente la creación del archivo `.env`.
 
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 3.** Ahora crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente codigo en la terminal.
+- **Paso 18.** Ahora crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente codigo en la terminal.
 
   > **Notas**
   - El archivo `compose.yaml` mapea puertos `8091-8096` para la consola web y `11210` para clientes.
@@ -181,7 +181,7 @@ Generarás un archivo `.env` con variables (usuario, contraseña, tag de imagen,
   YAML
   ```
 
-- **Paso 4.** Verifica la creación del archivo correctamente.
+- **Paso 19.** Verifica la creación del archivo correctamente.
 
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
@@ -195,7 +195,7 @@ Generarás un archivo `.env` con variables (usuario, contraseña, tag de imagen,
 
 Levantarás el contenedor con Docker Compose y confirmarás que la imagen se descarga y el servicio inicia.
 
-- **Paso 1.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 20.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
   > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
@@ -208,7 +208,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
 
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 2.**  Verifica que se haya levantado correctamente el contenedor, escribe el siguiente comando em la terminal.
+- **Paso 21.**  Verifica que se haya levantado correctamente el contenedor, escribe el siguiente comando em la terminal.
 
   ```bash
   export CB_CONTAINER_NAME=cbnode1
@@ -216,7 +216,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 3.** Valida con el comando de **`inspect`** que en efecto esté **_healthy_** el contenedor.
+- **Paso 22.** Valida con el comando de **`inspect`** que en efecto esté **_healthy_** el contenedor.
 
   > **Nota.** El contenedor debe estar `Up` y el healthcheck en `healthy` (puede tardar 30–90s en la primera subida). 
   {: .lab-note .info .compact}
@@ -228,7 +228,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
   {% endraw %}
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 4.** Comprueba que el endpoint base esté funcionando bien.
+- **Paso 23.** Comprueba que el endpoint base esté funcionando bien.
 
   > **Nota.**
   - El `curl` debe regresar JSON (sin HTML de error).
@@ -256,7 +256,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
 
 Usarás `couchbase-cli` dentro del contenedor para inicializar el clúster, definir cuotas de memoria, habilitar servicios y crear un bucket de prueba.
 
-- **Paso 1.** Inicializa el clúster ejecuta el siguiete comando en la terminal.
+- **Paso 24.** Inicializa el clúster ejecuta el siguiete comando en la terminal.
 
   > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
@@ -276,7 +276,7 @@ Usarás `couchbase-cli` dentro del contenedor para inicializar el clúster, defi
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 2.** Verifica el estado del clúster
+- **Paso 25.** Verifica el estado del clúster
 
   ```bash
   docker exec -it ${CB_CONTAINER_NAME} couchbase-cli server-list \
@@ -284,7 +284,7 @@ Usarás `couchbase-cli` dentro del contenedor para inicializar el clúster, defi
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 3.** Crea un bucket de prueba de manera directa con el siguiente comando en la terminal.
+- **Paso 26.** Crea un bucket de prueba de manera directa con el siguiente comando en la terminal.
 
   ```bash
   docker exec -it ${CB_CONTAINER_NAME} couchbase-cli bucket-create \
@@ -296,7 +296,7 @@ Usarás `couchbase-cli` dentro del contenedor para inicializar el clúster, defi
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 4.** Verifica que el bucket se haya creado correctamente, escribe el siguiente comando en la terminal.
+- **Paso 27.** Verifica que el bucket se haya creado correctamente, escribe el siguiente comando en la terminal.
 
   ```bash
   docker exec -it ${CB_CONTAINER_NAME} couchbase-cli bucket-list \
@@ -314,7 +314,7 @@ Usarás `couchbase-cli` dentro del contenedor para inicializar el clúster, defi
 
 Probarás endpoints REST básicos, health del contenedor y accederás a la consola web para verificar servicios y bucket.
 
-- **Paso 1.** Comprueba la salud del contenedor:
+- **Paso 28.** Comprueba la salud del contenedor:
 
   {% raw %}
   ```bash
@@ -323,7 +323,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
   {% endraw %}
   ![cbase22]({{ page.images_base | relative_url }}/22.png)
 
-- **Paso 2.** Verifica servicios vía REST, escribe el siguiente comando en la terminal.
+- **Paso 29.** Verifica servicios vía REST, escribe el siguiente comando en la terminal.
 
   > **Importante.** La salida de ambos comandos es muy extensa puedes tomarte unos segundos para analizarla.
   {: .lab-note .important .compact}
@@ -335,7 +335,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
   curl -fsS -u "${CB_USER}:${CB_PASS}" http://localhost:8091/pools/default/buckets | jq '.'
   ```
 
-- **Paso 3.** Abre la consola web y verifica que todo funcione correctamente. Abre la siguiente URL en el navegador **Google Chrome**
+- **Paso 30.** Abre la consola web y verifica que todo funcione correctamente. Abre la siguiente URL en el navegador **Google Chrome**
 
   > **Importante.** Usa los siguientes datos para autenticarte.
   - **Usuario:** `admin`
@@ -347,7 +347,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 4.** Ya dentro de la página web de **Couchbase** da clic en **Buckets** del menú lateral izquierdo.
+- **Paso 31.** Ya dentro de la página web de **Couchbase** da clic en **Buckets** del menú lateral izquierdo.
 
   > **Nota.** Debes observar el bucket llamado **dev** creado previamente.
   {: .lab-note .info .compact}
@@ -364,7 +364,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
 
 Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
 
-- **Paso 1.** Ahora regresa a la terminal de **Git Bash** para aplicar el siguiente comando.
+- **Paso 32.** Ahora regresa a la terminal de **Git Bash** para aplicar el siguiente comando.
 
   > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
@@ -374,7 +374,7 @@ Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas 
   ```
   ![cbase25]({{ page.images_base | relative_url }}/25.png)
 
-- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 33.** Apagar y eliminar contenedor (se conservan los datos en ./data)
 
   > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
