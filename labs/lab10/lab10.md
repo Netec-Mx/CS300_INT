@@ -524,8 +524,8 @@ Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server
 - **Paso 18.** Ahora si ejecuta el **rebalance** para aplicar cambios de colocación. 
 
   ```bash
-  docker exec -it ${NODE1} couchbase-cli rebalance \
-    -c couchbase1 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}"
+  docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli rebalance \
+    -c couchbase1 -u "${CB_USER}" -p "${CB_PASS}"
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
@@ -614,6 +614,9 @@ Detendrás uno de los nodos de un rack y validarás que los datos siguen accesib
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
 - **Paso 24.** Ahora realiza la lectura de datos desde `n1` (consulta N1QL)
+
+  > **NOTA:** Si el comando se queda pegado, espera unos minutos a que termine, probablemente dara error por que no encuentra como rutear la solicitud, vuele a ejecutar el comando y deberia responder el nodo.
+  {: .lab-note .info .compact}
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 cbq \
