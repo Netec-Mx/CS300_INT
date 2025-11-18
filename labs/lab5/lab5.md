@@ -153,7 +153,7 @@ Organizarás la carpeta de esta práctica, definirás variables de entorno y ver
 
   > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica4-rbac**
+  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica5-auditoria**
   {: .lab-note .important .compact}
 
   ```bash

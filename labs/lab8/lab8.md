@@ -441,9 +441,12 @@ Crearás un usuario limitado para la app y correrás un cargador en Node.js con 
 
 - **Paso 25.** Crea el archivo load.js que definira la logica para la carga masiva de los dockumentos.
 
+  > **IMPORTANTE:** El Script es muy grande, en caso de que el espacio en la terminal sea poco. Crea el archivo manualmente y copia el contenido a partir de la linea que dice **require('dotenv').config();** hacia abajo.
+  {: .lab-note .important .compact}
+
   ```bash
   cat > load.js << 'EOF'
-  // load_verbose.js
+  // load.js
   require('dotenv').config();
   const fs = require('fs');
   const readline = require('readline');

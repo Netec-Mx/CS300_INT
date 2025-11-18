@@ -333,31 +333,35 @@ Implementarás un script `crud.js` que conecte, haga **insert**, **get** (con pr
 
     // 3) REPLACE con CAS (optimistic locking)
     console.log('\n=== REPLACE (CAS) ===');
-    const full = await coll.get(docId); // documento completo para modificar
-    const current = full.content;
-    current.price = 24.99;
+    const full = await coll.get(docId);
+    const current = { ...full.content, price: 24.99 };
     const rep = await coll.replace(docId, current, { cas: full.cas });
     console.log('REPLACE OK, nuevo CAS=', rep.cas.toString('hex'));
 
-    // 4) SUB-DOCUMENT: lookupIn (lectura parcial)
+    // 4) SUB-DOC lookupIn (lectura parcial)
     console.log('\n=== SUB-DOC lookupIn ===');
     const sub = await coll.lookupIn(docId, [
       couchbase.LookupInSpec.get('stock'),
       couchbase.LookupInSpec.get('tags[0]'),
     ]);
-    const stock = sub.content[0].value;   // ✅ acceso correcto por índice
+    const stock = sub.content[0].value;
     const firstTag = sub.content[1].value;
     console.log('lookupIn → stock =', stock, ', firstTag =', firstTag);
 
-    // 5) SUB-DOCUMENT: mutateIn (incrementar stock y push a tags)
+    // 5) SUB-DOC mutateIn (incrementar stock y append a tags)
     console.log('\n=== SUB-DOC mutateIn ===');
     const mut = await coll.mutateIn(docId, [
       couchbase.MutateInSpec.increment('stock', 5),
-      couchbase.MutateInSpec.arrayPush('tags', 'promo'),
-    ], { storeSemantics: couchbase.StoreSemantics.Replace });
-    console.log('mutateIn OK. Nuevos valores subdoc (por operación):', mut.content);
+      // Usa arrayAppend (o arrayAddUnique si no quieres duplicados)
+      couchbase.MutateInSpec.arrayAppend('tags', 'promo'),
+    ]);
+    console.log('mutateIn OK, CAS=', mut.cas.toString('hex'));
 
-    // 6) QUERY (SQL++) sobre la colección
+    // Verificación posterior al mutateIn
+    const after = await coll.get(docId, { project: ['stock', 'tags'] });
+    console.log('POST-mutateIn →', after.content);
+
+    // 6) QUERY (SQL++)
     console.log('\n=== QUERY (SQL++) ===');
     const min = 10;
     const statement = `SELECT id, name, price

@@ -169,7 +169,7 @@ Crearás una carpeta para la práctica, validarás que el contenedor `cbnode1` e
 
   > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica4-rbac**
+  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica6-tls**
   {: .lab-note .important .compact}
 
   ```bash
@@ -390,10 +390,10 @@ Configurar Docker Compose para ejecutar Couchbase con soporte TLS utilizando los
         - CLUSTER_FTS_RAMSIZE=512
       
       healthcheck:
-        test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8091/pools >/dev/null || exit 1"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
+        test: ["CMD-SHELL", "curl -fsS -u $${CB_USERNAME}:$${CB_PASSWORD} http://127.0.0.1:8091/pools >/dev/null || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 12
         start_period: 60s
 
   volumes:
