@@ -10,7 +10,7 @@ prerequisites: # CAMBIAR POR CADA PRACTICA
   - Docker Desktop instalado y en ejecución (WSL2 recomendado en Windows).
   - Visual Studio Code instalado y terminal Git Bash.
   - 4 GB de RAM libres para el contenedor (recomendado).
-  - Puertos locales disponibles **8091–8096** y **11210**.
+  - Puertos locales disponibles **`8091–8096`** y **`11210`**.
   - Conectividad a Internet para descargar la imagen.
 introduction: # CAMBIAR POR CADA PRACTICA
   - En esta práctica levantarás un nodo de Couchbase Server utilizando Docker y lo inicializarás mediante CLI/REST. Al finalizar, tendrás un contenedor corriendo con servicios Data/Index/Query, un bucket de prueba y verificaciones de salud (health checks).
@@ -20,7 +20,7 @@ final_result: > # CAMBIAR POR CADA PRACTICA
   Un nodo de Couchbase corriendo en Docker local, inicializado con servicios Data/Index/Query, con un bucket de prueba y validaciones por CLI/REST/UI. Estructura de carpetas organizada para reutilización en prácticas posteriores.
 notes: # CAMBIAR POR CADA PRACTICA
   - Cambia la contraseña por una segura en entornos no-demo.
-  - Si el healthcheck tarda demasiado, revisa RAM disponible y que no haya conflictos de puertos (8091–8096/11210).
+  - Si el healthcheck tarda demasiado, revisa RAM disponible y que no haya conflictos de puertos (`8091–8096`/`11210`).
   - En Windows con WSL2, usar rutas del proyecto dentro de `~` o del sistema de archivos de Linux (mejor performance).
   - Si `cbq` no está en `PATH` dentro del contenedor, llama con ruta completa `/opt/couchbase/bin/cbq`.
   - Para CE (Community Edition) puedes usar `couchbase/server:community`; para Enterprise (trial), `couchbase/server:enterprise`.
@@ -44,7 +44,7 @@ next: /lab2/lab2/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 
 Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y validarás que Docker Desktop esté operativo con Git Bash como terminal.
 
-- **Paso 1.** Crea una carpeta en el escritorio de la **Maquina Virtual** llamada **cs300-labs**.
+- **Paso 1.** Crea una carpeta en el escritorio de la **Máquina Virtual** llamada **`cs300-labs`**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -70,11 +70,11 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 7.** En la **barra de herramientas de la terminal** que se encuentra en el lado derecho, **da clic en la pestaña para expandir el menu.**
+- **Paso 7.** En la **barra de herramientas de la terminal** que se encuentra en el lado derecho, **da clic en la pestaña para expandir el menú.**
 
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 8.** Selecciona del menu la opción **Select Default Profile**, como lo muestra la imagen.
+- **Paso 8.** Selecciona del menú la opción **Select Default Profile**, como lo muestra la imagen.
 
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
@@ -90,7 +90,7 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 12.** Verifica que aparezca la terminal en **Git Bash** y la ruta del directorio **cs300-labs** como lo muestra la imagen.
+- **Paso 12.** Verifica que aparezca la terminal en **Git Bash** y la ruta del directorio **`cs300-labs`** como lo muestra la imagen.
 
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
@@ -107,7 +107,7 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
 - **Paso 15.** Verifica que Docker esté activo y accesible, copi y pega los siguientes comandos en la terminal.
 
-  > **Importante.** Si no esta activo, puedes buscar el software de Docker en las aplicaciones del Windows.
+  > **Importante.** Si no está activo, puedes buscar el software de Docker en las aplicaciones del Windows.
   {: .lab-note .important .compact}
 
   ```bash
@@ -148,10 +148,10 @@ Generarás un archivo `.env` con variables (usuario, contraseña, tag de imagen,
 
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 3.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
+- **Paso 3.** Ahora crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente codigo en la terminal.
 
-  > **Nota.**
-  - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
+  > **Notas**
+  - El archivo `compose.yaml` mapea puertos `8091-8096` para la consola web y `11210` para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
 
@@ -197,9 +197,9 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
 
 - **Paso 1.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **Importante.** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -208,7 +208,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
 
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 2.**  Verifica que se haya levantado correctamente el contenedor, escribe le siguiente comando em la terminal.
+- **Paso 2.**  Verifica que se haya levantado correctamente el contenedor, escribe el siguiente comando em la terminal.
 
   ```bash
   export CB_CONTAINER_NAME=cbnode1
@@ -216,7 +216,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 3.** Valida con el comando de **inspect** que en efecto este **Healthy** el contenedor.
+- **Paso 3.** Valida con el comando de **`inspect`** que en efecto esté **_healthy_** el contenedor.
 
   > **Nota.** El contenedor debe estar `Up` y el healthcheck en `healthy` (puede tardar 30–90s en la primera subida). 
   {: .lab-note .info .compact}
@@ -228,7 +228,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
   {% endraw %}
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 4.** Comprueba que el endpoint base este funcionando bien.
+- **Paso 4.** Comprueba que el endpoint base esté funcionando bien.
 
   > **Nota.**
   - El `curl` debe regresar JSON (sin HTML de error).
@@ -335,9 +335,9 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
   curl -fsS -u "${CB_USER}:${CB_PASS}" http://localhost:8091/pools/default/buckets | jq '.'
   ```
 
-- **Paso 3.** Abre la consola web, y verifica que todo este correctamente. Abre la siguiente URL en el navegador **Google Chrome**
+- **Paso 3.** Abre la consola web y verifica que todo funcione correctamente. Abre la siguiente URL en el navegador **Google Chrome**
 
-  > **Importante.** Usa los siguientes datos par autenticarte.
+  > **Importante.** Usa los siguientes datos para autenticarte.
   - **Usuario:** `admin`
   - **Contraseña:** `adminlab`
   {: .lab-note .important .compact}
@@ -347,7 +347,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 4.** Ya dentro de la pagina web de **Couchbase** da clic en **Buckets** del menu lateral izquierdo.
+- **Paso 4.** Ya dentro de la página web de **Couchbase** da clic en **Buckets** del menú lateral izquierdo.
 
   > **Nota.** Debes observar el bucket llamado **dev** creado previamente.
   {: .lab-note .info .compact}
@@ -362,7 +362,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
 
 ### Tarea 6. Limpieza y reinicio (buenas prácticas)
 
-Aprenderás a apagar/encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
+Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
 
 - **Paso 1.** Ahora regresa a la terminal de **Git Bash** para aplicar el siguiente comando.
 
