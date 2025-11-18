@@ -310,7 +310,7 @@ Definirás tres usuarios locales con combinaciones de roles predefinidos acotado
     -c ${CB_HOST} -u "${CB_USER}" -p "${CB_PASS}" \
     --set --rbac-username "${RBAC_DBA}" --rbac-password ${RBAC_DBA_PASS} \
     --auth-domain local \
-    --roles "bucket_admin[\`${CB_BUCKET}\`],query_manage_index[\`${CB_BUCKET}\`]"
+    --roles "bucket_admin[${CB_BUCKET}],query_manage_index[${CB_BUCKET}]"
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
@@ -343,16 +343,18 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
 - **Paso 20.** Inserta un documento con el usuario **writer_app** (permitido):
 
   ```bash
-  docker exec -it cbnode1 cbq -e http://${CB_HOST}:8093 -u "${RBAC_WRITER}" -p ${RBAC_WRITER_PASS} \
+  docker exec -i cbnode1 cbq \
+    -e "http://${CB_HOST}:8093" \
+    -u "${RBAC_WRITER}" -p "${RBAC_WRITER_PASS}" \
     -s "INSERT INTO \`${CB_BUCKET}\`.${CB_SCOPE}.${CB_COLL_ORDERS} (KEY, VALUE) VALUES
-        ('o::2001', {orderId:2001, customerId:'c::010', total:120.5, status:'NEW', ts:NOW_MILLIS()}),
-        ('o::2002', {orderId:2002, customerId:'c::011', total:75.0,  status:'PAID', ts:NOW_MILLIS()});"
+        (\"o::2001\", {\"orderId\":2001, \"customerId\":\"c::010\", \"total\":120.5, \"status\":\"NEW\",  \"ts\":NOW_MILLIS()}),
+        (\"o::2002\", {\"orderId\":2002, \"customerId\":\"c::011\", \"total\":75.0,  \"status\":\"PAID\", \"ts\":NOW_MILLIS()});"
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
 - **Paso 21.** Ahora con `writer_app` intenta realizar un **SELECT** (debería **fallar** por falta de `query_select`):
 
-  > **IMPORTANTE:** Cuando ejecutas el **SELECT** con el usuario **writer** (sin el rol query_select), el servicio de Query responde HTTP 401 (no autorizado). Es normal el mensaje **ERROR 147...**
+  > **IMPORTANTE:** Cuando ejecutas el **SELECT** con el usuario **writer** (sin el rol query_select), el servicio de Query responde HTTP 401 (no autorizado). Es normal el mensaje **ERROR 174...**
   {: .lab-note .important .compact}
 
   ```bash
@@ -372,7 +374,7 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
 
 - **Paso 23.** Ahora prueba con `analyst_ro` ejecuta **INSERT** (debe **fallar**).
 
-  > **IMPORTANTE:** Cuando ejecutas el **INSERT** con el usuario **analyst_ro** (sin el rol writer), el servicio de insert responde HTTP 401 (no autorizado). Es normal el mensaje **ERROR 147...**
+  > **IMPORTANTE:** Cuando ejecutas el **INSERT** con el usuario **analyst_ro** (sin el rol writer), el servicio de insert responde HTTP 401 (no autorizado). Es normal el mensaje **ERROR 174...**
   {: .lab-note .important .compact}
 
   ```bash
