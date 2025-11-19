@@ -454,7 +454,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
     --data-urlencode 'statement=SELECT DataverseName
                       FROM Metadata.`Dataverse`
                       WHERE DataverseName = "dv_audit";' \
-    "http://${CB_HOST}:8095/analytics/service""
+    "http://${CB_HOST}:8095/analytics/service"
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
