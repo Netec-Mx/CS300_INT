@@ -333,7 +333,7 @@ Crearás un **índice covering** que cubra predicados y proyección para evitar 
   ```bash
   docker exec -it ${CB_CONTAINER} cbq -e http://127.0.0.1:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
     -s "EXPLAIN SELECT name, price, brand
-        FROM \\\`${CB_BUCKET}\\\`.${CB_SCOPE}.${CB_COLLECTION}
+        FROM ${CB_BUCKET}.${CB_SCOPE}.${CB_COLLECTION}
         WHERE type='product' AND category='hardware' AND status='active'
         ORDER BY name;"
   ```

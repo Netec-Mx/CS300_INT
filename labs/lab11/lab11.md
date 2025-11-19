@@ -300,10 +300,12 @@ Crearás un bucket con réplicas y cargarás algunos documentos para evaluar con
   {: .lab-note .info .compact}
 
   ```bash
-  docker exec -it ${NODE1} cbq -e http://couchbase1:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
-    -s "INSERT INTO ${CB_BUCKET} (KEY,VALUE) VALUES ('doc::1', {type:'demo', rack:'A'});" \
-    -s "UPSERT INTO ${CB_BUCKET} (KEY,VALUE) VALUES ('doc::2', {type:'demo', rack:'B'});" \
-    -s "SELECT META().id, rack FROM ${CB_BUCKET} WHERE type='demo' ORDER BY META().id;"
+  docker exec -it "${NODE1}" cbq -e http://couchbase1:8093 \
+    -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
+    -s "CREATE PRIMARY INDEX IF NOT EXISTS ON \`${CB_BUCKET}\`;" \
+    -s "INSERT INTO \`${CB_BUCKET}\` (KEY,VALUE) VALUES ('doc::1', {\"type\":\"demo\",\"rack\":\"A\"});" \
+    -s "UPSERT INTO \`${CB_BUCKET}\` (KEY,VALUE) VALUES ('doc::2', {\"type\":\"demo\",\"rack\":\"B\"});" \
+    -s "SELECT META().id AS id, rack FROM \`${CB_BUCKET}\` WHERE \`type\`='demo' ORDER BY META().id;"
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
@@ -357,7 +359,7 @@ Detendrás un nodo para disparar el auto-failover y validarás que el clúster s
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 15.** Esperar al menos **30 segundos** y consulta los datos. Ejecuta el comando, ya espera los 30 segundos.
+- **Paso 15.** Esperar al menos **30 segundos** y consulta los datos. Ejecuta el siguiente comando que ya espera los 30 segundos.
 
   ```bash
   sleep $((AFO_TIMEOUT+5))
@@ -389,7 +391,7 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
 
 - **Paso 17.** Levanta el nodo `n3` y unelo de nuevo. Ejecuta uno por uno los comandos.
 
-  > **IMPORTANTE:** Primero dale **2 minutos** al segundo rebalance. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo.
+  > **IMPORTANTE:** Al segundo comando de **Rebalance** dale **4 minutos** de espera. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo.
   {: .lab-note .important .compact}
 
   ```bash
@@ -426,7 +428,7 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
 
 - **Paso 19.** Ahora para probar **force** primero debes rebalancear al nodo 2 y luego agregarlo. Ejecuta esta serie de comandos.
 
-  > **IMPORTANTE:** Primero dale **2 minutos** al segundo rebalance. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo. **Si te marca error al final se debe a recursos/latencia vuelve a intentar el rebalance**
+  > **IMPORTANTE:** Al segundo comando de **Rebalance** dale **4 minutos** de espera. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo. **Si te marca error al final se debe a recursos/latencia vuelve a intentar el rebalance**
   {: .lab-note .important .compact}
 
   ```bash
@@ -453,7 +455,8 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
   ```bash
   docker exec -it ${NODE1} couchbase-cli failover \
     -c couchbase1 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
-    --server couchbase2 --force
+    --server-failover "${CB2_IP}:8091" \
+    --hard
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
