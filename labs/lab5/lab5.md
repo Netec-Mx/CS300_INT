@@ -13,7 +13,7 @@ prerequisites: # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: > # CAMBIAR POR CADA PRACTICA
-  La auditoría (Audit Logging) registra “quién, qué, cuándo y desde dónde” ante eventos de seguridad y administración: inicios de sesión, cambios de roles, creación de buckets/colecciones, modificaciones de índices y ejecución de consultas, entre otros. En esta práctica activarás la auditoría, generarás eventos intencionales (éxitos y fallos) y validarás la información almacenada en los archivos de log y endpoints REST.
+  La auditoría (Audit Logging) registra “quién, qué, cuándo y desde dónde” ante eventos de seguridad y administración: inicios de sesión, cambios de roles, creación de buckets/colecciones, modificaciones de índices y ejecución de consultas, entre otros. En está práctica activarás la auditoría, generarás eventos intencionales (éxitos y fallos) y validarás la información almacenada en los archivos de log y endpoints REST.
 slug: lab5 # CAMBIAR POR CADA PRACTICA
 lab_number: 5 # CAMBIAR POR CADA PRACTICA
 final_result: > # CAMBIAR POR CADA PRACTICA
@@ -40,18 +40,17 @@ next: /lab6/lab6/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 
 ---
 
-### Tarea 1: Preparación del entorno y variables
+### Tarea 1. Preparación del entorno y variables
 
-Organizarás la carpeta de esta práctica, definirás variables de entorno y verificarás el contenedor/servicio antes de configurar la auditoría.
+Organizarás la carpeta de está práctica, definirás variables de entorno y verificarás el contenedor/servicio antes de configurar la auditoría.
 
-#### Tarea 1.1
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -66,7 +65,7 @@ Organizarás la carpeta de esta práctica, definirás variables de entorno y ver
 
 - **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -87,7 +86,7 @@ Organizarás la carpeta de esta práctica, definirás variables de entorno y ver
   CB_COLL_ORDERS=orders
   CB_COLL_CUSTOMERS=customers
 
-  # Usuarios para la practica
+  # Usuarios para la práctica
   RBAC_ANALYST=analyst_ro
   RBAC_ANALYST_PASS='Ana!2025'
 
@@ -103,9 +102,9 @@ Organizarás la carpeta de esta práctica, definirás variables de entorno y ver
   EOF
   ```
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
+- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
 
-  > **NOTA:**
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -138,9 +137,9 @@ Organizarás la carpeta de esta práctica, definirás variables de entorno y ver
 
 - **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -149,11 +148,11 @@ Organizarás la carpeta de esta práctica, definirás variables de entorno y ver
 
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
+- **Paso 7.** Inicializa el clúster, ejecuta el siguiente comando en la terminal.
 
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica5-auditoria**
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **practica5-auditoria**
   {: .lab-note .important .compact}
 
   ```bash
@@ -171,7 +170,7 @@ Organizarás la carpeta de esta práctica, definirás variables de entorno y ver
 
 - **Paso 8.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cbnode1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
   {: .lab-note .info .compact}
@@ -188,13 +187,12 @@ Organizarás la carpeta de esta práctica, definirás variables de entorno y ver
 
 ---
 
-### Tarea 2: Habilitar auditoría mediante CLI/REST
+### Tarea 2. Habilitar auditoría mediante CLI/REST
 
 Activarás la auditoría, configurarás la ruta de logs, el tamaño de rotación y revisarás la configuración vía REST.
 
-#### Tarea 2.1
 
-- **Paso 9.** Primero crea el directorio de **auditoria** dentro del contenedor de couchbase.
+- **Paso 1.** Primero crea el directorio de **auditoria** dentro del contenedor de couchbase.
 
   ```bash
   set -a; source .env; set +a
@@ -211,9 +209,9 @@ Activarás la auditoría, configurarás la ruta de logs, el tamaño de rotación
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ejecuta el siguiente comando para la configuracion de la auditoría con `couchbase-cli setting-audit`:
+- **Paso 2.** Ejecuta el siguiente comando para la configuracion de la auditoría con `couchbase-cli setting-audit`:.
 
-  > **NOTA:** La propiedad `rotate-interval 0` = rotación por tamaño; `rotate-size` ~20MB.
+  > **Nota.** La propiedad `rotate-interval 0` = rotación por tamaño; `rotate-size` ~20MB.
   {: .lab-note .info .compact}
 
   ```bash
@@ -227,14 +225,14 @@ Activarás la auditoría, configurarás la ruta de logs, el tamaño de rotación
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Ahora realiza la verificación de la activación de la auditoria.
+- **Paso 3.** Ahora realiza la verificación de la activación de la auditoria.
 
   ```bash
   docker exec cbnode1 sh -lc 'curl -fsS -u "$CB_USERNAME:$CB_PASSWORD" http://127.0.0.1:8091/settings/audit'
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Verifica tambien los archivos creados con el siguiente comando.
+- **Paso 4.** Verifica tambien los archivos creados con el siguiente comando.
 
   ```bash
   docker exec cbnode1 sh -lc "ls -l /opt/couchbase/var/lib/couchbase/logs/audit"
@@ -247,13 +245,12 @@ Activarás la auditoría, configurarás la ruta de logs, el tamaño de rotación
 
 ---
 
-### Tarea 3: Bucket/scope/collections
+### Tarea 3. Bucket/scope/collections
 
 Crearás el bucket `orders`, el *scope* `sales` y la *collections* `orders`.
 
-#### Tarea 3.1
 
-- **Paso 13.** Crear el bucket `orders` con **256MB** y *flush* habilitado.
+- **Paso 1.** Crear el bucket `orders` con **256MB** y *flush* habilitado.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli bucket-create \
@@ -267,7 +264,7 @@ Crearás el bucket `orders`, el *scope* `sales` y la *collections* `orders`.
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Crea el *scope* **sales** vía REST, copia y pega el comando en la terminal.
+- **Paso 2.** Crea el *scope* **sales** vía REST, copia y pega el comando en la terminal.
 
   ```bash
   # Scope
@@ -277,7 +274,7 @@ Crearás el bucket `orders`, el *scope* `sales` y la *collections* `orders`.
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Crea el *collections* **orders** vía REST, copia y pega el comando en la terminal.
+- **Paso 3.** Crea el *collections* **orders** vía REST, copia y pega el comando en la terminal.
 
   ```bash
   # Collection: orders
@@ -287,7 +284,7 @@ Crearás el bucket `orders`, el *scope* `sales` y la *collections* `orders`.
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 16.** Crea el índice primario para **orders** y realizar las pruebas de N1QL.
+- **Paso 4.** Crea el índice primario para **orders** y realizar las pruebas de N1QL.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://${CB_HOST}:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -295,9 +292,9 @@ Crearás el bucket `orders`, el *scope* `sales` y la *collections* `orders`.
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 17.** Ejectua el siguiente comando para listar **sales** con **orders** correctamente.
+- **Paso 5.** Ejectua el siguiente comando para listar **sales** con **orders** correctamente.
 
-  > **NOTA:** Configuraste el *keyspace* `orders.sales.orders` para probar permisos granulares por *collection*.
+  > **Nota.** Configuraste el *keyspace* `orders.sales.orders` para probar permisos granulares por *collection*.
   {: .lab-note .info .compact}
 
   ```bash
@@ -306,7 +303,7 @@ Crearás el bucket `orders`, el *scope* `sales` y la *collections* `orders`.
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 18.** Ahora crea el usuario **analyst_ro** (solo lectura en `orders.sales.orders`), copia y pega el siguiente comando en la terminal.
+- **Paso 6.** Ahora crea el usuario **analyst_ro** (solo lectura en `orders.sales.orders`), copia y pega el siguiente comando en la terminal.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -323,29 +320,28 @@ Crearás el bucket `orders`, el *scope* `sales` y la *collections* `orders`.
 
 ---
 
-### Tarea 4: Generar eventos de autenticación (éxitos y fallos)
+### Tarea 4. Generar eventos de autenticación (éxitos y fallos)
 
 Provocarás inicios de sesión correctos y fallidos para observar eventos de auditoría de autenticación.
 
-#### Tarea 4.1
 
-- **Paso 19.** Realiza la prueba con el usuario **analyst_ro** para generar logs
+- **Paso 1.** Realiza la prueba con el usuario **analyst_ro** para generar logs.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://${CB_HOST}:8093 -u "${RBAC_ANALYST}" -p ${RBAC_ANALYST_PASS} -s "SELECT 1;"
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 14.** Ahora intenta el inicio de sesion para simular una falla.
+- **Paso 2.** Ahora intenta el inicio de sesión para simular una falla.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://${CB_HOST}:8093 -u "${RBAC_ANALYST}" -p 'Wrong!2025' -s "SELECT 1;" || true
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 15.** Ahora revisa los logs de auditoria generados por los eventos de inicio de sesión.
+- **Paso 3.** Ahora revisa los logs de auditoria generados por los eventos de inicio de sesión.
 
-  > **NOTA:**
+  > **Nota.**
   - Debes observar entradas recientes indicando éxito y/o fallo de autenticación con timestamps.  
   - La línea contiene el usuario y el origen **(host/endpoint).**
   - Los eventos de autenticación son clave para **trazabilidad de accesos** y detección de intentos fallidos.
@@ -368,13 +364,12 @@ Provocarás inicios de sesión correctos y fallidos para observar eventos de aud
 
 ---
 
-### Tarea 4: Generar eventos RBAC y de administración
+### Tarea 5. Generar eventos RBAC y de administración
 
 Crearás y eliminarás temporalmente un usuario para registrar eventos de cambio RBAC.
 
-#### Tarea 4.1
 
-- **Paso 16.** Crea un usuario temporal `temp_audit` con rol mínimo.
+- **Paso 1.** Crea un usuario temporal `temp_audit` con rol mínimo.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -385,7 +380,7 @@ Crearás y eliminarás temporalmente un usuario para registrar eventos de cambio
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 17.** Ahora lista el usuario para confirmar que se haya creado correctamente.
+- **Paso 2.** Ahora lista el usuario para confirmar que se haya creado correctamente.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -393,7 +388,7 @@ Crearás y eliminarás temporalmente un usuario para registrar eventos de cambio
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 18.** Ahora elimina el usuario `temp_audit` para registrar el evento de borrado:
+- **Paso 3.** Ahora elimina el usuario `temp_audit` para registrar el evento de borrado:.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -402,9 +397,9 @@ Crearás y eliminarás temporalmente un usuario para registrar eventos de cambio
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 
-- **Paso 19.** Revisar los eventos del uusuario creado y eliminado:
+- **Paso 4.** Revisar los eventos del uusuario creado y eliminado:.
 
-  > **NOTA:** Entradas en `audit.log` con acciones de creación/borrado de usuario.  
+  > **Nota.** Entradas en `audit.log` con acciones de creación/borrado de usuario.  
   {: .lab-note .info .compact}
 
   ```bash
@@ -424,16 +419,15 @@ Crearás y eliminarás temporalmente un usuario para registrar eventos de cambio
 
 ---
 
-### Tarea 5: Auditoría de operaciones de datos / consultas
+### Tarea 6. Auditoría de operaciones de datos / consultas
 
 Ejecutarás operaciones de lectura/escritura con distintos usuarios para generar eventos de acc
 eso a datos y Query (N1QL).
 
-#### Tarea 5.1
 
-- **Paso 20.** Abre la consola web, y verifica que todo este correctamente. Abre la siguiente URL en el navegador **Google Chrome**
+- **Paso 1.** Abre la consola web, y verifica que todo este correctamente. Abre la siguiente URL en el navegador **Google Chrome**.
 
-  > **IMPORTANTE:** Usa los siguientes datos par autenticarte.
+  > **Importante.** Usa los siguientes datos par autenticarte.
   - **Usuario:** `admin`
   - **Contraseña:** `adminlab`
   {: .lab-note .important .compact}
@@ -443,15 +437,15 @@ eso a datos y Query (N1QL).
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 21.** En la interfaz da clic en la opción lateral izquierda **Security** expante la propiedad **Query and Index Service** y activala.
+- **Paso 2.** En la interfaz da clic en la opción lateral izquierda **Security** expante la propiedad **Query and Index Service** y activala.
 
   ![cbase24]({{ page.images_base | relative_url }}/24.png)
 
-- **Paso 22.** Da clic en la opción **Save**
+- **Paso 3.** Da clic en la opción **Save**.
 
-- **Paso 23.** Regresa a la terminal de **VSC** 
+- **Paso 4.** Regresa a la terminal de **VSC** .
 
-- **Paso 24.** Crea el usuario **writer_app** (escritura en `orders.sales.orders`, sin permisos de lectura/SELECT):
+- **Paso 5.** Crea el usuario **writer_app** (escritura en `orders.sales.orders`, sin permisos de lectura/SELECT):.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -462,7 +456,7 @@ eso a datos y Query (N1QL).
   ```
   ![cbase25]({{ page.images_base | relative_url }}/25.png)
 
-- **Paso 25.** Inserta con el usuario **writer_app** (evento de mutación) los siguientes datos:
+- **Paso 6.** Inserta con el usuario **writer_app** (evento de mutación) los siguientes datos:.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://$CB_HOST:8093 \
@@ -473,7 +467,7 @@ eso a datos y Query (N1QL).
   ```
   ![cbase26]({{ page.images_base | relative_url }}/26.png)
 
-- **Paso 26.** Ahora realiza la consulta con el usuario `analyst_ro` **SELECT**.
+- **Paso 7.** Ahora realiza la consulta con el usuario `analyst_ro` **SELECT**.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://$CB_HOST:8093 \
@@ -482,9 +476,9 @@ eso a datos y Query (N1QL).
   ```
   ![cbase27]({{ page.images_base | relative_url }}/27.png)
 
-- **Paso 27.** Ejecuta el siguiente comando para revisar la auditoria y verifica las líneas que mencionen `n1ql`, `query` o mutaciones **SELECT** o **INSERT**.
+- **Paso 8.** Ejecuta el siguiente comando para revisar la auditoria y verifica las líneas que mencionen `n1ql`, `query` o mutaciones **SELECT** o **INSERT**.
 
-  > **NOTA:** La salida del comando es muy extensa dependiendo de cuantas pruebas hayas realizado, la imagen solo demuestra parte de la salida.
+  > **Nota.** La salida del comando es muy extensa dependiendo de cuantas pruebas hayas realizado, la imagen solo demuestra parte de la salida.
   {: .lab-note .info .compact}
 
   ```bash
@@ -502,13 +496,12 @@ eso a datos y Query (N1QL).
 
 ---
 
-### Tarea 6: Limpieza
+### Tarea 7. Limpieza
 
 Revertirás exclusiones y dejarás la auditoría activada, o la desactivarás según necesidades del entorno de laboratorio.
 
-#### Tarea 6.1
 
-- **Paso 28.** Borrar los usuarios RBAC crados para la practica.
+- **Paso 1.** Borrar los usuarios RBAC creados para la práctica.
 
   ```bash
   for U in "${RBAC_ANALYST}" "${RBAC_WRITER}"; do
@@ -519,11 +512,11 @@ Revertirás exclusiones y dejarás la auditoría activada, o la desactivarás se
   ```
   ![cbase29]({{ page.images_base | relative_url }}/29.png)
 
- **Paso 29.** Ahora elimina el bucket con el siguiente comando.
+ **Paso 2.** Ahora elimina el bucket con el siguiente comando.
 
-  > **NOTA:** Espera unos segundos, es normal que tarde en eliminarse.
+  > **Nota.** Espera unos segundos, es normal que tarde en eliminarse.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Si te llegase a marcar algun error en el borrado, pude deberse a que aun esta ocupado en alguna tarea, intentalo nuevamente. En ocasiones se borra aunque mande el mensaje de error.
+  > **Importante.** Si te llegase a marcar algún error en el borrado, pude deberse a que aun está ocupado en alguna tarea, inténtalo nuevamente. En ocasiones se borra aunque mande el mensaje de error.
   {: .lab-note .important .compact}
 
   ```bash
@@ -532,9 +525,9 @@ Revertirás exclusiones y dejarás la auditoría activada, o la desactivarás se
     --bucket orders
   ```
 
-- **Paso 30.** Ahora en la terminal aplica el siguiente comando para detener el nodo.
+- **Paso 3.** Ahora en la terminal aplica el siguiente comando para detener el nodo.
 
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -542,9 +535,9 @@ Revertirás exclusiones y dejarás la auditoría activada, o la desactivarás se
   ```
   ![cbase30]({{ page.images_base | relative_url }}/30.png)
 
-- **Paso 31.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 4.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
 
   ```bash
