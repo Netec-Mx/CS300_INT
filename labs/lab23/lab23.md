@@ -88,7 +88,7 @@ Crea estructura independiente y define variables del clúster, bucket y parámet
   APP_BUCKET=ejectionlab
   APP_SCOPE=shop
   APP_COLLECTION=products
-  APP_BUCKET_RAM=20
+  APP_BUCKET_RAM=100
   EVICTION=valueOnly 
 
   # Carga

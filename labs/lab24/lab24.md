@@ -294,7 +294,7 @@ Ejecutarás `cbcollect_info` con configuración por defecto (sin redaction) y va
 
 - **Paso 16.** Ejecuta `cbcollect_info` dentro del contenedor
 
-  > **NOTA:** Si detectas algunos codigos de error, es normal ya queno estan muchos paquetes instalados. El proceso puede tardar de **1 a 5 minutos** termina solo. 
+  > **NOTA:** Si detectas algunos codigos de error, es normal ya que no estan muchos paquetes instalados. El proceso puede tardar de **1 a 5 minutos** termina solo. 
   {: .lab-note .info .compact}
 
   {%raw%}
