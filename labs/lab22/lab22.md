@@ -448,7 +448,7 @@ Repetirás las métricas para evidenciar la mejora.
 
 #### Tarea 6.1
 
-- **Paso 25.** Repie la ejecución de la metrica `basicStats` y obten los tamaños de discos usados.
+- **Paso 25.** Repite la ejecución de la metrica `basicStats` y obten los tamaños de discos usados.
 
   > **IMPORTANTE:** Es normal que siga marcando 0% de fragmentación solo es un calculo de referencia y depende de las configuraciones del cluster. Lo importante es que observes la cantidad de **`diskUsed`** y **`dataUsed`** que se haya reducido el tamañao.
   {: .lab-note .important .compact}
@@ -477,7 +477,7 @@ Repetirás las métricas para evidenciar la mejora.
 
   ```bash
   docker exec -it ${CB_CONTAINER} cbq -e http://127.0.0.1:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
-    -s "SELECT COUNT(*) AS n FROM \\\`${APP_BUCKET}\\\`.${APP_SCOPE}.${APP_COLLECTION};"
+    -s "SELECT COUNT(*) AS n FROM ${APP_BUCKET}.${APP_SCOPE}.${APP_COLLECTION};"
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 

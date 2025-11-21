@@ -359,7 +359,7 @@ Simularás pérdida del bucket borrándolo del clúster y **restaurarás** el co
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 20.** Reliza la restauracion **completa** desde el repo.
+- **Paso 20.** Realiza la restauracion **completa** desde el repo.
 
   > **NOTA:** Si tu backup contiene múltiples buckets o colecciones, `--map-data` te permite controlar exactamente a dónde se restauran. Para esta practica no es necesario.
   {: .lab-note .info .compact}
@@ -367,13 +367,14 @@ Simularás pérdida del bucket borrándolo del clúster y **restaurarás** el co
   {: .lab-note .important .compact}
 
   ```bash
-  MSYS2_ARG_CONV_EXCL="*" docker exec -it "${CB_CONTAINER}" bash -lc '
+  MSYS2_ARG_CONV_EXCL="*" docker exec -it "${CB_CONTAINER}" bash -lc "
     cbbackupmgr restore \
-      --archive "'"${BK_ARCHIVE}"'" --repo "'"${BK_REPO}"'" \
+      --archive '${BK_ARCHIVE}' --repo '${BK_REPO}' \
       --cluster http://127.0.0.1:8091 \
-      --username "'"${CB_ADMIN}"'" --password "'"${CB_ADMIN_PASS}"'" \
-      --auto-create-buckets
-  '
+      --username '${CB_ADMIN}' --password '${CB_ADMIN_PASS}' \
+      --auto-create-buckets \
+      --purge
+  "
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
