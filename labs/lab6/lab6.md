@@ -13,7 +13,7 @@ prerequisites: # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: | # CAMBIAR POR CADA PRACTICA
-Transport Layer Security (TLS) es un protocolo criptográfico que proporciona comunicaciones seguras a través de una red. Es el sucesor de Secure Sockets Layer (SSL) y se utiliza ampliamente para asegurar conexiones web, correo electrónico y otras comunicaciones.
+  Transport Layer Security (TLS) es un protocolo criptográfico que proporciona comunicaciones seguras a través de una red. Es el sucesor de Secure Sockets Layer (SSL) y se utiliza ampliamente para asegurar conexiones web, correo electrónico y otras comunicaciones.
 
   En está práctica, implementarás un entorno completo de TLS usando:
   - **Docker**: para containerizar nuestros servicios.
