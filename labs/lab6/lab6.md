@@ -1,6 +1,6 @@
 ---
 layout: lab
-title: "Práctica 6. TLS con certificados autofirmados" # CAMBIAR POR CADA PRACTICA
+title: "Práctica 6: TLS con certificados autofirmados" # CAMBIAR POR CADA PRACTICA
 permalink: /lab6/lab6/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab6/img # CAMBIAR POR CADA PRACTICA
 duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
