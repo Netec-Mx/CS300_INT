@@ -14,15 +14,15 @@ prerequisites:  # CAMBIAR POR CADA PRACTICA
   - 3–4 GB de RAM libres (servicios `kv,index,query`).
   - Utilidades del host `unzip`, `jq` (opcional para inspección). 
 introduction: | # CAMBIAR POR CADA PRACTICA
-  La propiedad `cbcollect_info` empaqueta **logs**, **configuración**, **estadísticas** y **diagnósticos** del nodo para facilitar troubleshooting. Couchbase permite **Log Redaction** (None / Partial / Full) para ocultar datos sensibles (por ejemplo, valores de documentos) dentro del archivo resultante. En esta práctica crearás **dos** paquetes: uno **sin redaction** y otro **con redaction parcial**, y revisarás sus diferencias.
+  La propiedad `cbcollect_info` empaqueta **logs**, **configuración**, **estadísticas** y **diagnósticos** del nodo para facilitar troubleshooting. Couchbase permite **Log Redaction** (None / Partial / Full) para ocultar datos sensibles (por ejemplo, valores de documentos) dentro del archivo resultante. En esta práctica crearás **dos** paquetes: uno **sin redaction** y otro **con redaction parcial** y revisarás sus diferencias.
 slug: lab24 # CAMBIAR POR CADA PRACTICA
 lab_number: 24 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
-  Generaste dos paquetes de soporte con `cbcollect_info`: uno **sin** redaction y otro **con** redaction **partial**. Validaste su contenido, comprobaste marcadores de redacción y entendiste cómo entregar de forma **segura** la evidencia para troubleshooting o escalamiento a soporte.
+  Generaste dos paquetes de soporte con `cbcollect_info`: uno **sin** redaction y otro **con** redaction **partial**. Validaste su contenido, comprobaste los marcadores de redacción y entendiste cómo entregar de forma **segura** la evidencia para troubleshooting o escalamiento a soporte.
 notes: | # CAMBIAR POR CADA PRACTICA
   - Para **entornos regulados**, usa **redaction full** y valida antes de compartir externamente.  
   - Evita publicar paquetes en repositorios públicos; contienen configuración sensible.  
-  - En clústeres grandes, considera `--threads` y ventanas de menor carga para minimizar impacto.  
+  - En clústeres grandes, considera `--threads` y ventanas de menor carga para minimizar el impacto.  
   - Con **TLS** habilitado, la herramienta recolecta certificados y configuraciones relacionadas para diagnóstico.
 references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
   - text: Log Redaction (niveles y configuración)
@@ -37,22 +37,20 @@ next: /lab1/lab1/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 
 ---
 
-### Tarea 1: Carpeta de la práctica y variables
+### Tarea 1. Carpeta de la práctica y variables.
 
 Crearás una carpeta aislada con subdirectorios y un `.env` con variables consistentes para el laboratorio.
 
-#### Tarea 1.1
-
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el ícono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica24-cbcollect/
@@ -62,9 +60,9 @@ Crearás una carpeta aislada con subdirectorios y un `.env` con variables consis
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -100,15 +98,13 @@ Crearás una carpeta aislada con subdirectorios y un `.env` con variables consis
 
 ---
 
-### Tarea 2: Docker Compose y salud del nodo
+### Tarea 2. Docker Compose y salud del nodo.
 
 Definirás un `compose.yaml` con un único nodo Couchbase y validarás que la API responde.
 
-#### Tarea 2.1
+- **Paso 1.** Ahora, crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
-
-  > **NOTA:**
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -140,11 +136,11 @@ Definirás un `compose.yaml` con un único nodo Couchbase y validarás que la AP
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal, ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -152,7 +148,7 @@ Definirás un `compose.yaml` con un único nodo Couchbase y validarás que la AP
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Verifica que el contenedor se haya creado correctamente.
+- **Paso 3.** Verifica que el contenedor se haya creado correctamente.
 
   {%raw%}
   ```bash
@@ -168,17 +164,15 @@ Definirás un `compose.yaml` con un único nodo Couchbase y validarás que la AP
 
 ---
 
-### Tarea 3: Inicializar clúster y crear bucket “estrecho”
+### Tarea 3. Inicializar el clúster y crear un bucket “estrecho”.
 
 Inicializarás el nodo, crearás un bucket/colección y registrarás algo de actividad para que el paquete contenga eventos reales.
 
-#### Tarea 3.1
+- **Paso 1.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
 
-- **Paso 8.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
-
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica24-cbcollect**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **practica24-cbcollect**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -194,12 +188,12 @@ Inicializarás el nodo, crearás un bucket/colección y registrarás algo de act
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
-  - Contenedor `cb-collect-n1` aparece **Up**.  
+  > **Nota.**
+  - El contenedor `cb-collect-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
-  - Esta conexion es mediante HTTP.
+  - Esta conexión es mediante HTTP.
   {: .lab-note .info .compact}
 
   ```bash
@@ -208,7 +202,7 @@ Inicializarás el nodo, crearás un bucket/colección y registrarás algo de act
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 3.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-create \
@@ -218,7 +212,7 @@ Inicializarás el nodo, crearás un bucket/colección y registrarás algo de act
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Ahora crea el *Scope* **shop**
+- **Paso 4.** Ahora, crea el *Scope* **shop**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -227,7 +221,7 @@ Inicializarás el nodo, crearás un bucket/colección y registrarás algo de act
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Con este comando crea el *Collection* **events**
+- **Paso 5.** Con este comando crea el *Collection* **events**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -236,7 +230,7 @@ Inicializarás el nodo, crearás un bucket/colección y registrarás algo de act
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Crea el índice primario temporal para validaciones
+- **Paso 6.** Crea el índice primario temporal para validaciones.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" -q=false \
@@ -244,9 +238,9 @@ Inicializarás el nodo, crearás un bucket/colección y registrarás algo de act
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Carga 30 documentos (loop con N1QL)
+- **Paso 7.** Carga 30 documentos (loop con N1QL).
 
-  > **IMPORTANTE:** Es normal que la terminal se quede en espera, ya que esta insertando los 30 registros. El proceso finalizara solo, espera unos minutos.
+  > **Importante.** Es normal que la terminal se quede en espera, ya que está insertando los 30 registros. El proceso finalizará solo. Epera unos minutos.
   {: .lab-note .important .compact}
 
   ```bash
@@ -270,7 +264,7 @@ Inicializarás el nodo, crearás un bucket/colección y registrarás algo de act
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Verifica que se hayan cargado correctamente, realiza la consulta de conteo.
+- **Paso 8.** Verifica que se hayan cargado correctamente, realiza la consulta de conteo.
 
   ```bash
   docker exec -i "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "$CB_ADMIN" -p "$CB_ADMIN_PASS" -q=false \
@@ -286,15 +280,13 @@ Inicializarás el nodo, crearás un bucket/colección y registrarás algo de act
 
 ---
 
-### Tarea 4: Recolección **sin** log redaction
+### Tarea 4. Recolección **sin** log redaction.
 
 Ejecutarás `cbcollect_info` con configuración por defecto (sin redaction) y validarás el archivo resultante.
 
-#### Tarea 4.1
+- **Paso 1.** Ejecuta `cbcollect_info` dentro del contenedor.
 
-- **Paso 16.** Ejecuta `cbcollect_info` dentro del contenedor
-
-  > **NOTA:** Si detectas algunos codigos de error, es normal ya que no estan muchos paquetes instalados. El proceso puede tardar de **1 a 5 minutos** termina solo. 
+  > **Nota.** Si detectas algunos codigos de error, es normal, ya que no están muchos paquetes instalados. El proceso puede tardar de **1 a 5 minutos**, termina solo. 
   {: .lab-note .info .compact}
 
   {%raw%}
@@ -326,7 +318,7 @@ Ejecutarás `cbcollect_info` con configuración por defecto (sin redaction) y va
   {%endraw%}
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 17.** Verifica el archivo y copialo al host.
+- **Paso 2.** Verifica el archivo y cópialo al host.
 
   ```bash
   LATEST_NR=$(docker exec -i "$CB_CONTAINER" bash -lc \
@@ -362,15 +354,13 @@ Ejecutarás `cbcollect_info` con configuración por defecto (sin redaction) y va
 
 ---
 
-### Tarea 5: Recolección **con** log redaction (nivel **partial**)
+### Tarea 5. Recolección **con** log redaction (nivel **partial**).
 
 Activarás redaction **partial** para ocultar datos sensibles de usuario y generarás un segundo paquete, comparándolo con el primero.
 
-#### Tarea 5.1
+- **Paso 1.** Inicia la recolección redacted con CLI.
 
-- **Paso 18.** Inicia la recolección redacted con CLI
-
-  > **NOTA:** En clústeres multinodo, `collect-logs-start/stop` recolecta desde *todos* los nodos. Aquí tenemos un solo nodo.
+  > **Nota.** En clústeres multinodo, `collect-logs-start/stop` recolecta desde *todos* los nodos. Aquí tenemos un solo nodo.
   {: .lab-note .info .compact}
 
   ```bash
@@ -396,7 +386,7 @@ Activarás redaction **partial** para ocultar datos sensibles de usuario y gener
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 19.** Copia el archivo al host y valida el ZIP redacted.
+- **Paso 2.** Copia el archivo al host y valida el ZIP redacted.
 
   ```bash
   # === Detecta el ZIP más reciente y cópialo al host ===
@@ -429,13 +419,11 @@ Activarás redaction **partial** para ocultar datos sensibles de usuario y gener
 
 ---
 
-### Tarea 6: Comparativa y verificación de redaction
+### Tarea 6. Comparativa y verificación de redaction.
 
 Comprobarás que en el paquete redacted aparecen **marcadores** de redacción y que el manifiesto registra el nivel usado.
 
-#### Tarea 6.1
-
-- **Paso 20.** Extrae ambos ZIP y busca los marcadores `<ud>`
+- **Paso 1.** Extrae ambos ZIP y busca los marcadores `<ud>`.
 
   ```bash
   # === Limpieza suave (no aborta si no existen) ===
@@ -498,7 +486,7 @@ Comprobarás que en el paquete redacted aparecen **marcadores** de redacción y 
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 21.** Revisar los manifiesto y metadatos de los archivos.
+- **Paso 2.** Revisar los manifiestos y metadatos de los archivos.
 
   ```bash
   # === Pistas de manifiesto/metadatos en REDACTED ===
@@ -519,15 +507,13 @@ Comprobarás que en el paquete redacted aparecen **marcadores** de redacción y 
 
 ---
 
-### Tarea 7: Limpieza
+### Tarea 7. Limpieza.
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 7.1
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-- **Paso 22.** En la terminal aplica el siguiente comando para detener el nodo.
-
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -535,11 +521,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 23.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apagar y eliminar el contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
