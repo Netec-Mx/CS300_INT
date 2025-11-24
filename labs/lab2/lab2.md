@@ -5,7 +5,7 @@ permalink: /lab2/lab2/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab2/img # CAMBIAR POR CADA PRACTICA
 duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
 objective: # CAMBIAR POR CADA PRACTICA
-  - Desplegar un clúster de Couchbase de 3 nodos con Docker Compose en una sola máquina, inicializar el clúster desde el nodo 1, unir nodos 2 y 3, rebalancear, crear un bucket de prueba y validar estado/servicios vía CLI, REST y la consola web, usando Visual Studio Code y terminal Git Bash.
+  - Desplegar un clúster de Couchbase de tres nodos con Docker Compose en una sola máquina, inicializar el clúster desde el nodo 1, unir nodos 2 y 3, rebalancear, crear un bucket de prueba y validar estado/servicios vía CLI, REST y la consola web, usando Visual Studio Code y terminal Git Bash.
 prerequisites: # CAMBIAR POR CADA PRACTICA
   - Visual Studio Code con terminal **Git Bash**.
   - 6–8 GB de RAM libres recomendados para 3 nodos (mínimo ~5 GB).  
@@ -13,11 +13,11 @@ prerequisites: # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: # CAMBIAR POR CADA PRACTICA
-  - Configurarás un clúster Couchbase de 3 nodos (couchbase1, couchbase2, couchbase3) sobre una red de Docker. Publicaremos puertos externos solo en el nodo 1 para usar la Web Console local y APIs; los demás nodos se comunicarán por la red interna de Docker. Automatizarás la creación y el rebalanceo con `couchbase-cli` y verificarás la salud del clúster.
+  - Configurarás un clúster Couchbase de tres nodos (`couchbase1`, `couchbase2`, `couchbase3`) sobre una red de Docker. Publicarás puertos externos solo en el `nodo 1` para usar la Web Console local y API; los demás nodos se comunicarán por la red interna de Docker. Automatizarás la creación y el rebalanceo con `couchbase-cli` y verificarás la salud del clúster.
 slug: lab2 # CAMBIAR POR CADA PRACTICA
 lab_number: 2 # CAMBIAR POR CADA PRACTICA
 final_result: > # CAMBIAR POR CADA PRACTICA
-  Clúster de Couchbase de **3 nodos** funcionando en Docker Compose, inicializado desde el nodo 1, con nodos 2 y 3 añadidos y rebalanceados, bucket de prueba creado, y validaciones completas por CLI, REST y Web Console.
+  Clúster de Couchbase de **tres nodos** funcionando en Docker Compose, inicializado desde el nodo 1, con nodos 2 y 3 añadidos y rebalanceados, bucket de prueba creado y validaciones completas por `CLI`, `REST` y Web Console.
 notes: # CAMBIAR POR CADA PRACTICA
   - Ajusta `CB_RAM`, `CB_INDEX_RAM` y `CB_BUCKET_RAM` según la RAM disponible.  
   - Evita publicar puertos de nodos 2 y 3 para no duplicar puertos en el host.  
@@ -45,14 +45,14 @@ Crearás la carpeta de la práctica con subdirectorios por nodo para separar dat
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **`cs300-labs`**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica2-multinode/{node1,node2,node3}/{data,logs,config}
@@ -61,7 +61,7 @@ Crearás la carpeta de la práctica con subdirectorios por nodo para separar dat
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** Ahora en el árbol de directorios lateral derecho verifica los directorios `node1`, `node2`, `node3` existen con `data/`, `logs/`, `config/` dentro y el directorio `scripts`.
+- **Paso 4.** Ahora, en el árbol de directorios lateral derecho verifica los directorios `node1`, `node2`, `node3` existen con `data/`, `logs/`, `config/` dentro y el directorio `scripts`.
 
   > **Nota.** Mantener datos/losgs por nodo permite borrar o recrear nodos de forma independiente sin perder claridad.
   {: .lab-note .info .compact}
@@ -74,14 +74,14 @@ Crearás la carpeta de la práctica con subdirectorios por nodo para separar dat
 
 ---
 
-### Tarea 2. Variables de entorno y Docker Compose (3 nodos)
+### Tarea 2. Variables de entorno y Docker Compose (tres nodos)
 
 Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **nodo 1** expondrá puertos hacia el host. Cada servicio tendrá healthcheck.
 
 
-- **Paso 1.** Crea el archivo `.env` dentro del directorio **practica2-multinode**.
+- **Paso 1.** Crea el archivo `.env` dentro del directorio **`practica2-multinode`**.
 
-  > **Importante.** El comando se ejecuta dentro del directorio **practica2-multinode** 
+  > **Importante.** El comando se ejecuta dentro del directorio **`practica2-multinode`**. 
   {: .lab-note .important .compact}
 
   ```bash
@@ -99,9 +99,9 @@ Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **no
   EOF
   ```
 
-- **Paso 2.** Ahora con mucho cuidado ejecuta este comando que creara el archivo `compose.yaml` donde se definen los 3 nodos de couchbase.:.
+- **Paso 2.** Ahora, con mucho cuidado, ejecuta este comando que creara el archivo `compose.yaml` donde se definen los tres nodos de couchbase.
 
-  > **Nota.**
+  > **Notas**
   - Una red bridge compartida permite que los nodos se resuelvan por `hostname` (`couchbase1`, `couchbase2`, `couchbase3`).  
   - Publicar puertos solo en el nodo 1 simplifica el acceso desde el host.
   - Stack de 3 servicios listo para ser levantado.
@@ -190,7 +190,7 @@ Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **no
 Subirás los 3 contenedores y confirmarás que los healthchecks respondan.
 
 
-- **Paso 1.** Ahora ejecuta el comando para levantar los 3 nodos mediante el docker compose y cargar las variables.
+- **Paso 1.** Ahora, ejecuta el comando para levantar los tres nodos mediante el docker `compose` y cargar las variables.
 
   ```bash
   set -a; source .env; set +a
@@ -207,10 +207,10 @@ Subirás los 3 contenedores y confirmarás que los healthchecks respondan.
   {%endraw%}
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 3.** Ahora verifica el status particularmente de cada nodo.
+- **Paso 3.** Ahora, verifica el estatus particularmente de cada nodo.
   
-  > **Nota.**
-  - Los 3 contenedores deben estar `Up`. Health puede tardar ~1–2 min en quedar `healthy` la primera vez.
+  > **Notas**
+  - Los tres contenedores deben estar `Up`. Health puede tardar ~1–2 min en quedar `healthy` la primera vez.
   - El endpoint `/pools` es una sonda rápida para saber que el proceso de Couchbase está arriba (aunque no inicializado).
   {: .lab-note .info .compact}
 
@@ -234,9 +234,9 @@ Subirás los 3 contenedores y confirmarás que los healthchecks respondan.
 Inicializarás el clúster en el nodo 1, agregarás nodos 2 y 3 con los servicios definidos y lanzarás un rebalanceo.
 
 
-- **Paso 1.** De manera más eficiente crearas un script para la inicialización de los nodos, copia y pega el siguiente comando.
+- **Paso 1.** De manera más eficiente, crea un script para la inicialización de los nodos, copia y pega el siguiente comando.
 
-  > **Nota.** El comando se ejecuta dentro de la carpeta **practica2-multinode**
+  > **Nota.** El comando se ejecuta dentro de la carpeta **`practica2-multinode`**.
   {: .lab-note .info .compact}
 
   {%raw%}
@@ -430,10 +430,10 @@ Inicializarás el clúster en el nodo 1, agregarás nodos 2 y 3 con los servicio
   ```
   {%endraw%}
 
-- **Paso 2.** Ahora ejecuta el script para levantar los nodos.
+- **Paso 2.** Ahora, ejecuta el script para levantar los nodos.
 
-  > **Nota.**
-  - `server-list` debe reportar **3 nodos** con servicios `data,index,query`.  
+  > **Notas**
+  - `server-list` debe reportar **tres nodos** con servicios `data,index,query`.  
   - `bucket-list` debe mostrar el bucket `test`.  
   - `rebalance` no debe devolver errores.
   {: .lab-note .info .compact}
@@ -454,10 +454,10 @@ Inicializarás el clúster en el nodo 1, agregarás nodos 2 y 3 con los servicio
 
 ### Tarea 5. Validaciones por REST y Web Console
 
-Consultarás endpoints REST y validarás desde la consola web que existen 3 nodos, servicios activos y el bucket creado.
+Consultarás endpoints `REST` y validarás desde la consola web que existen tres nodos, servicios activos y el bucket creado.
 
 
-- **Paso 1.** Valida los nodos mediante el endpoint REST.
+- **Paso 1.** Valida los nodos mediante el endpoint `REST`.
 
   > **Importante.** Recuerda que la salida de la inforamción es demasiada extensa, puedes analizarla o interrumpirla con **`CTRL + C`**
   {: .lab-note .important .compact}
@@ -467,7 +467,7 @@ Consultarás endpoints REST y validarás desde la consola web que existen 3 nodo
   curl -fsS -u "${CB_USER}:${CB_PASS}" http://localhost:8091/pools/default | jq '.'
   ```
 
-- **Paso 2.** Abre la consola web, y verifica que todo este correctamente. Abre la siguiente URL en el navegador **Google Chrome**.
+- **Paso 2.** Abre la consola web y verifica que todo esté correctamente. Abre la siguiente URL en el navegador **Google Chrome**.
 
   > **Importante.** Usa los siguientes datos par autenticarte.
   - **Usuario:** `admin`
@@ -479,11 +479,11 @@ Consultarás endpoints REST y validarás desde la consola web que existen 3 nodo
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 3.** Entrando al sistema de Couchbase te aparecera la notificación del rebalance que se ha aplicado correctamente.
+- **Paso 3.** Entrando al sistema de Couchbase, te aparecerá la notificación del rebalance que se ha aplicado correctamente.
 
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 4.** Da clic en la opción de **Buckets** y verás que aplicó la distribución a los 3 nodos.
+- **Paso 4.** Da clic en la opción de **Buckets** y verás que aplicó la distribución a los tres nodos.
 
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
@@ -505,9 +505,9 @@ Crearás un índice primario para ejecutar una consulta rápida sobre el bucket 
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 2.** Ahora realiza la prueba para consultar el índice primario.
+- **Paso 2.** Ahora, realiza la prueba para consultar el índice primario.
 
-  > **Importante.** Para consultas ad-hoc el índice primario es útil. En producción se recomiendan índices específicos.
+  > **Importante.** Para consultas _ad-hoc_, el índice primario es útil. En producción se recomiendan índices específicos.
   {: .lab-note .important .compact}
 
   ```bash
@@ -523,7 +523,7 @@ Crearás un índice primario para ejecutar una consulta rápida sobre el bucket 
 
 ### Tarea 7. Limpieza y reinicio (buenas prácticas)
 
-Aprenderás a apagar/encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
+Aprenderás a apagar o encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
 
 
 - **Paso 1.** Ahora regresa a la terminal de **Git Bash** para aplicar el siguiente comando.
@@ -536,9 +536,9 @@ Aprenderás a apagar/encender el servicio y a limpiar volúmenes si necesitas em
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
 
   ```bash
