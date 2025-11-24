@@ -1,37 +1,37 @@
 ---
 layout: lab
-title: "Práctica 12: Rebalance tras cambio de nodos" # CAMBIAR POR CADA PRACTICA
-permalink: /lab12/lab12/ # CAMBIAR POR CADA PRACTICA
-images_base: /labs/lab12/img # CAMBIAR POR CADA PRACTICA
-duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
-objective: # CAMBIAR POR CADA PRACTICA
+title: "Práctica 12: Rebalance tras cambio de nodos" # CAMBIAR POR CADA práctica
+permalink: /lab12/lab12/ # CAMBIAR POR CADA práctica
+images_base: /labs/lab12/img # CAMBIAR POR CADA práctica
+duration: "25 minutos" # CAMBIAR POR CADA práctica
+objective: # CAMBIAR POR CADA práctica
   - Desplegar un clúster de Couchbase para **rebalance** después de **cambios de topología** *scale out* (agregar nodos) y *scale in* (retirar nodos). Validarás continuidad del servicio, redistribución de particiones (vBuckets) e integridad de datos
-prerequisites:  # CAMBIAR POR CADA PRACTICA
+prerequisites:  # CAMBIAR POR CADA práctica
   - Software **Docker Desktop** en ejecución.  
   - Software **Visual Studio Code** con terminal **Git Bash**.  
   - Puertos libres para UI/REST por nodo `18091/28091/38091` (mapeados a `8091`).
   - Conectividad a Internet para descargar imágenes.  
   - 4–6 GB de RAM libres (3 nodos con servicios `kv,index,query`).
-introduction: | # CAMBIAR POR CADA PRACTICA
-  En Couchbase, el **rebalance** redistribuye particiones (vBuckets), réplicas e índices cuando cambias la **topología** del clúster (agregar/quitar nodos, mover grupos, etc.). Un rebalance correcto mantiene disponibilidad y rendimiento al equilibrar carga y almacenamiento. En esta práctica crearás un clúster de 3 nodos, cargarás datos, harás **scale out** a 4 nodos y después **scale in** de vuelta a 3, verificando que los datos siguen accesibles y que la distribución se estabiliza.
-slug: lab12 # CAMBIAR POR CADA PRACTICA
-lab_number: 12 # CAMBIAR POR CADA PRACTICA
-final_result: | # CAMBIAR POR CADA PRACTICA
+introduction: | # CAMBIAR POR CADA práctica
+  En Couchbase, el **rebalance** redistribuye particiones (vBuckets), réplicas e índices cuando cambias la **topología** del clúster (agregar/quitar nodos, mover grupos, etc.). Un rebalance correcto mantiene disponibilidad y rendimiento al equilibrar carga y almacenamiento. En está práctica crearás un clúster de 3 nodos, cargarás datos, harás **scale out** a 4 nodos y después **scale in** de vuelta a 3, verificando que los datos siguen accesibles y que la distribución se estabiliza.
+slug: lab12 # CAMBIAR POR CADA práctica
+lab_number: 12 # CAMBIAR POR CADA práctica
+final_result: | # CAMBIAR POR CADA práctica
   Creaste un clúster de 3 nodos, cargaste datos, realizaste **scale out** a 4 nodos y luego **scale in** a 3, ejecutando **rebalance** en cada cambio y verificando continuidad e integridad. Ahora dominas el ciclo típico de **cambio de capacidad** en Couchbase y su efecto en la distribución de vBuckets e índices.
-notes: | # CAMBIAR POR CADA PRACTICA
+notes: | # CAMBIAR POR CADA práctica
   - **Index Service**: si usas índices secundarios, considera *index rebalancing* y la opción de *moving indexes* (tiempos mayores).  
   - **Server Groups**: en entornos productivos, combina cambios de nodos con **Rack/Zone Awareness** (ver Práctica 10).  
   - **Durabilidad**: para escrituras críticas durante rebalances, considera `DurabilityLevel`.  
   - **Monitoreo**: observa *Tasks* en la UI y métricas de *Rebalance Progress*.  
   - **Versiones**: flags de CLI pueden variar levemente entre versiones de Couchbase Server.
-references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
+references: # CAMBIAR POR CADA práctica LINKS ADICIONALES DE DOCUMENTACION
   - text: Rebalance (conceptos y flujos)
     url: https://docs.couchbase.com/server/current/learn/clusters-and-availability/rebalance.html 
   - text: Puertos
     url: https://docs.couchbase.com/server/current/install/install-ports.html
     
-prev: /lab11/lab11/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ATRAS        
-next: /lab13/lab13/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
+prev: /lab11/lab11/ # CAMBIAR POR CADA práctica MENU DE NAVEGACION HACIA ATRAS        
+next: /lab13/lab13/ # CAMBIAR POR CADA práctica MENU DE NAVEGACION HACIA ADELANTE
 ---
 
 
@@ -41,14 +41,14 @@ next: /lab13/lab13/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 Crearás una carpeta aislada para la práctica y un `.env` con variables para 4 nodos potenciales.
 
-#### Tarea 1.1
+
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -64,7 +64,7 @@ Crearás una carpeta aislada para la práctica y un `.env` con variables para 4 
 
 - **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -103,11 +103,11 @@ Crearás una carpeta aislada para la práctica y un `.env` con variables para 4 
 
 Definirás un `compose.yaml` con 3 nodos iniciales y un 4º nodo listo para *scale out* (se puede levantar después).
 
-#### Tarea 2.1
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-  > **NOTA:**
+- **Paso 1.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
+
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -206,11 +206,11 @@ Definirás un `compose.yaml` con 3 nodos iniciales y un 4º nodo listo para *sca
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -228,13 +228,13 @@ Definirás un `compose.yaml` con 3 nodos iniciales y un 4º nodo listo para *sca
 
 Inicializarás el clúster en `n1`, unirás `n2` y `n3`, crearás el bucket y cargarás datos de prueba.
 
-#### Tarea 3.1
 
-- **Paso 7.** Inicializa el clúster en **n1**, ejecuta el siguiete comando en la terminal.
 
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+- **Paso 1.** Inicializa el clúster en **n1**, ejecuta el siguiete comando en la terminal.
+
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica12-rebalance**
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **practica12-rebalance**
   {: .lab-note .important .compact}
 
   ```bash
@@ -250,12 +250,12 @@ Inicializarás el clúster en `n1`, unirás `n2` y `n3`, crearás el bucket y ca
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-rb-n1` aparece **Up**.  
-  - `curl` devuelve JSON de la inrbrmación del nodo.
-  - Esta conexion es mediante HTTP.
+  - `curl` devuelve JSON de la información del nodo.
+  - está conexión es mediante HTTP.
   {: .lab-note .info .compact}
 
   ```bash
@@ -264,7 +264,7 @@ Inicializarás el clúster en `n1`, unirás `n2` y `n3`, crearás el bucket y ca
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Agregar el nodo `n2` al clúster (desde `n1`)
+- **Paso 3.** Agregar el nodo `n2` al clúster (desde `n1`).
 
   {%raw%}
   ```bash
@@ -277,7 +277,7 @@ Inicializarás el clúster en `n1`, unirás `n2` y `n3`, crearás el bucket y ca
   {%endraw%}
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Agregar el nodo `n3` al clúster (desde `n1`)
+- **Paso 4.** Agregar el nodo `n3` al clúster (desde `n1`).
 
   {%raw%}
   ```bash
@@ -290,7 +290,7 @@ Inicializarás el clúster en `n1`, unirás `n2` y `n3`, crearás el bucket y ca
   {%endraw%}
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Ahora realiza el **Rebalance** entre los nodos.
+- **Paso 5.** Ahora realiza el **Rebalance** entre los nodos.
 
   {%raw%}
   ```bash
@@ -301,7 +301,7 @@ Inicializarás el clúster en `n1`, unirás `n2` y `n3`, crearás el bucket y ca
   {%endraw%}
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Crear el bucket con **réplicas=1**.
+- **Paso 6.** Crear el bucket con **réplicas=1**.
 
   ```bash
   docker exec -it ${NODE1} couchbase-cli bucket-create \
@@ -314,9 +314,9 @@ Inicializarás el clúster en `n1`, unirás `n2` y `n3`, crearás el bucket y ca
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Ahora inserta y lee documentos de prueba (N1QL)
+- **Paso 7.** Ahora inserta y lee documentos de prueba (N1QL).
 
-  > **NOTA:** La imagen es representativa, el resultado es mas extenso.
+  > **Nota.** La imagen es representativa, el resultado es más extenso.
   {: .lab-note .info .compact}
 
   ```bash
@@ -337,16 +337,16 @@ Inicializarás el clúster en `n1`, unirás `n2` y `n3`, crearás el bucket y ca
 
 Levantarás `n4`, lo agregarás al clúster y ejecutarás **rebalance** para redistribuir carga y datos.
 
-#### Tarea 4.1
 
-- **Paso 14.** Levanta el nodo `n4`.
+
+- **Paso 1.** Levanta el nodo `n4`.
 
   ```bash
   docker compose up -d --scale n4=1 n4
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Verifica la salud hasta que este **healthy**
+- **Paso 2.** Verifica la salud hasta que este **healthy**.
 
   {%raw%}
   ```bash
@@ -355,7 +355,7 @@ Levantarás `n4`, lo agregarás al clúster y ejecutarás **rebalance** para red
   {%endraw%}
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 16.** Agregar el nodo `n4` al clúster.
+- **Paso 3.** Agregar el nodo `n4` al clúster.
 
   {%raw%}
   ```bash
@@ -368,7 +368,7 @@ Levantarás `n4`, lo agregarás al clúster y ejecutarás **rebalance** para red
   {%endraw%}
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 17.** Rebalancea la infraestructura con el nodo 4
+- **Paso 4.** Rebalancea la infraestructura con el nodo 4.
 
   ```bash
   docker exec -it ${NODE1} couchbase-cli rebalance \
@@ -386,9 +386,9 @@ Levantarás `n4`, lo agregarás al clúster y ejecutarás **rebalance** para red
 
 Retirarás un nodo (`n2`) del clúster de 4 nodos y ejecutarás **rebalance** para reubicar particiones e índices.
 
-#### Tarea 5.1
 
-- **Paso 18.** Expulsar `n2` con **graceful failover** y rebalance
+
+- **Paso 1.** Expulsar `n2` con **graceful failover** y rebalance.
 
   ```bash
   docker exec -it ${NODE1} couchbase-cli failover \
@@ -397,7 +397,7 @@ Retirarás un nodo (`n2`) del clúster de 4 nodos y ejecutarás **rebalance** pa
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 19.** Revisar el estado de los nodos con el siguiente comando.
+- **Paso 2.** Revisar el estado de los nodos con el siguiente comando.
 
   ```bash
   docker exec -it ${NODE1} couchbase-cli server-list \
@@ -405,7 +405,7 @@ Retirarás un nodo (`n2`) del clúster de 4 nodos y ejecutarás **rebalance** pa
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 20.** Detener y quitar contenedor `n2`.
+- **Paso 3.** Detener y quitar contenedor `n2`.
 
   ```bash
   docker stop ${NODE2}
@@ -423,11 +423,11 @@ Retirarás un nodo (`n2`) del clúster de 4 nodos y ejecutarás **rebalance** pa
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 7.1
 
-- **Paso 21.** En la terminal aplica el siguiente comando para detener el nodo.
 
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+- **Paso 1.** En la terminal aplica el siguiente comando para detener el nodo.
+
+  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -435,11 +435,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 22.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
