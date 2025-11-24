@@ -9,15 +9,15 @@ objective: # CAMBIAR POR CADA PRACTICA
 prerequisites: # CAMBIAR POR CADA PRACTICA
   - Visual Studio Code con terminal **Git Bash**.
   - 6–8 GB de RAM libres recomendados para 3 nodos (mínimo ~5 GB).  
-  - Puertos locales disponibles **8091–8096**, **11210** (se publicarán solo desde el nodo 1).
-  - Node.js 18+ (recomendado) y **npm** disponibles en el host.
+  - Puertos locales disponibles **`8091-8096`**, **`11210`** (se publicarán solo desde el nodo 1).
+  - Node.js 18+ (recomendado) y **`npm`** disponibles en el host.
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: | # CAMBIAR POR CADA PRACTICA
   Couchbase facilita el “bulk load” de datos por varias vías. En esta práctica verás dos enfoques complementarios:  
 
   1. **`cbimport`** (dentro del contenedor): muy rápido y simple para NDJSON.  
-  2. **SDK Node.js**: más control sobre claves, concurrencia, reintentos, durabilidad y validaciones en línea.
+  2. **`SDK Node.js`**: más control sobre claves, concurrencia, reintentos, durabilidad y validaciones en línea.
 slug: lab8 # CAMBIAR POR CADA PRACTICA
 lab_number: 8 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
@@ -102,8 +102,8 @@ Crearás una estructura independiente con carpetas para datos, configuración y 
 
 - **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-  > **Nota.**
-  - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
+  > **Notas**
+  - El archivo `compose.yaml` mapea puertos `8091-8096` para la consola web y `11210` para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
 
@@ -135,8 +135,10 @@ Crearás una estructura independiente con carpetas para datos, configuración y 
 
 - **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **Importante.** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  > El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante**
+  > 
+  > Para agilizar los procesos, la imagen ya está descargada en el ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
