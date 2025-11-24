@@ -1,36 +1,36 @@
 ---
 layout: lab
-title: "Práctica 13: Creación de índices secundarios/covering" # CAMBIAR POR CADA PRACTICA
-permalink: /lab13/lab13/ # CAMBIAR POR CADA PRACTICA
-images_base: /labs/lab13/img # CAMBIAR POR CADA PRACTICA
-duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
-objective: # CAMBIAR POR CADA PRACTICA
+title: "Práctica 13: Creación de índices secundarios/covering" # CAMBIAR POR CADA práctica
+permalink: /lab13/lab13/ # CAMBIAR POR CADA práctica
+images_base: /labs/lab13/img # CAMBIAR POR CADA práctica
+duration: "25 minutos" # CAMBIAR POR CADA práctica
+objective: # CAMBIAR POR CADA práctica
   - Desplegar Couchbase en Docker y dominar la creación y verificación de **índices secundarios** (compuestos, parciales y funcionales) y **índices covering** (que evitan el *FETCH*), midiendo su efecto en planes de ejecución **EXPLAIN** y en consultas N1QL.
-prerequisites:  # CAMBIAR POR CADA PRACTICA
+prerequisites:  # CAMBIAR POR CADA práctica
   - Software **Docker Desktop** en ejecución.  
   - Software **Visual Studio Code** con terminal **Git Bash**.  
   - Puertos libres para UI/REST por nodo `18091/28091/38091` (mapeados a `8091`).
   - Conectividad a Internet para descargar imágenes.
-introduction: | # CAMBIAR POR CADA PRACTICA
-  N1QL usa **índices secundarios** para filtrar y ordenar eficientemente. Un **índice covering** permite responder la consulta **sin leer el documento** (sin operador *FETCH*), siempre que **todas** las columnas referenciadas (predicados, proyecciones, ORDER BY) estén contenidas en el índice (como **llaves** o en **INCLUDE**). También existen **índices parciales** (con *WHERE*) para subconjuntos y **funcionales** (expresiones como `LOWER(name)`). En esta práctica crearás cada tipo y comprobarás su uso con **EXPLAIN**.
-slug: lab13 # CAMBIAR POR CADA PRACTICA
-lab_number: 13 # CAMBIAR POR CADA PRACTICA
-final_result: | # CAMBIAR POR CADA PRACTICA
+introduction: | # CAMBIAR POR CADA práctica
+  N1QL usa **índices secundarios** para filtrar y ordenar eficientemente. Un **índice covering** permite responder la consulta **sin leer el documento** (sin operador *FETCH*), siempre que **todas** las columnas referenciadas (predicados, proyecciones, ORDER BY) estén contenidas en el índice (como **llaves** o en **INCLUDE**). También existen **índices parciales** (con *WHERE*) para subconjuntos y **funcionales** (expresiones como `LOWER(name)`). En está práctica crearás cada tipo y comprobarás su uso con **EXPLAIN**.
+slug: lab13 # CAMBIAR POR CADA práctica
+lab_number: 13 # CAMBIAR POR CADA práctica
+final_result: | # CAMBIAR POR CADA práctica
   Has creado y validado **índices secundarios** (compuesto, parcial y funcional) y un **índice covering** con `INCLUDE`, comprobando con **EXPLAIN** el uso de cada índice y la ausencia de *Fetch* cuando corresponde. También probaste `USE INDEX` para forzar planes alternos. Quedas listo para diseñar estrategias de indexación eficientes en N1QL.
-notes: | # CAMBIAR POR CADA PRACTICA
+notes: | # CAMBIAR POR CADA práctica
   - Para *covering* perfecto con `ORDER BY`, incluye la columna de ordenamiento en las **keys** del índice (no solo en `INCLUDE`).  
   - Evita depender del **índice primario**; úsalo solo para diagnósticos.  
   - Mantén los índices **lo más específicos posible** para tus consultas críticas.  
   - Monitorea el tamaño y tiempo de *build* de cada índice, especialmente en colecciones grandes.
-references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
+references: # CAMBIAR POR CADA práctica LINKS ADICIONALES DE DOCUMENTACION
   - text: Índices secundarios y covering en N1QL
     url: https://www.couchbase.com/blog/es/introduction-to-covering-indexes/?facet=blog%2Fblogs.facets%2FYear%2F2015%2FMonth%2F11
   - text: Índices parciales y funcionales
     url: https://docs.couchbase.com/server/current/n1ql/n1ql-language-reference/createindex.html#partial-indexes  
   - text: EXPLAIN
     url: https://docs.couchbase.com/server/current/n1ql/n1ql-language-reference/explain.html
-prev: /lab12/lab12/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ATRAS        
-next: /lab14/lab14/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
+prev: /lab12/lab12/ # CAMBIAR POR CADA práctica MENU DE NAVEGACION HACIA ATRAS        
+next: /lab14/lab14/ # CAMBIAR POR CADA práctica MENU DE NAVEGACION HACIA ADELANTE
 ---
 
 
@@ -40,14 +40,14 @@ next: /lab14/lab14/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 Crearás una carpeta aislada y un `.env` con variables estándar.
 
-#### Tarea 1.1
+
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -63,7 +63,7 @@ Crearás una carpeta aislada y un `.env` con variables estándar.
 
 - **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -94,11 +94,11 @@ Crearás una carpeta aislada y un `.env` con variables estándar.
 
 Definirás y levantarás un `compose.yaml` con un nodo que expone UI y servicios `data,index,query`.
 
-#### Tarea 2.1
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-  > **NOTA:**
+- **Paso 1.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
+
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -130,11 +130,11 @@ Definirás y levantarás un `compose.yaml` con un nodo que expone UI y servicios
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -142,7 +142,7 @@ Definirás y levantarás un `compose.yaml` con un nodo que expone UI y servicios
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Verifica que el contenedor se haya creado correctamente.
+- **Paso 3.** Verifica que el contenedor se haya creado correctamente.
 
   {%raw%}
   ```bash
@@ -162,13 +162,13 @@ Definirás y levantarás un `compose.yaml` con un nodo que expone UI y servicios
 
 Inicializarás el clúster, crearás bucket/scope/collection y cargarás datos de muestra para pruebas de índices.
 
-#### Tarea 3.1
 
-- **Paso 8.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
 
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+- **Paso 1.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
+
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica13-indexes**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **practica13-indexes**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -184,12 +184,12 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás datos d
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-index-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
-  - Esta conexion es mediante HTTP.
+  - está conexión es mediante HTTP.
   {: .lab-note .info .compact}
 
   ```bash
@@ -198,7 +198,7 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás datos d
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 3.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-create \
@@ -210,7 +210,7 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás datos d
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Ahora crea el *Scope*.
+- **Paso 4.** Ahora crea el *Scope*.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -219,7 +219,7 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás datos d
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Con este comando crea el *Collection*
+- **Paso 5.** Con este comando crea el *Collection*.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -228,9 +228,9 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás datos d
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Cargar datos de ejemplo (10 documentos)
+- **Paso 6.** Cargar datos de ejemplo (10 documentos).
 
-  > **IMPORTANTE:** El resultado es iterativo para los 10 documentos la salida es muy grande, la imagen representa la sección de la inserción.
+  > **Importante.** El resultado es iterativo para los 10 documentos la salida es muy grande, la imagen representa la sección de la inserción.
   {: .lab-note .important .compact}
 
   ```bash
@@ -271,9 +271,9 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás datos d
 
 Crearás diferentes tipos de índices secundarios y verificarás su uso con **EXPLAIN**.
 
-#### Tarea 4.1
 
-- **Paso 13.** Índice compuesto para filtros típicos
+
+- **Paso 1.** Índice compuesto para filtros típicos.
 
   ```bash
   docker exec -i ${CB_CONTAINER} cbq -e http://${CB_HOST}:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" <<'SQL'
@@ -284,7 +284,7 @@ Crearás diferentes tipos de índices secundarios y verificarás su uso con **EX
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 14.** Índice parcial (solo `type='product'`)
+- **Paso 2.** Índice parcial (solo `type='product'`).
 
   ```bash
   docker exec -i ${CB_CONTAINER} cbq -e http://${CB_HOST}:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" <<'SQL'
@@ -296,7 +296,7 @@ Crearás diferentes tipos de índices secundarios y verificarás su uso con **EX
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 15.** Índice funcional (búsqueda case-insensitive por nombre)
+- **Paso 3.** Índice funcional (búsqueda case-insensitive por nombre).
 
   ```bash
   docker exec -i ${CB_CONTAINER} cbq -e http://${CB_HOST}:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" <<'SQL'
@@ -317,9 +317,9 @@ Crearás diferentes tipos de índices secundarios y verificarás su uso con **EX
 
 Crearás un **índice covering** que cubra predicados y proyección para evitar el *FETCH* del documento.
 
-#### Tarea 5.1
 
-- **Paso 15.** Crea el índice covering (claves + trailing keys)
+
+- **Paso 1.** Crea el índice covering (claves + trailing keys).
 
   ```bash
   docker exec -it ${CB_CONTAINER} cbq -e http://${CB_HOST}:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
@@ -328,7 +328,7 @@ Crearás un **índice covering** que cubra predicados y proyección para evitar 
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 16.** **EXPLAIN** de una consulta cubierta muestra el plan para verificar que el índice cubre la consulta.
+- **Paso 2.** **EXPLAIN** de una consulta cubierta muestra el plan para verificar que el índice cubre la consulta.
 
   ```bash
   docker exec -it ${CB_CONTAINER} cbq -e http://127.0.0.1:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
@@ -339,7 +339,7 @@ Crearás un **índice covering** que cubra predicados y proyección para evitar 
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 17.** Ejecutar la consulta sin EXPLAIN (validación de resultado)
+- **Paso 3.** Ejecutar la consulta sin EXPLAIN (validación de resultado).
 
   ```bash
   docker exec -it ${CB_CONTAINER} cbq -e http://${CB_HOST}:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
@@ -360,11 +360,11 @@ Crearás un **índice covering** que cubra predicados y proyección para evitar 
 
 Forzarás el uso de un índice con `USE INDEX` y compararás planes.
 
-#### Tarea 6.1
 
-- **Paso 18.** Sin *hint* (deja que el optimizador elija el plan/índice óptimo)
 
-  > **NOTA:** Un `IndexScan` usando el índice que el optimizador considere mejor (el parcial si existe y aplica), y sin Fetch si el índice es covering.
+- **Paso 1.** Sin *hint* (deja que el optimizador elija el plan/índice óptimo).
+
+  > **Nota.** Un `IndexScan` usando el índice que el optimizador considere mejor (el parcial si existe y aplica), y sin Fetch si el índice es covering.
   {: .lab-note .info .compact}
 
   ```bash
@@ -377,9 +377,9 @@ Forzarás el uso de un índice con `USE INDEX` y compararás planes.
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 19.** Con hint (forzar índice parcial)
+- **Paso 2.** Con hint (forzar índice parcial).
 
-  > **NOTA:** El plan debe mostrar `IndexScan` sobre **idx_prod_partial_active**. Si otro índice era “mejor” según el optimizador, aquí verás cómo cambia el plan al forzarlo.
+  > **Nota.** El plan debe mostrar `IndexScan` sobre **idx_prod_partial_active**. Si otro índice era “mejor” según el optimizador, aquí verás cómo cambia el plan al forzarlo.
   {: .lab-note .info .compact}
 
   ```bash
@@ -393,9 +393,9 @@ Forzarás el uso de un índice con `USE INDEX` y compararás planes.
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 20.** Con índice funcional (búsqueda case-insensitive)
+- **Paso 3.** Con índice funcional (búsqueda case-insensitive).
 
-  > **NOTA:** `IndexScan` sobre **idx_prod_lower_name**. Si no aparece, revisa que el índice esté online y que la expresión LOWER(name) coincide con la del índice.
+  > **Nota.** `IndexScan` sobre **idx_prod_lower_name**. Si no aparece, revisa que el índice esté online y que la expresión LOWER(name) coincide con la del índice.
   {: .lab-note .info .compact}
 
   ```bash
@@ -418,11 +418,11 @@ Forzarás el uso de un índice con `USE INDEX` y compararás planes.
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 7.1
 
-- **Paso 21.** En la terminal aplica el siguiente comando para detener el nodo.
 
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+- **Paso 1.** En la terminal aplica el siguiente comando para detener el nodo.
+
+  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -430,11 +430,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 22.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
