@@ -13,7 +13,7 @@ prerequisites:  # CAMBIAR POR CADA práctica
   - Conectividad a Internet para descargar imágenes.  
   - 4–6 GB de RAM libres (3 nodos con servicios `kv,index,query`).
 introduction: | # CAMBIAR POR CADA práctica
-  Couchbase ofrece **Auto-Failover** para sacar de rotación nodos que no responden durante un tiempo configurable, y **Failover manual** (graceful/force) gestionado por el operador. Tras el failover, puedes **recuperar** el nodo con **delta** (reutiliza datos existentes) o **full** (descarta datos) y luego ejecutar un **rebalance** para restablecer la distribución de particiones (vBuckets) y réplicas.
+  Couchbase ofrece **Auto-Failover** para sacar de rotación nodos que no responden durante un tiempo configurable y **Failover manual** (`graceful/force`) gestionado por el operador. Tras el failover, puedes **recuperar** el nodo con **`delta`** (reutiliza datos existentes) o **`full`** (descarta datos) y luego ejecutar un **`rebalance`** para restablecer la distribución de particiones (vBuckets) y réplicas.
 slug: lab11 # CAMBIAR POR CADA práctica
 lab_number: 11 # CAMBIAR POR CADA práctica
 final_result: | # CAMBIAR POR CADA práctica
@@ -37,7 +37,7 @@ next: /lab12/lab12/ # CAMBIAR POR CADA práctica MENU DE NAVEGACION HACIA ADELAN
 
 ---
 
-### Tarea 1: Estructura base del proyecto
+### Tarea 1. Estructura base del proyecto
 
 Crearás la carpeta independiente de la práctica y un archivo `.env` con variables estándar para 3 nodos.
 
@@ -45,14 +45,14 @@ Crearás la carpeta independiente de la práctica y un archivo `.env` con variab
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > Nota. Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **`cs300-labs`**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica11-failover/
@@ -62,9 +62,9 @@ Crearás la carpeta independiente de la práctica y un archivo `.env` con variab
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > Nota. El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -96,10 +96,10 @@ Crearás la carpeta independiente de la práctica y un archivo `.env` con variab
   EOF
   ```
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
+- **Paso 5.** Ahora, crea el archivo **`Docker Compose`** llamado **`compose.yaml`**. Copia y pega el siguiente código en la terminal.
 
-  > Nota.
-  - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
+  > **Notas**
+  - El archivo `compose.yaml` mapea puertos `8091–8096` para la consola web y `11210` para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
 
@@ -176,9 +176,11 @@ Crearás la carpeta independiente de la práctica y un archivo `.env` con variab
 
 - **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > Importante. Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  {: .lab-note .important .compact}
-  > Importante. El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.**
+  >
+  > - Para agilizar los procesos, laa imagen debe estar descargada en el ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  >
+  > - El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -192,17 +194,18 @@ Crearás la carpeta independiente de la práctica y un archivo `.env` con variab
 
 ---
 
-### Tarea 2: Crear el clúster y unir nodos
+### Tarea 2. Crear el clúster y unir nodos
 
 Inicializarás el clúster en `n1` y unirás `n2` y `n3`, finalizando con un rebalance.
 
 
 
-- **Paso 1.** Inicializa el clúster en **n1**, ejecuta el siguiete comando en la terminal.
+- **Paso 1.** Inicializa el clúster en **`n1`**. Ejecuta el siguiete comando en la terminal.
 
-  > Nota. El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > Importante. El comando se ejecuta desde el directorio de la práctica **practica11-failover**
+
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **`practica11-failover`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -218,10 +221,10 @@ Inicializarás el clúster en `n1` y unirás `n2` y `n3`, finalizando con un reb
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 2.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el `json` con las propiedades del nodo.
 
-  > Nota.
-  - Contenedor `cb-fo-n1` aparece **Up**.  
+  > **Notas**
+  - El contenedor `cb-fo-n1` aparece **`Up`**.  
   - `curl` devuelve JSON de la información del nodo.
   - Esta conexión es mediante HTTP.
   {: .lab-note .info .compact}
@@ -258,7 +261,7 @@ Inicializarás el clúster en `n1` y unirás `n2` y `n3`, finalizando con un reb
   {%endraw%}
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 5.** Ahora realiza el **Rebalance** entre los nodos.
+- **Paso 5.** Ahora, realiza el **`Rebalance`** entre los nodos.
 
   {%raw%}
   ```bash
@@ -275,13 +278,12 @@ Inicializarás el clúster en `n1` y unirás `n2` y `n3`, finalizando con un reb
 
 ---
 
-### Tarea 3: Crear bucket con réplicas y datos de prueba
+### Tarea 3. Crear bucket con réplicas y datos de prueba
 
-Crearás un bucket con réplicas y cargarás algunos documentos para evaluar continuidad ante failover.
+Crearás un bucket con réplicas y cargarás algunos documentos para evaluar continuidad ante failover
 
 
-
-- **Paso 1.** Crear el bucket con **réplicas=2**.
+- **Paso 1.** Crea el bucket con **`réplicas=2`**.
 
   ```bash
   docker exec -it ${NODE1} couchbase-cli bucket-create \
@@ -294,9 +296,9 @@ Crearás un bucket con réplicas y cargarás algunos documentos para evaluar con
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 2.** Ahora inserta y lee documentos de prueba (N1QL).
+- **Paso 2.** Ahora, inserta y lee documentos de prueba (N1QL).
 
-  > Nota. La imagen es representativa, el resultado es más extenso.
+  > **Nota.** La imagen es representativa, el resultado es más extenso.
   {: .lab-note .info .compact}
 
   ```bash
@@ -315,13 +317,11 @@ Crearás un bucket con réplicas y cargarás algunos documentos para evaluar con
 
 ---
 
-### Tarea 4: Configurar Auto-Failover
+### Tarea 4. Configurar Auto-Failover
 
-Habilitarás auto-failover con un timeout razonable y límites de activación.
+Habilitarás `auto-failover` con un timeout razonable y límites de activación.
 
-
-
-- **Paso 1.** Ejecuta el siguiente comando en la terminal para ajustar el auto-failover (CLI).
+- **Paso 1.** Ejecuta el siguiente comando en la terminal para ajustar el `auto-failover` (CLI).
 
   ```bash
   docker exec -it ${NODE1} couchbase-cli setting-autofailover \
@@ -346,20 +346,18 @@ Habilitarás auto-failover con un timeout razonable y límites de activación.
 
 ---
 
-### Tarea 5: Simular falla y observar Auto-Failover
+### Tarea 5. Simular falla y observar `Auto-Failover`
 
 Detendrás un nodo para disparar el auto-failover y validarás que el clúster sigue sirviendo datos.
 
-
-
-- **Paso 1.** Ahora deten el nodo `n3` para simular la caída.
+- **Paso 1.** Ahora, detén el nodo `n3` para simular la caída.
 
   ```bash
   docker stop ${NODE3}
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 2.** Esperar al menos **30 segundos** y consulta los datos. Ejecuta el siguiente comando que ya espera los 30 segundos.
+- **Paso 2.** Espera al menos **30 segundos** y consulta los datos, después ejecuta el siguiente comando.
 
   ```bash
   sleep $((AFO_TIMEOUT+5))
@@ -368,7 +366,7 @@ Detendrás un nodo para disparar el auto-failover y validarás que el clúster s
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 3.** Revisar el estado de los nodos con el siguiente comando.
+- **Paso 3.** Revisa el estado de los nodos con el siguiente comando.
 
   ```bash
   docker exec -it ${NODE1} couchbase-cli server-list \
@@ -382,16 +380,16 @@ Detendrás un nodo para disparar el auto-failover y validarás que el clúster s
 
 ---
 
-### Tarea 6: Failover manual (graceful vs force)
+### Tarea 6. Failover manual (`graceful` vs. `force`)
 
-Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicarás **failover manual** en `n2` para observar diferencias entre **graceful** y **force**.
-
-
+Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicarás **failover manual** en `n2` para observar diferencias entre **`graceful`** y **`force`**.
 
 
-- **Paso 1.** Levanta el nodo `n3` y unelo de nuevo. Ejecuta uno por uno los comandos.
 
-  > Importante. Al segundo comando de **Rebalance** dale **4 minutos** de espera. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo.
+
+- **Paso 1.** Levanta el nodo `n3` y únelo de nuevo. Ejecuta los comandos uno por uno.
+
+  > **Importante.** Al segundo comando de **`Rebalance`** dale **4 minutos** de espera. Si el segundo rebalance se atora, ejecuta **`CTRL + C`** y vuelve a intentarlo.
   {: .lab-note .important .compact}
 
   ```bash
@@ -414,9 +412,9 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 2.** Aplica ahora **Graceful failover** en `n2` (retira ordenadamente).
+- **Paso 2.** Aplica **Graceful failover** en `n2` (retira ordenadamente).
 
-  > Nota. **Graceful** intenta mover datos/servicios de forma ordenada
+  > **Nota.** **Graceful** intenta mover datos o servicios de forma ordenada.
   {: .lab-note .info .compact}
 
   ```bash
@@ -426,9 +424,9 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 3.** Ahora para probar **force** primero debes rebalancear al nodo 2 y luego agregarlo. Ejecuta esta serie de comandos.
+- **Paso 3.** Ahora, para probar **force**, primero, debes rebalancear al nodo 2 y, luego, agregarlo. Ejecuta esta serie de comandos.
 
-  > Importante. Al segundo comando de **Rebalance** dale **4 minutos** de espera. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo. **Si te marca error al final se debe a recursos/latencia vuelve a intentar el rebalance**
+  > **Importante.** Al segundo comando de **Rebalance** dale **4 minutos** de espera. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo. **Si te marca error al final, se debe a `recursos/latencia`, vuelve a intentar el rebalance**
   {: .lab-note .important .compact}
 
   ```bash
@@ -447,9 +445,9 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 4.** Ahora si aplica **force** para comparar el funcionamiento.
+- **Paso 4.** Ahora, aplica **`force`** para comparar el funcionamiento.
 
-  > Nota. **force/hard** asume falla irrecuperable inmediata.
+  > **Nota.** **`force/hard`** asume falla irrecuperable inmediata.
   {: .lab-note .info .compact}
 
   ```bash
@@ -466,15 +464,15 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
 
 ---
 
-### Tarea 7: Limpieza
+### Tarea 7. Limpieza
 
 Borrar datos en el entorno para repetir pruebas.
 
 
 
-- **Paso 1.** En la terminal aplica el siguiente comando para detener el nodo.
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-  > Nota. Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -482,11 +480,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
+- **Paso 2.** Apaga y elimina el contenedor (se conservan los datos en `./data**).
 
-  > Nota. Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
-  > Importante. Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red ****No resource found to remove****.
   {: .lab-note .important .compact}
 
   ```bash
