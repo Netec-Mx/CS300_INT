@@ -13,7 +13,7 @@ prerequisites:  # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar imágenes.  
   - 6–8 GB de RAM libres (2×2 nodos con `data,index,query`).  
 introduction: | # CAMBIAR POR CADA PRACTICA
-  **XDCR** (Cross Data Center Replication) replica de manera continua datos entre buckets de distintos clústeres. En esta práctica levantarás **dos clústeres independientes** en Docker (Origen y Destino), crearás un **bucket** con **colección** en ambos, configurarás la **referencia remota** en Origen y activarás una **replicación unidireccional**. Luego insertarás documentos en Origen y verificarás su llegada al Destino usando N1QL.
+  **XDCR** (Cross Data Center Replication) replica de manera continua los datos entre buckets de distintos clústeres. En esta práctica, levantarás **dos clústeres independientes** en Docker (Origen y Destino), crearás un **bucket** con **colección** en ambos, configurarás la **referencia remota** en Origen y activarás una **replicación unidireccional**. Luego, insertarás documentos en Origen y verificarás su llegada al Destino usando N1QL.
 slug: lab16 # CAMBIAR POR CADA PRACTICA
 lab_number: 16 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
@@ -22,7 +22,7 @@ notes: | # CAMBIAR POR CADA PRACTICA
   - Para producción, activa **TLS** en XDCR y usa **Alternate Addresses** si hay balanceadores o redes mixtas.  
   - Ajusta **compresión**, **lotes** y **límites de conexiones** según latencia/throughput.  
   - **Filtros de replicación** (por colección o expresión) permiten seleccionar subconjuntos cuando el destino no debe recibir todo.  
-  - Si cambias nombres de scope/collection, verifica mapeos de colecciones en la replicación.  
+  - Si cambias nombres de scope/collection, verifica los mapeos de colecciones en la replicación.  
   - Usa la UI (*XDCR*) para ver métricas de envío/recepción y lag.
 references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
   - text: Conceptos y operación de XDCR
@@ -40,22 +40,20 @@ next: /lab17/lab17/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 ---
 
-### Tarea 1: Carpeta de práctica y variables
+### Tarea 1. Carpeta de práctica y variables.
 
 Crear una carpeta para la práctica y un `.env` con variables para ambos clústeres, buckets y colecciones.
 
-#### Tarea 1.1
-
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica16-xdcr-uni/
@@ -66,9 +64,9 @@ Crear una carpeta para la práctica y un `.env` con variables para ambos clúste
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -119,15 +117,13 @@ Crear una carpeta para la práctica y un `.env` con variables para ambos clúste
 
 ---
 
-### Tarea 2: Docker Compose con **dos** clústeres
+### Tarea 2. Docker Compose con **dos** clústeres.
 
 Definir un `compose.yaml` que levante **2×2 nodos** (Origen y Destino) con *healthchecks* y puertos diferenciados.
 
-#### Tarea 2.1
+- **Paso 1.** Crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
-
-  > **NOTA:**
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -219,11 +215,11 @@ Definir un `compose.yaml` que levante **2×2 nodos** (Origen y Destino) con *hea
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal, ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -231,7 +227,7 @@ Definir un `compose.yaml` que levante **2×2 nodos** (Origen y Destino) con *hea
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Verifica la salud de los contenedores que se hayan creado correctamente.
+- **Paso 3.** Verifica la salud de los contenedores que se hayan creado correctamente.
 
   {%raw%}
   ```bash
@@ -249,17 +245,15 @@ Definir un `compose.yaml` que levante **2×2 nodos** (Origen y Destino) con *hea
 
 ---
 
-### Tarea 3: Inicializar clúster **Origen** (2 nodos)
+### Tarea 3. Inicializar clúster **Origen** (2 nodos).
 
 Crea el clúster en `src-n1`, agrega `src-n2`, rebalancea y preparar el keyspace.
 
-#### Tarea 3.1
+- **Paso 1.** Inicializa el clúster con el nodo **src-n1**, ejecuta el siguiete comando en la terminal.
 
-- **Paso 8.** Inicializa el clúster con el nodo **src-n1**, ejecuta el siguiete comando en la terminal.
-
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica16-xdcr-uni**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la practica **practica16-xdcr-uni**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -275,12 +269,12 @@ Crea el clúster en `src-n1`, agrega `src-n2`, rebalancea y preparar el keyspace
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-src-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
-  - Esta conexion es mediante HTTP.
+  - Esta conexión es mediante HTTP.
   {: .lab-note .info .compact}
 
   ```bash
@@ -289,7 +283,7 @@ Crea el clúster en `src-n1`, agrega `src-n2`, rebalancea y preparar el keyspace
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ahora agrega al nodo **src-n2**.
+- **Paso 3.** Ahora, agrega al nodo **src-n2**.
 
   {%raw%}
   ```bash
@@ -303,7 +297,7 @@ Crea el clúster en `src-n1`, agrega `src-n2`, rebalancea y preparar el keyspace
   {%endraw%}
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Realiza el **rebalance** de los nodos.
+- **Paso 4.** Realiza el **rebalance** de los nodos.
 
   {%raw%}
   ```bash
@@ -314,7 +308,7 @@ Crea el clúster en `src-n1`, agrega `src-n2`, rebalancea y preparar el keyspace
   {%endraw%}
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 5.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${SRC_NODE1} couchbase-cli bucket-create \
@@ -324,7 +318,7 @@ Crea el clúster en `src-n1`, agrega `src-n2`, rebalancea y preparar el keyspace
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Ahora crea el *Scope* **shop**
+- **Paso 6.** Ahora, crea el *Scope* **shop**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -333,7 +327,7 @@ Crea el clúster en `src-n1`, agrega `src-n2`, rebalancea y preparar el keyspace
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Con este comando crea el *Collection* **products**
+- **Paso 7.** Con este comando crea el *Collection* **products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -348,17 +342,15 @@ Crea el clúster en `src-n1`, agrega `src-n2`, rebalancea y preparar el keyspace
 
 ---
 
-### Tarea 4: Inicializar clúster **Destino** (2 nodos)
+### Tarea 4. Inicializar clúster **Destino** (2 nodos).
 
 Repetir pasos equivalentes para el **Destino** y crear el bucket/colección destino.
 
-#### Tarea 4.1
+- **Paso 1.** Inicializa el clúster con el nodo **dst-n1**, ejecuta el siguiete comando en la terminal.
 
-- **Paso 15.** Inicializa el clúster con el nodo **dst-n1**, ejecuta el siguiete comando en la terminal.
-
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica16-xdcr-uni**. Puede tardar unos segundos en inicializar.
+  > **Importante.:** El comando se ejecuta desde el directorio de la práctica **practica16-xdcr-uni**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -374,9 +366,9 @@ Repetir pasos equivalentes para el **Destino** y crear el bucket/colección dest
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 16.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-dst-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
   - Esta conexion es mediante HTTP.
@@ -388,7 +380,7 @@ Repetir pasos equivalentes para el **Destino** y crear el bucket/colección dest
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 17.** Ahora agrega al nodo **dst-n2**.
+- **Paso 3.** Ahora, agrega al nodo **dst-n2**.
 
   {%raw%}
   ```bash
@@ -402,7 +394,7 @@ Repetir pasos equivalentes para el **Destino** y crear el bucket/colección dest
   {%endraw%}
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 18.** Realiza el **rebalance** de los nodos.
+- **Paso 4.** Realiza el **rebalance** de los nodos.
 
   {%raw%}
   ```bash
@@ -413,7 +405,7 @@ Repetir pasos equivalentes para el **Destino** y crear el bucket/colección dest
   {%endraw%}
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 19.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 5.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${DST_NODE1} couchbase-cli bucket-create \
@@ -423,7 +415,7 @@ Repetir pasos equivalentes para el **Destino** y crear el bucket/colección dest
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 20.** Ahora crea el *Scope* **shop**
+- **Paso 6.** Ahora, crea el *Scope* **shop**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -432,7 +424,7 @@ Repetir pasos equivalentes para el **Destino** y crear el bucket/colección dest
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 21.** Con este comando crea el *Collection* **products**
+- **Paso 7.** Con este comando crea el *Collection* **products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -447,13 +439,11 @@ Repetir pasos equivalentes para el **Destino** y crear el bucket/colección dest
 
 ---
 
-### Tarea 5: Configurar **XDCR** unidireccional (Origen → Destino)
+### Tarea 5. Configurar **XDCR** unidireccional (Origen → Destino).
 
-Crear una **referencia remota** hacia el Destino desde el **Origen**, y luego crear la replicación **bucket→bucket** (collection-aware por defecto en Server moderno).
+Crear una **referencia remota** hacia el Destino desde el **Origen** y luego crear la replicación **bucket→bucket** (collection-aware por defecto en Server moderno).
 
-#### Tarea 5.1
-
-- **Paso 22.** Crea la **referencia remota** en el nodo Origen.
+- **Paso 1.** Crea la **referencia remota** en el nodo Origen.
 
   ```bash
   docker exec -it ${SRC_NODE1} couchbase-cli xdcr-setup \
@@ -466,7 +456,7 @@ Crear una **referencia remota** hacia el Destino desde el **Origen**, y luego cr
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 23.** Crea la **replicación** bucket→bucket
+- **Paso 2.** Crea la **replicación** bucket→bucket.
 
   ```bash
   docker exec -it ${SRC_NODE1} couchbase-cli xdcr-replicate \
@@ -479,7 +469,7 @@ Crear una **referencia remota** hacia el Destino desde el **Origen**, y luego cr
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 24.** Verfica la replicación con el siguiente comando. **Copia el valor de la propiedad `stream id:` lo usaras en el siguiente comando.**
+- **Paso 3.** Verfica la replicación con el siguiente comando. **Copia el valor de la propiedad `stream id:`, lo usarás en el siguiente comando.**
 
   ```bash
   docker exec -it ${SRC_NODE1} couchbase-cli xdcr-replicate \
@@ -487,9 +477,9 @@ Crear una **referencia remota** hacia el Destino desde el **Origen**, y luego cr
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 
-- **Paso 25.** Obten los detalles de la replica. **Sustituye la frase `STREAM-ID` por el valor que copiaste del paso anterior.**
+- **Paso 4.** Obtén los detalles de la réplica. **Sustituye la frase `STREAM-ID` por el valor que copiaste del paso anterior.**
 
-  > **IMPORTANTE:** Puedes apoyarte de la imagen, no elimines las comillas. El resultado es muy extenso la imagen representa una parte.
+  > **Importante.** Puedes apoyarte de la imagen, no elimines las comillas. El resultado es muy extenso, la imagen representa una parte.
   {: .lab-note .important .compact}
 
   ```bash
@@ -505,13 +495,11 @@ Crear una **referencia remota** hacia el Destino desde el **Origen**, y luego cr
 
 ---
 
-### Tarea 5: Pruebas de inserción y verificación en Destino
+### Tarea 5. Pruebas de inserción y verificación en Destino.
 
 Insertar documentos en Origen y verificarlos en Destino (N1QL). Incluye escapes de backticks para Git Bash.
 
-#### Tarea 6.1
-
-- **Paso 26.** Inserta los siguientes datos desde el **Origen** 
+- **Paso 1.** Inserta los siguientes datos desde el **Origen**.
 
   ```bash
   docker exec -it "${SRC_NODE1}" cbq -e "http://${SRC_HOST1}:8093" -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" -q=false \
@@ -521,9 +509,9 @@ Insertar documentos en Origen y verificarlos en Destino (N1QL). Incluye escapes 
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 27.** Ahora consulta los datos en el **Destino** 
+- **Paso 2.** Ahora, consulta los datos en el **Destino**.
 
-  > **NOTA:** La replicación puede tardar unos momentos.
+  > **Nota.** La replicación puede tardar unos momentos.
   {: .lab-note .info .compact}
 
   ```bash
@@ -541,15 +529,13 @@ Insertar documentos en Origen y verificarlos en Destino (N1QL). Incluye escapes 
 
 ---
 
-### Tarea 7: Limpieza
+### Tarea 7. Limpieza.
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 7.1
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-- **Paso 28.** En la terminal aplica el siguiente comando para detener el nodo.
-
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes encender otra vez los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -557,11 +543,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase25]({{ page.images_base | relative_url }}/25.png)
 
-- **Paso 29.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
