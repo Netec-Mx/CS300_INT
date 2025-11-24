@@ -13,11 +13,11 @@ prerequisites:  # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar imágenes.  
   - 3–4 GB de RAM libres (servicios `data,index,query`).  
 introduction: | # CAMBIAR POR CADA PRACTICA
-  La propiedad `cbbackupmgr` es la herramienta oficial de **backup/restore** para Couchbase Server Enterprise. Permite administrar **archivos de respaldo** organizados por **archive** y **repo**, incluyendo ciclos completos/incrementales, retención y restauraciones granulares (por bucket/scope/collection). En esta práctica crearás un **repositorio de backups**, ejecutarás un **backup completo** del bucket de aplicación.
+  La propiedad `cbbackupmgr` es la herramienta oficial de **backup/restore** para Couchbase Server Enterprise. Permite administrar **archivos de respaldo** organizados por **archive** y **repo**, incluyendo ciclos completos/incrementales, retención y restauraciones granulares (por bucket/scope/collection). En esta práctica, crearás un **repositorio de backups**, ejecutarás un **backup completo** del bucket de aplicación.
 slug: lab18 # CAMBIAR POR CADA PRACTICA
 lab_number: 18 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
-  Has creado un **repositorio de backups**, ejecutado un **backup completo**, inspeccionado su contenido.
+  Has creado un **repositorio de backups**, ejecutado un **backup completo** e inspeccionado su contenido.
 notes: | # CAMBIAR POR CADA PRACTICA
   - Para producción, programa backups con un **scheduler** externo y almacén **durable** (NAS/NFS/s3fs).  
   - Considera **encriptación a nivel de volumen** y control de accesos a la ruta de `archive`.  
@@ -36,22 +36,20 @@ next: /lab19/lab19/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 ---
 
-### Tarea 1: Estructura de práctica y variables
+### Tarea 1. Estructura de práctica y variables.
 
 Crear directorios de trabajo y un `.env` con variables reutilizables para el clúster y el repositorio de backups.
 
-#### Tarea 1.1
-
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el ícono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica18-backup/
@@ -64,7 +62,7 @@ Crear directorios de trabajo y un `.env` con variables reutilizables para el cl�
 
 - **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -107,15 +105,13 @@ Crear directorios de trabajo y un `.env` con variables reutilizables para el cl�
 
 ---
 
-### Tarea 2: Docker Compose y salud del nodo
+### Tarea 2. Docker Compose y salud del nodo.
 
 Definir `compose.yaml` para un nodo Couchbase con volúmenes persistentes y un volumen extra para **backups**.
 
-#### Tarea 2.1
+- **Paso 1.** Ahora, crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
-
-  > **NOTA:**
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -148,11 +144,11 @@ Definir `compose.yaml` para un nodo Couchbase con volúmenes persistentes y un v
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal, ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -160,7 +156,7 @@ Definir `compose.yaml` para un nodo Couchbase con volúmenes persistentes y un v
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Verifica que el contenedor se haya creado correctamente.
+- **Paso 3.** Verifica que el contenedor se haya creado correctamente.
 
   {%raw%}
   ```bash
@@ -176,17 +172,15 @@ Definir `compose.yaml` para un nodo Couchbase con volúmenes persistentes y un v
 
 ---
 
-### Tarea 3: Inicializar clúster y preparar datos
+### Tarea 3. Inicializar clúster y preparar datos.
 
 Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo que luego se respaldarán.
 
-#### Tarea 3.1
+- **Paso 1.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
 
-- **Paso 8.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
-
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica18-backup**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la practica **practica18-backup**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -202,9 +196,9 @@ Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-backup-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
   - Esta conexion es mediante HTTP.
@@ -216,7 +210,7 @@ Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 3.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-create \
@@ -226,7 +220,7 @@ Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Ahora crea el *Scope* **shop**
+- **Paso 4.** Ahora, crea el *Scope* **shop**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -235,7 +229,7 @@ Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Con este comando crea el *Collection* **products**
+- **Paso 5.** Con este comando crea el *Collection* **products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -244,7 +238,7 @@ Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Crea el índice primario temporal para validaciones
+- **Paso 6.** Crea el índice primario temporal para validaciones.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" -q=false \
@@ -252,9 +246,9 @@ Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Carga 1 000 documentos (loop con N1QL)
+- **Paso 7.** Carga 1 000 documentos (loop con N1QL).
 
-  > **IMPORTANTE:** Es normal que la terminal se quede en espera, ya que esta insertando los 1000 registros. El proceso finalizara solo, espera unos minutos.
+  > **Importante.** Es normal que la terminal se quede en espera, ya que está insertando los 1 000 registros. El proceso finalizará solo. Espera unos minutos.
   {: .lab-note .important .compact}
 
   ```bash
@@ -278,7 +272,7 @@ Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Verifica que se hayan cargado correctamente, realiza la consulta de conteo.
+- **Paso 8.** Verifica que se hayan cargado correctamente, realiza la consulta de conteo.
 
   ```bash
   docker exec -i "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "$CB_ADMIN" -p "$CB_ADMIN_PASS" -q=false \
@@ -294,13 +288,11 @@ Inicializar el clúster, crear bucket/scope/collection y cargar datos de ejemplo
 
 ---
 
-### Tarea 4: Crear **archive/repo** y ejecutar **backup completo**
+### Tarea 4. Crear **archive/repo** y ejecutar **backup completo**.
 
 Crearás el **archive** y el **repo** de `cbbackupmgr` y realizarás un **backup** completo del clúster.
 
-#### Tarea 4.1
-
-- **Paso 16.** Crea el archive y repo (dentro del contenedor)
+- **Paso 1.** Crea el archive y repo (dentro del contenedor).
 
   ```bash
   docker exec -it "${CB_CONTAINER}" bash -lc "
@@ -310,9 +302,9 @@ Crearás el **archive** y el **repo** de `cbbackupmgr` y realizarás un **backup
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 17.** Ejecuta el **backup** completo.
+- **Paso 2.** Ejecuta el **backup** completo.
 
-  > **NOTA:** Es normal que el proceso tarde, espera unos minutos.
+  > **Nota.** Es normal que el proceso tarde, espera unos minutos.
   {: .lab-note .info .compact}
 
   ```bash
@@ -326,7 +318,7 @@ Crearás el **archive** y el **repo** de `cbbackupmgr` y realizarás un **backup
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 18.** Ahora inspecciona el repo
+- **Paso 3.** Ahora, inspecciona el repo.
 
   ```bash
   MSYS2_ARG_CONV_EXCL="*" docker exec -it "${CB_CONTAINER}" cbbackupmgr info \
@@ -340,15 +332,13 @@ Crearás el **archive** y el **repo** de `cbbackupmgr` y realizarás un **backup
 
 ---
 
-### Tarea 5: Limpieza
+### Tarea 5. Limpieza.
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 5.1
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-- **Paso 19.** En la terminal aplica el siguiente comando para detener el nodo.
-
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -356,11 +346,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 20.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
