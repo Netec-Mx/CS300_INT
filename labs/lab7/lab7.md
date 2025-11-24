@@ -129,7 +129,7 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
   > **Importante**
   > 
   > Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  > El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
 
@@ -193,7 +193,7 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 2.** Ahora, crea el *Scope*.
+- **Paso 2.** Ahora, crea el `Scope`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -239,7 +239,7 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Verifica que el `Scope` sea correcto.
+- **Paso 7.** Verifica que el `Scope` sea correcto.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -362,7 +362,7 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
 
 ---
 
-### Tarea 4: Pruebas adicionales y troubleshooting
+### Tarea 4. Pruebas adicionales y troubleshooting
 
 - **Paso 1.**  Realiza una prueba con las credenciales erróneas (se espera error de `auth`).
 
