@@ -45,15 +45,14 @@ next: /lab9/lab9/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 
 ---
 
-### Tarea 1: Preparar la estructura de trabajo
+### Tarea 1. Preparar la estructura de trabajo
 
 Crearás una estructura independiente con carpetas para datos, configuración y scripts; abrirás el proyecto en VS Code y dejarás variables en `.env`.
 
-#### Tarea 1.1
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
   {: .lab-note .info .compact}
 
 - **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
@@ -74,7 +73,7 @@ Crearás una estructura independiente con carpetas para datos, configuración y 
 
 - **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -103,7 +102,7 @@ Crearás una estructura independiente con carpetas para datos, configuración y 
 
 - **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-  > **NOTA:**
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -136,9 +135,8 @@ Crearás una estructura independiente con carpetas para datos, configuración y 
 
 - **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -148,9 +146,10 @@ Crearás una estructura independiente con carpetas para datos, configuración y 
 
 - **Paso 7.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
 
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica8-bulk**
+  
+  > **Importante.** El comando se ejecuta desde el directorio de la practica **`practica8-bulk`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -166,10 +165,10 @@ Crearás una estructura independiente con carpetas para datos, configuración y 
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 8.** Verifica que el clúster esté **healthy** y que se muestre el `json` con las propiedades del nodo.
 
-  > **NOTA:**
-  - Contenedor `cb-bulk-node1` aparece **Up**.  
+  > **Nota**
+  - Contenedor `cb-bulk-node1` aparece **`Up`**.  
   - `curl` devuelve JSON de la información del nodo.
   - Esta conexion es mediante HTTP.
   {: .lab-note .info .compact}
@@ -186,13 +185,9 @@ Crearás una estructura independiente con carpetas para datos, configuración y 
 
 ---
 
-### Tarea 2: Crear bucket/scope/collection/
+### Tarea 2. Crear `bucket/scope/collection/`
 
-Se creará el bucket de ingestión y se preparará el keyspace con índices mínimos para validaciones.
-
-#### Tarea 2.1
-
-- **Paso 9.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 1.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-create \
@@ -204,7 +199,7 @@ Se creará el bucket de ingestión y se preparará el keyspace con índices mín
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ahora crea el *Scope*.
+- **Paso 2.** Ahora, crea el *Scope*.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -213,7 +208,7 @@ Se creará el bucket de ingestión y se preparará el keyspace con índices mín
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Con este comando crea el *Collection*
+- **Paso 3.** Con este comando, crea el `Collection`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -222,7 +217,7 @@ Se creará el bucket de ingestión y se preparará el keyspace con índices mín
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.**  Crea los índices primarios para N1QL.
+- **Paso 4.**  Crea los índices primarios para N1QL.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq \
@@ -231,7 +226,7 @@ Se creará el bucket de ingestión y se preparará el keyspace con índices mín
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Verifica que el bucket este creado correctamente.
+- **Paso 5.** Verifica que el bucket esté creado correctamente.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-list \
@@ -239,7 +234,7 @@ Se creará el bucket de ingestión y se preparará el keyspace con índices mín
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Verifica que el *Scope* este correctamente.
+- **Paso 6.** Verifica que el `Scope` sea correcto.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -253,15 +248,11 @@ Se creará el bucket de ingestión y se preparará el keyspace con índices mín
 
 ---
 
-### Tarea 3: Generar dataset NDJSON (controlable por tamaño)
+### Tarea 3. Generar dataset NDJSON (controlable por tamaño)
 
-Generarás un dataset reproducible en formato NDJSON (una línea = un documento) para cargarlo con `cbimport`.
+- **Paso 1.** Define el código para el generador de registros en Node.js.
 
-#### Tarea 3.1
-
-- **Paso 15.** Define el codigo para el generador de registros en Node.js.
-
-  > **IMPORTANTE:** Verifica que el archivo se haya creado en el directorio **datasets**
+  > **Importante.** Verifica que el archivo se haya creado en el directorio **`datasets`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -303,7 +294,7 @@ Generarás un dataset reproducible en formato NDJSON (una línea = un documento)
   EOF
   ```
 
-- **Paso 16.** Ahora ejecuta el archivo Node.js para la creacion del documento **orders.ndjson**
+- **Paso 2.** Ahora, ejecuta el archivo Node.js para la creación del documento **`orders.ndjson`**.
 
   ```bash
   set -a; source ../.env; set +a
@@ -312,7 +303,7 @@ Generarás un dataset reproducible en formato NDJSON (una línea = un documento)
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 17.** Verifica que se haya creado correctamente el archivo con los datos, ejecuta el siguiente comando.
+- **Paso 3.** Verifica que se haya creado correctamente el archivo con los datos y ejecuta el siguiente comando.
 
 
   ```bash
@@ -328,15 +319,11 @@ Generarás un dataset reproducible en formato NDJSON (una línea = un documento)
 
 ---
 
-### Tarea 4: Inserción masiva con `cbimport` (alta velocidad)
+### Tarea 4. Inserción masiva con `cbimport` (alta velocidad)
 
-Cargarás el NDJSON directamente en la collection con claves generadas desde `_key` y múltiples hilos.
+- **Paso 1.** Primero, copia el archivo **`NDJSON`** al contenedor porque está en el `host` y escribe el siguiente comando.
 
-#### Tarea 4.1
-
-- **Paso 18.** Primero copia el archivo **NDJSON** al contenedor porque lo tenemos en el host, escribe el siguiente comando
-
-  > **NOTA:** Recuerda que el comando se ejecuta dentro del directorio **datasets**
+  > **Nota.** Recuerda que el comando se ejecuta dentro del directorio **`datasets`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -344,9 +331,9 @@ Cargarás el NDJSON directamente en la collection con claves generadas desde `_k
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 19.** Carga el dataset al contenedor con la propiedad `cbimport`.
+- **Paso 2.** Carga el dataset al contenedor con la propiedad `cbimport`.
 
-  > **NOTA:** Solo como **referencia** el dataset tambien se puede montaral contenedor: `docker cp orders.ndjson ${CB_CONTAINER}:/tmp/orders.ndjson`
+  > **Nota.** Solo como **referencia** el dataset tambien se puede montar al contenedor: `docker cp orders.ndjson ${CB_CONTAINER}:/tmp/orders.ndjson`
   {: .lab-note .info .compact}
 
   ```bash
@@ -365,7 +352,7 @@ Cargarás el NDJSON directamente en la collection con claves generadas desde `_k
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 20.** Ahora ejecuta el siguiente comando para la validación de la carga de documento.
+- **Paso 3.** Ahora, ejecuta el siguiente comando para la validación de la carga de documento.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq \
@@ -374,7 +361,7 @@ Cargarás el NDJSON directamente en la collection con claves generadas desde `_k
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 21.** Ahora muestra 3 documentos para re-validar que todo este cargado correctamente.
+- **Paso 4.** Ahora, muestra tres documentos para revalidar que todo se haya cargado correctamente.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq \
@@ -389,15 +376,11 @@ Cargarás el NDJSON directamente en la collection con claves generadas desde `_k
 
 ---
 
-### Tarea 5: Usuario de aplicación y ruta de inserción con SDK
+### Tarea 5. Usuario de aplicación y ruta de inserción con SDK
 
-Crearás un usuario limitado para la app y correrás un cargador en Node.js con control de lotes/concurrencia y reintentos.
+- **Paso 1.** Crea el usuario con el siguiente comando y ejecútalo en la terminal.
 
-#### Tarea 5.1
-
-- **Paso 22.** Crea el usuario con el siguiente comando, ejecutalo en la terminal.
-
-  > **NOTA:** Ahora debemos regresar un directorio a la raíz **practica8-bulk** para ejecutar el siguiente comando.
+  > **Nota.** Ahora, debes regresar un directorio a la raíz **`practica8-bulk`** para ejecutar el siguiente comando.
   {: .lab-note .info .compact}
 
   ```bash
@@ -410,7 +393,7 @@ Crearás un usuario limitado para la app y correrás un cargador en Node.js con 
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 23.** Ahora dentro del directorio **app** se creara la variables de entorno que usara el usuario.
+- **Paso 2.** Ahora, dentro del directorio **`app`**, crea la variable de entorno que usará el usuario.
 
   ```bash
   cd app
@@ -429,9 +412,9 @@ Crearás un usuario limitado para la app y correrás un cargador en Node.js con 
   EOF
   ```
 
-- **Paso 24.** Ahora inicializa el proyecto de Node.js con los siguientes comandos.
+- **Paso 3.** Ahora, inicializa el proyecto de Node.js con los siguientes comandos.
 
-  > **NOTA:** Estos comandos se ejecutan en el directorio **app** puede tardar unos minutos. Espera
+  > **Nota.** Estos comandos, se ejecutan en el directorio **`app`** y puede tardar unos minutos. 
   {: .lab-note .info .compact}
 
   ```bash
@@ -439,9 +422,9 @@ Crearás un usuario limitado para la app y correrás un cargador en Node.js con 
   npm install couchbase dotenv
   ```
 
-- **Paso 25.** Crea el archivo load.js que definira la logica para la carga masiva de los dockumentos.
+- **Paso 4.** Crea el archivo `load.js`, que definirá la lógica para la carga masiva de los documentos.
 
-  > **IMPORTANTE:** El Script es muy grande, en caso de que el espacio en la terminal sea poco. Crea el archivo manualmente y copia el contenido a partir de la linea que dice **require('dotenv').config();** hacia abajo.
+  > **Importante.** El script es muy grande, en caso de que el espacio en la terminal sea poco. Crea el archivo manualmente y copia el contenido a partir de la línea que dice **`require('dotenv').config();`** hacia abajo.
   {: .lab-note .important .compact}
 
   ```bash
@@ -661,13 +644,9 @@ Crearás un usuario limitado para la app y correrás un cargador en Node.js con 
 
 ---
 
-### Tarea 6: Usuario de aplicación y ruta de inserción con SDK
+### Tarea 6. Usuario de aplicación y ruta de inserción con SDK
 
-Correrás consultas para verificar estructura, rangos y distribución simple del dataset.
-
-#### Tarea 6.1
-
-- **Paso 27.** Verifica las estadisticas sobre los registros insertados.
+- **Paso 1.** Verifica las estadísticas sobre los registros insertados.
 
   ```bash
   docker exec -it ${CB_CONTAINER} cbq -e http://127.0.0.1:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
@@ -675,9 +654,9 @@ Correrás consultas para verificar estructura, rangos y distribución simple del
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 28.** Verificación del rango de fecha de los documentos insertados.
+- **Paso 2.** Verificación del rango de fecha de los documentos insertados.
 
-  > **IMPORTANTE:** En algunos campos se muestra en **milisegundos** la consulta se adapto para que se mostraran los dias o fechas en UTC.
+  > **Importante.** En algunos campos, se muestra en **milisegundos**. La consulta se adaptó para que se mostraran los días o fechas en UTC.
   {: .lab-note .important .compact}
 
   ```bash
@@ -708,19 +687,16 @@ Correrás consultas para verificar estructura, rangos y distribución simple del
 
 ---
 
-### Tarea 7: Limpieza
+### Tarea 7. Limpieza
 
-Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 7.1
+- **Paso 1.** Realiza el vaciado del bucket para eliminar todos los documentos.
 
-- **Paso 29.** Realiza el vaciado del bucket eliminara todos los documentos.
-
-  > **NOTA:** Es normal que el comando mande un resultado vacio.
+  > **Nota.** Es normal que el comando mande un resultado vacío.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:**
-  - **OPCIONAL** Si quieres verificar puedes escribir este comando.
-  - `curl -s -u "${CB_ADMIN}:${CB_ADMIN_PASS}" "http://localhost:8091/pools/default/buckets/${CB_BUCKET}" | jq '.basicStats.itemCount'`
+  > **Opcional**
+  - Si quieres verificar, puedes escribir este comando:
+   `curl -s -u "${CB_ADMIN}:${CB_ADMIN_PASS}" "http://localhost:8091/pools/default/buckets/${CB_BUCKET}" | jq '.basicStats.itemCount'`
   {: .lab-note .important .compact}
 
   ```bash
@@ -729,9 +705,9 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase22]({{ page.images_base | relative_url }}/22.png)
 
-- **Paso 30.** En la terminal aplica el siguiente comando para detener el nodo.
+- **Paso 2.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -739,11 +715,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 31.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 3.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **`No resource found to remove`**.
   {: .lab-note .important .compact}
 
   ```bash
