@@ -7,14 +7,14 @@ duration: "20 minutos" # CAMBIAR POR CADA PRACTICA
 objective: # CAMBIAR POR CADA PRACTICA
   - Levantar un nodo de Couchbase en Docker (local), crear un bucket/colecciones y un usuario de aplicación con permisos mínimos, e implementar una app **Node.js** (SDK oficial de Couchbase) que realice operaciones básicas *upsert/get*, *query N1QL* y *subdocumentos*.
 prerequisites: # CAMBIAR POR CADA PRACTICA
-  - Visual Studio Code con terminal **Git Ba``sh**.
+  - Visual Studio Code con terminal **Git Bash**.
   - 6–8 GB de RAM libres recomendados para 3 nodos (mínimo ~5 GB).  
-  - Puertos locales disponibles **8091–8096**, **11210** (se publicarán solo desde el nodo 1).
+  - Puertos locales disponibles **`8091–8096`**, **`11210`** (se publicarán solo desde el nodo 1).
   - Node.js 18+ (recomendado) y **npm** disponibles en el host.
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: | # CAMBIAR POR CADA PRACTICA
-  En esta práctica crearás una carpeta nueva, un `compose.yaml` mínimo para Couchbase, inicializarás el clúster y recursos de datos, y escribirás una aplicación Node.js que se conecte mediante el SDK oficial. Validarás la conectividad ejecutando operaciones KV y consultas N1QL. Además, incluirás validaciones y troubleshooting para entornos reales.
+  En esta práctica, crearás una carpeta nueva, un `compose.yaml` mínimo para Couchbase, inicializarás el clúster y recursos de datos, y escribirás una aplicación Node.js que se conecte mediante el SDK oficial. Validarás la conectividad ejecutando operaciones KV y consultas N1QL. Además, incluirás validaciones y troubleshooting para entornos reales.
 slug: lab7 # CAMBIAR POR CADA PRACTICA
 lab_number: 7 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
@@ -40,7 +40,7 @@ next: /lab8/lab8/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 
 ---
 
-### Tarea 1: Preparar la estructura de trabajo
+### Tarea 1. Preparar la estructura de trabajo
 
 Organizarás carpetas para aislar datos, configuración, logs y el código de la app; abrirás VS Code y validarás Docker.
 
@@ -127,6 +127,7 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
 - **Paso 6.** Inicia el servicio. Dentro de la terminal, ejecuta el siguiente comando.
 
   > **Importante**
+  > 
   > Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   > El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
