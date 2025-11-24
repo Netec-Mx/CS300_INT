@@ -43,11 +43,9 @@ next: /lab23/lab23/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 Crearás una carpeta aislada con subdirectorios y un `.env` con variables reutilizables.
 
-#### Tarea 1.1.
-
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
 - **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el ícono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
@@ -66,7 +64,7 @@ Crearás una carpeta aislada con subdirectorios y un `.env` con variables reutil
 
 - **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** el archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -108,11 +106,9 @@ Crearás una carpeta aislada con subdirectorios y un `.env` con variables reutil
 
 Definirás `compose.yaml` para un nodo Couchbase con volúmenes persistentes.
 
-#### Tarea 2.1.
+- **Paso 1.** Ahora, crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-- **Paso 5.** Ahora, crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
-
-  > **NOTA:**
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -144,11 +140,11 @@ Definirás `compose.yaml` para un nodo Couchbase con volúmenes persistentes.
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal, ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal, ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** el `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -156,7 +152,7 @@ Definirás `compose.yaml` para un nodo Couchbase con volúmenes persistentes.
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Verifica que el contenedor se haya creado correctamente.
+- **Paso 3.** Verifica que el contenedor se haya creado correctamente.
 
   {%raw%}
   ```bash
@@ -176,13 +172,11 @@ Definirás `compose.yaml` para un nodo Couchbase con volúmenes persistentes.
 
 Inicializarás el clúster, crearás la estructura del bucket y poblarás datos para **inducir fragmentación** (updates y deletes).
 
-#### Tarea 3.1.
+- **Paso 1.** Inicializa el clúster y ejecuta el siguiete comando en la terminal.
 
-- **Paso 8.** Inicializa el clúster y ejecuta el siguiete comando en la terminal.
-
-  > **NOTA:** el `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** el `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** el comando se ejecuta desde el directorio de la practica **practica22-compaction**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la practica **practica22-compaction**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -198,9 +192,9 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-compaction-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
   - Esta conexion es mediante HTTP.
@@ -212,7 +206,7 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 3.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-create \
@@ -222,7 +216,7 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Ahora crea el *Scope* **shop**.
+- **Paso 4.** Ahora crea el *Scope* **shop**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -231,7 +225,7 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Con este comando, crea el *Collection* **products**.
+- **Paso 5.** Con este comando, crea el *Collection* **products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -240,7 +234,7 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Crea el índice primario temporal para validaciones.
+- **Paso 6.** Crea el índice primario temporal para validaciones.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" -q=false \
@@ -248,9 +242,9 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Carga 500 documentos (loop con N1QL).
+- **Paso 7.** Carga 500 documentos (loop con N1QL).
 
-  > **IMPORTANTE:** es normal que la terminal se quede en espera, ya que está insertando los 500 registros. El proceso finalizara solo. Espera unos minutos.
+  > **Importante.** es normal que la terminal se quede en espera, ya que está insertando los 500 registros. El proceso finalizara solo. Espera unos minutos.
   {: .lab-note .important .compact}
 
   ```bash
@@ -274,7 +268,7 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Verifica que se hayan cargado correctamente, realiza la consulta de conteo.
+- **Paso 8.** Verifica que se hayan cargado correctamente, realiza la consulta de conteo.
 
   ```bash
   docker exec -i "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "$CB_ADMIN" -p "$CB_ADMIN_PASS" -q=false \
@@ -284,9 +278,9 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 16.** Genera algunas **actualizaciones** para realizar la fragmentación.
+- **Paso 9.** Genera algunas **actualizaciones** para realizar la fragmentación.
 
-  > **IMPORTANTE:** es normal que la terminal se quede en espera, ya que está actualizando los registros. El proceso finalizará solo. Espera unos minutos.
+  > **Importante.** Es normal que la terminal se quede en espera, ya que está actualizando los registros. El proceso finalizará solo. Espera unos minutos.
   {: .lab-note .important .compact}
 
   ```bash
@@ -302,9 +296,9 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 17.** Ahora genera algunas **eliminaciones** para realizar la fragmentación.
+- **Paso 10.** Ahora genera algunas **eliminaciones** para realizar la fragmentación.
 
-  > **IMPORTANTE:** es normal que la terminal se quede en espera, ya que está eliminando 250 registros. El proceso finalizará solo. Espera unos minutos.
+  > **Importante.** Es normal que la terminal se quede en espera, ya que está eliminando 250 registros. El proceso finalizará solo. Espera unos minutos.
   {: .lab-note .important .compact}
 
   ```bash
@@ -330,9 +324,7 @@ Inicializarás el clúster, crearás la estructura del bucket y poblarás datos 
 
 Consultarás métricas y derivarás **fragmentación%** estimada para el bucket.
 
-#### Tarea 4.1.
-
-- **Paso 18.** Obtén los resultados de la métrica `basicStats` del bucket (REST).
+- **Paso 1.** Obtén los resultados de la métrica `basicStats` del bucket (REST).
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -340,7 +332,7 @@ Consultarás métricas y derivarás **fragmentación%** estimada para el bucket.
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 19.** Extrae los valores de las métricas `diskUsed` y `dataUsed` para calcular la fragmentación(%) aproximada.
+- **Paso 2.** Extrae los valores de las métricas `diskUsed` y `dataUsed` para calcular la fragmentación(%) aproximada.
 
   ```bash
   DISK=$(curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -357,9 +349,9 @@ Consultarás métricas y derivarás **fragmentación%** estimada para el bucket.
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 20.** Ahora, realiza más inflaciones y mutaciones para simular la fragmentación.
+- **Paso 3.** Ahora, realiza más inflaciones y mutaciones para simular la fragmentación.
 
-  > **IMPORTANTE:** ejecuta este comando **al menos 5 veces**, pero puedes requerir un poco más.
+  > **Importante.** Ejecuta este comando **al menos 5 veces**, pero puedes requerir un poco más.
   {: .lab-note .important .compact}
 
   ```bash
@@ -374,7 +366,7 @@ Consultarás métricas y derivarás **fragmentación%** estimada para el bucket.
   done
   ```
 
-- **Paso 21.** Realiza un borrado de un 40–60 % de la data.
+- **Paso 4.** Realiza un borrado de un 40–60 % de la data.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq \
@@ -384,9 +376,9 @@ Consultarás métricas y derivarás **fragmentación%** estimada para el bucket.
   sleep 5
   ```
 
-- **Paso 22.** Verifica el porcentaje de fragmentación.
+- **Paso 5.** Verifica el porcentaje de fragmentación.
 
-  > **NOTA:** el porcentaje de la fragmentación puede ser **0 %**, aun así, continua con la compactación en la siguiente tarea.
+  > **Nota.** El porcentaje de la fragmentación puede ser **0 %**, aun así, continua con la compactación en la siguiente tarea.
   {: .lab-note .info .compact}
 
   ```bash
@@ -414,9 +406,7 @@ Consultarás métricas y derivarás **fragmentación%** estimada para el bucket.
 
 Dispararás la compaction manual del bucket y observarás el progreso.
 
-#### Tarea 5.1.
-
-- **Paso 23.** Inicia la compaction del bucket (CLI).
+- **Paso 1.** Inicia la compaction del bucket (CLI).
 
   ```bash
   docker exec -it "${CB_CONTAINER}" couchbase-cli bucket-compact \
@@ -425,7 +415,7 @@ Dispararás la compaction manual del bucket y observarás el progreso.
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 24.** Verificar el estado periódicamente hasta que termine de ocupar la terminal.
+- **Paso 2.** Verificar el estado periódicamente hasta que termine de ocupar la terminal.
 
   ```bash
   for i in {1..10}; do
@@ -446,11 +436,9 @@ Dispararás la compaction manual del bucket y observarás el progreso.
 
 Repetirás las métricas para evidenciar la mejora.
 
-#### Tarea 6.1.
+- **Paso 1.** Repite la ejecución de la metrica `basicStats` y obtén los tamaños de discos usados.
 
-- **Paso 25.** Repite la ejecución de la metrica `basicStats` y obtén los tamaños de discos usados.
-
-  > **IMPORTANTE:** es normal que siga marcando 0 % de fragmentación, solo es un cálculo de referencia y depende de las configuraciones del clúster. Lo importante es que observes que la cantidad de **`diskUsed`** y **`dataUsed`** ha reducido su tamaño.
+  > **Importante.** Es normal que siga marcando 0 % de fragmentación, solo es un cálculo de referencia y depende de las configuraciones del clúster. Lo importante es que observes que la cantidad de **`diskUsed`** y **`dataUsed`** ha reducido su tamaño.
   {: .lab-note .important .compact}
 
   ```bash
@@ -473,7 +461,7 @@ Repetirás las métricas para evidenciar la mejora.
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 26.** Valida las consultas y ausencia de errores.
+- **Paso 2.** Valida las consultas y ausencia de errores.
 
   ```bash
   docker exec -it ${CB_CONTAINER} cbq -e http://127.0.0.1:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
@@ -491,11 +479,9 @@ Repetirás las métricas para evidenciar la mejora.
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 7.1.
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-- **Paso 27.** En la terminal, aplica el siguiente comando para detener el nodo.
-
-  > **NOTA:** si es necesario, puedes encender de nuevo los contenedores con el comando **`docker compose start`**.
+  > **Nota.** Si es necesario, puedes encender de nuevo los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -503,11 +489,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase22]({{ page.images_base | relative_url }}/22.png)
 
-- **Paso 28.** Apagar y eliminar contenedor (se conservan los datos en ./data).
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** si es necesario, puedes activar otra vez los contenedores con el comando **`docker compose up -d`**.
+  > **Nota.** Si es necesario, puedes activar otra vez los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
