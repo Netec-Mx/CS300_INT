@@ -45,10 +45,10 @@ Crearás la carpeta independiente de la práctica y un archivo `.env` con variab
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -174,11 +174,11 @@ Crearás la carpeta independiente de la práctica y un archivo `.env` con variab
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 6.** Inicia el servicio. Dentro de la terminal, ejecuta el siguiente comando.
 
   > **Importante.**
   >
-  > - Para agilizar los procesos, laa imagen debe estar descargada en el ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > - Para agilizar los procesos, la imagen debe estar descargada en el ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   >
   > - El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
@@ -317,7 +317,7 @@ Crearás un bucket con réplicas y cargarás algunos documentos para evaluar con
 
 ---
 
-### Tarea 4. Configurar Auto-Failover
+### Tarea 4. Configurar `Auto-Failover`
 
 Habilitarás `auto-failover` con un timeout razonable y límites de activación.
 
@@ -348,7 +348,7 @@ Habilitarás `auto-failover` con un timeout razonable y límites de activación.
 
 ### Tarea 5. Simular falla y observar `Auto-Failover`
 
-Detendrás un nodo para disparar el auto-failover y validarás que el clúster sigue sirviendo datos.
+Detendrás un nodo para disparar el `auto-failover` y validarás que el clúster sigue sirviendo datos.
 
 - **Paso 1.** Ahora, detén el nodo `n3` para simular la caída.
 
@@ -382,7 +382,7 @@ Detendrás un nodo para disparar el auto-failover y validarás que el clúster s
 
 ### Tarea 6. Failover manual (`graceful` vs. `force`)
 
-Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicarás **failover manual** en `n2` para observar diferencias entre **`graceful`** y **`force`**.
+Reiniciarás `n3`, lo volverás a unir (si `auto-failover` ocurrió) y practicarás **`failover manual`** en `n2` para observar diferencias entre **`graceful`** y **`force`**.
 
 
 
@@ -412,9 +412,9 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 2.** Aplica **Graceful failover** en `n2` (retira ordenadamente).
+- **Paso 2.** Aplica **`Graceful failover`** en `n2` (retira ordenadamente).
 
-  > **Nota.** **Graceful** intenta mover datos o servicios de forma ordenada.
+  > **Nota.** **`Graceful`** intenta mover datos o servicios de forma ordenada.
   {: .lab-note .info .compact}
 
   ```bash
@@ -424,9 +424,9 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 3.** Ahora, para probar **force**, primero, debes rebalancear al nodo 2 y, luego, agregarlo. Ejecuta esta serie de comandos.
+- **Paso 3.** Ahora, para probar **`force`**, primero, debes rebalancear al `nodo 2` y, luego, agregarlo. Ejecuta esta serie de comandos.
 
-  > **Importante.** Al segundo comando de **Rebalance** dale **4 minutos** de espera. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo. **Si te marca error al final, se debe a `recursos/latencia`, vuelve a intentar el rebalance**
+  > **Importante.** Al segundo comando de **`Rebalance`** dale **4 minutos** de espera. Si el segundo rebalance se atora ejecuta **`CTRL + C`** y vuelve a intentarlo. Si te marca error al final, se debe a `recursos/latencia`, vuelve a intentar el rebalance.
   {: .lab-note .important .compact}
 
   ```bash
@@ -447,7 +447,7 @@ Reiniciarás `n3`, lo volverás a unir (si auto-failover ocurrió) y practicará
 
 - **Paso 4.** Ahora, aplica **`force`** para comparar el funcionamiento.
 
-  > **Nota.** **`force/hard`** asume falla irrecuperable inmediata.
+  > **Nota.** **`force/hard`** asume la falla irrecuperable inmediata.
   {: .lab-note .info .compact}
 
   ```bash
@@ -480,11 +480,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 2.** Apaga y elimina el contenedor (se conservan los datos en `./data**).
+- **Paso 2.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **Importante.** Es normal el mensaje del objeto de red ****No resource found to remove****.
+  > **Importante.** Es normal el mensaje del objeto de red **`No resource found to remove`**.
   {: .lab-note .important .compact}
 
   ```bash
