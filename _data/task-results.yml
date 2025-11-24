@@ -1,24 +1,24 @@
 # EJEMPLO PARA LOS RESULTADOS ESPERADOS DE CADA TAREA DE CADA PRACTICA
 lab1: # NOMBRE DE LABORATORIO SIMPLE --> lab#
   results: # NO MODIFICAR
-    # LISTA DE CADA RESULTADO DE CADA TAREA SE MOSTRARA EN COLOR VERDE PARA QUE RESALTE
+    # LISTA DE CADA RESULTADO DE CADA TAREA SE MOSTRARÁ EN COLOR VERDE PARA QUE RESALTE
     - "**Resultado esperado.** Estructura de carpetas creada, VS Code abierto con terminal Git Bash funcional y Docker operativo."
     - "**Resultado esperado.** Definición de servicio lista para levantar el contenedor con una sola orden y con healthcheck configurado."
     - "**Resultado esperado.** Contenedor en ejecución con Couchbase accesible en `http://localhost:8091`."
-    - "**Resultado esperado.** Clúster inicializado con servicios Data/Index/Query y bucket `test` creado y visible."
-    - "**Resultado esperado.** Los endpoints REST son útiles para automatización y pruebas en CI/CD. La consola web permite validar rápidamente estado y métricas."
-    - "**Resultado esperado.** Contenedor controlado correctamente; capacidad de reinicio y reinstalación limpia para repetir la práctica."
+    - "**Resultado esperado.** Clúster inicializado con servicios `Data`, `Index`, `Query` y `bucket` `test` creado y visible."
+    - "**Resultado esperado.** Los endpoints `REST` son útiles para automatización y pruebas en CI/CD. La consola web permite validar rápidamente estado y métricas."
+    - "**Resultado esperado.** Contenedor controlado correctamente, capacidad de reinicio y reinstalación limpia para repetir la práctica."
 # ESTRUCTURA PARA COPIAR Y PEGAR CUANTAS VECES SEA NECESARIO
 lab2:
   results:
     - "**Resultado esperado.** Estructura lista para definir Compose y scripts de inicialización."
-    - "**Resultado esperado.** Stack de 3 servicios listo para ser levantado."
+    - "**Resultado esperado.** Stack de tres servicios listo para ser levantado."
     - "**Resultado esperado.** Tres contenedores operativos y accesibles por `hostname` dentro de la red Docker."
-    - "**Resultado esperado.** Clúster de 3 nodos configurado, rebalanceado y con un bucket de prueba."
+    - "**Resultado esperado.** Clúster de tres nodos configurado, rebalanceado y con un bucket de prueba."
     - "**Resultado esperado.** Confirmación visual y por API del clúster multinodo."
     - "**Resultado esperado.** Motor de Query funcional y accesible a través del nodo 1."
     - "**Resultado esperado.** Control total del ciclo de vida del clúster multinodo durante la práctica."
-lab3:
+Lab3:
   results:
     - "**Resultado esperado.** Proyecto abierto y entorno listo para crear buckets."
     - "**Resultado esperado.** Dos buckets creados con configuraciones diferenciadas y listados correctamente."
@@ -38,7 +38,7 @@ lab5:
   results:
     - "**Resultado esperado.** Workspace en VS Code y entorno verificado para avanzar con la configuración de la auditoría."
     - "**Resultado esperado.** Auditoría habilitada y escribiendo en el directorio esperado."
-    - "**Resultado esperado.** Bucket/scope/collections e índice primario preparados para la auditoria"
+    - "**Resultado esperado.** `Bucket`, `scope`, `collections` e índice primario preparados para la auditoria"
     - "**Resultado esperado.** Evidencia en `audit.log` de inicios de sesión correctos y fallidos."
     - "**Resultado esperado.** Registros claros de quién hizo qué cambios y cuándo."
     - "**Resultado esperado.** Auditoría capturando tanto mutaciones como lecturas de datos vía N1QL."
@@ -49,14 +49,14 @@ lab6:
     - "**Resultado esperado.** Los comandos deben mostrar información detallada de los certificados y confirmar que `server.crt: OK`."
     - "**Resultado esperado.** Los archivos de docker compose y scripts creados correctamente."
     - "**Resultado esperado.** Los comandos deben ejecutarse sin errores y confirmar la configuración TLS."
-    - "**Resultado esperado.** Las APIs deben responder correctamente via HTTPS."
-    - "**Resultado esperado.** Entorno de la practica limpio para las siguientes actividades."
+    - "**Resultado esperado.** Las API deben responder correctamente vía HTTPS."
+    - "**Resultado esperado.** Entorno de la práctica limpio para las siguientes actividades."
 lab7:
   results:
-    - "**Resultado esperado.** Estructura del proyecto correcta y couchbase en ejecución y accesible en `http://localhost:8091`"
-    - "**Resultado esperado.** Clúster listo con bucket/colección y usuario RBAC para la app."
+    - "**Resultado esperado.** Estructura del proyecto correcta y Couchbase en ejecución y accesible en `http://localhost:8091`"
+    - "**Resultado esperado.** Clúster listo con bucket o colección y usuario RBAC para la app."
     - "**Resultado esperado.** Aplicación Node.js conectada y realizando operaciones KV y N1QL exitosamente."
-    - "**Resultado esperado.** Ensayar fallos te permite diferenciar problemas de permisos, de indices o de conectividad."
+    - "**Resultado esperado.** Ensayar fallos te permite diferenciar problemas de permisos, de índices o de conectividad."
     - "**Resultado esperado.** Entorno listo para repetir o realizar otra práctica."
 lab8:
   results:
@@ -77,17 +77,17 @@ lab9:
 lab10:
   results:
     - "**Resultado esperado.** Estructura lista para definir Compose y scripts de inicialización."
-    - "**Resultado esperado.** Stack de 3 servicios listo para ser levantado."
+    - "**Resultado esperado.** Stack de tres servicios listo para ser levantado."
     - "**Resultado esperado.** Tres contenedores operativos y accesibles por `hostname` dentro de la red Docker."
-    - "**Resultado esperado.** Clúster de 3 nodos configurado, rebalanceado y con un bucket de prueba."
+    - "**Resultado esperado.** Clúster de tres nodos configurado, rebalanceado y con un bucket de prueba."
     - "**Resultado esperado.** Grupos creados y nodos distribuidos entre racks."
-    - "**Resultado esperado.** Con 3 nodos y réplicas=2, cada vBucket tiene 1 activo + 2 réplicas, ideal para dos racks."
+    - "**Resultado esperado.** Con tres nodos y `réplicas=2`, cada vBucket tiene 1 activo + 2 réplicas, ideal para dos racks."
     - "**Resultado esperado.** Alta disponibilidad validada ante la caída de un rack."
     - "**Resultado esperado.** Entorno listo para repetir o realizar otra práctica."
 lab11:
   results:
     - "**Resultado esperado.** Tres nodos Couchbase corriendo y accesibles."
-    - "**Resultado esperado.** Clúster de 3 nodos listo para pruebas de HA."
+    - "**Resultado esperado.** Clúster de tres nodos listo para pruebas de HA."
     - "**Resultado esperado.** Bucket y datos de prueba listos."
     - "**Resultado esperado.** Auto-failover habilitado y verificado."
     - "**Resultado esperado.** Auto-failover ejecutado y servicio disponible."
@@ -97,17 +97,17 @@ lab12:
   results:
     - "**Resultado esperado.** Estructura y variables listas para levantar el entorno."
     - "**Resultado esperado.** Tres nodos corriendo listos para clusterizar."
-    - "**Resultado esperado.** Clúster de 3 nodos con bucket y datos de prueba."
-    - "**Resultado esperado.** Clúster de **4 nodos** funcionando con datos intactos."
-    - "**Resultado esperado.** Clúster vuelve a **3 nodos** estable, con datos íntegros."
+    - "**Resultado esperado.** Clúster de tres nodos con bucket y datos de prueba."
+    - "**Resultado esperado.** Clúster de **cuatro nodos** funcionando con datos intactos."
+    - "**Resultado esperado.** Clúster vuelve a **tres nodos** estable, con datos íntegros."
     - "**Resultado esperado.** Entorno listo para repetir o realizar otra práctica."
 lab13:
   results:
     - "**Resultado esperado.** Estructura y variables listas."
     - "**Resultado esperado.** Un solo nodo es suficiente para probar índices (incluye servicio de índices). Nodo listo para inicialización."
-    - "**Resultado esperado.** Keyspace con 10 documentos listo para indexar."
+    - "**Resultado esperado.** Keyspace con diez documentos listo para indexar."
     - "**Resultado esperado.** Índices secundarios creados y listados en `system:indexes` con estado `Ready`."
-    - "**Resultado esperado.** Consulta cubierta por el índice: sin *Fetch* y con resultados correctos."
+    - "**Resultado esperado.** Consulta cubierta por el índice: sin `Fetch` y con resultados correctos."
     - "**Resultado esperado.** Comprensión de cómo los hints afectan la elección de índices y el plan resultante."
     - "**Resultado esperado.** Entorno limpio para nuevas iteraciones."
 lab14:
@@ -117,12 +117,12 @@ lab14:
     - "**Resultado esperado.** Keyspace con datos textuales listo para FTS."
     - "**Resultado esperado.** Índice FTS creado y activo para la colección `products`."
     - "**Resultado esperado.** Búsquedas FTS funcionales por REST con resultados correctos."
-    - "**Resultado esperado.** Comprensión de *fuzziness* y *prefix* en FTS."
+    - "**Resultado esperado.** Comprensión de `fuzziness` y `prefix` en FTS."
     - "**Resultado esperado.** Entorno limpio para nuevas iteraciones."
 lab15:
   results:
     - "**Resultado esperado.** Estructura lista para levantar el nodo y configurar servicios."
-    - "**Resultado esperado.** Nodo listo para inicialización de cluster y creación de buckets."
+    - "**Resultado esperado.** Nodo listo para inicialización de clúster y creación de buckets."
     - "**Resultado esperado.** Buckets y colecciones listas para Eventing y Analytics."
     - "**Resultado esperado.** Datos listos para activar Eventing al mutar."
     - "**Resultado esperado.** Función Eventing desplegada con binding `dst` apuntando a la colección de auditoría."
@@ -176,15 +176,15 @@ lab21:
     - "**Resultado esperado.** Prometheus listo para *scrapear* Couchbase."
     - "**Resultado esperado.** Orquestación preparada para iniciar el stack."
     - "**Resultado esperado.** Stack corriendo y scraping activo."
-    - "**Resultado esperado.** Datos insertados y KPIs con actividad reciente."
-    - "**Resultado esperado.** Dashboard listo con metricas actualizándose cada 5s."
-    - "**Resultado esperado.** Panel grafico mostrando las metricas del servidor Couchbase"
+    - "**Resultado esperado.** Datos insertados y KPI con actividad reciente."
+    - "**Resultado esperado.** Dashboard listo con métricas actualizándose cada 5s."
+    - "**Resultado esperado.** Panel grafico mostrando las métricas del servidor Couchbase"
     - "**Resultado esperado.** Entorno limpio para nuevas iteraciones."
 lab22:
   results:
     - "**Resultado esperado.** Proyecto base listo para comenzar."
     - "**Resultado esperado.** Nodo definido y listo para ser levantado."
-    - "**Resultado esperado.** Cluster inicializado y bucket fragmentado con varias operaciones."
+    - "**Resultado esperado.** Clúster inicializado y bucket fragmentado con varias operaciones."
     - "**Resultado esperado.** Métricas **previas** registradas para ser comparadas."
     - "**Resultado esperado.** Compaction manual en ejecución y finalización exitosa."
     - "**Resultado esperado.** Resultado obtenido y la evidencia cuantitativa de la compaction"
@@ -194,8 +194,8 @@ lab23:
     - "**Resultado esperado.** Proyecto base listo para comenzar."
     - "**Resultado esperado.** Nodo listo para inicialización."
     - "**Resultado esperado.** Bucket “estrecho” listo para pruebas de presión de memoria."
-    - "**Resultado esperado.** Memoria presionada y ejection en curso."
-    - "**Resultado esperado.** Evidencia numérica de ejection y *bg fetches*."
+    - "**Resultado esperado.** Memoria presionada y `ejection` en curso."
+    - "**Resultado esperado.** Evidencia numérica de `ejection` y `bg fetches`."
     - "**Resultado esperado.** Las métricas mejoran tras mitigar presión."
     - "**Resultado esperado.** Entorno limpio para nuevas iteraciones."
 lab24:
