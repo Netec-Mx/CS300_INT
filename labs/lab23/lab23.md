@@ -13,14 +13,14 @@ prerequisites:  # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar imágenes.  
   - 3–4 GB de RAM libres (servicios `kv,index,query`).  
 introduction: | # CAMBIAR POR CADA PRACTICA
-  Cuando la **working set** (datos activos) supera la RAM asignada a un bucket, Couchbase puede **expulsar** valores desde memoria (Value‑Only Eviction) o expulsar claves y valores (Full Eviction, con implicaciones de latencia). La **ejection** se dispara por umbrales de memoria globales (high/low watermarks). En este laboratorio forzarás la presión de memoria para observar **`vb_active_perc_mem_resident`**, **`ep_num_value_ejects`**, **`ep_bg_fetched`** y las relaciones con **`mem_used`**, **`ep_mem_high_wat`** y **`ep_mem_low_wat`**.
+  Cuando la **working set** (datos activos) supera la RAM asignada a un bucket, Couchbase puede **expulsar** valores desde memoria (Value‑Only Eviction) o expulsar claves y valores (Full Eviction, con implicaciones de latencia). La **ejection** se dispara por umbrales de memoria globales (high/low watermarks). En este laboratorio, forzarás la presión de memoria para observar **`vb_active_perc_mem_resident`**, **`ep_num_value_ejects`**, **`ep_bg_fetched`** y las relaciones con **`mem_used`**, **`ep_mem_high_wat`** y **`ep_mem_low_wat`**.
 slug: lab23 # CAMBIAR POR CADA PRACTICA
 lab_number: 23 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
-  Provocaste **ejection** en un bucket de Couchbase ajustando la RAM y generando carga, observaste **resident ratio**, **ejections** y **bg fetches**, y aplicaste **mitigaciones** para recuperar desempeño. 
+  Provocaste **ejection** en un bucket de Couchbase ajustando la RAM y generando carga, observaste **resident ratio**, **ejections** y **bg fetches** y aplicaste **mitigaciones** para recuperar desempeño. 
 notes: | # CAMBIAR POR CADA PRACTICA
   - `fullEviction` reduce más RAM pero aumenta latencias por *fetch*; solo úsalo cuando aceptes ese trade‑off.  
-  - En cargas reales, usa **SDKs** y **durabilidad/replicas** con criterio; incrementan uso de RAM.  
+  - En cargas reales, usa **SDKs** y **durabilidad/replicas** con criterio; incrementan el uso de RAM.  
   - Evita índices primarios salvo en validaciones.  
   - Monitorea continuamente `vb_active_perc_mem_resident` y define alertas en Prometheus/Grafana.
 references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
@@ -38,22 +38,21 @@ next: /lab24/lab24/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 ---
 
-### Tarea 1: Carpeta de la práctica y variables
+### Tarea 1. Carpeta de la práctica y variables.
 
-Crea estructura independiente y define variables del clúster, bucket y parámetros de carga.
+Crea una estructura independiente y define las variables del clúster, bucket y parámetros de carga.
 
-#### Tarea 1.1
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica23-ejection/
@@ -63,9 +62,9 @@ Crea estructura independiente y define variables del clúster, bucket y parámet
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -105,15 +104,13 @@ Crea estructura independiente y define variables del clúster, bucket y parámet
 
 ---
 
-### Tarea 2: Docker Compose y salud del nodo
+### Tarea 2. Docker Compose y salud del nodo.
 
 Definir el `compose.yaml`, levantar servicios y validar estado.
 
-#### Tarea 2.1
+- **Paso 1.** Ahora, crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
-
-  > **NOTA:**
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -145,11 +142,11 @@ Definir el `compose.yaml`, levantar servicios y validar estado.
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal, ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** el `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -157,7 +154,7 @@ Definir el `compose.yaml`, levantar servicios y validar estado.
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Verifica que el contenedor se haya creado correctamente.
+- **Paso 3.** Verifica que el contenedor se haya creado correctamente.
 
   {%raw%}
   ```bash
@@ -173,17 +170,15 @@ Definir el `compose.yaml`, levantar servicios y validar estado.
 
 ---
 
-### Tarea 3: Inicializar clúster y crear bucket “estrecho”
+### Tarea 3. Inicializar el clúster y crear un bucket “estrecho”.
 
 Inicializa el clúster y crea un bucket con **RAM limitada** y **política de ejection** específica.
 
-#### Tarea 3.1
+- **Paso 1.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
 
-- **Paso 8.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
-
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica23-ejection**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la practica **practica23-ejection**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -199,9 +194,9 @@ Inicializa el clúster y crea un bucket con **RAM limitada** y **política de ej
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-ejection-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
   - Esta conexion es mediante HTTP.
@@ -213,7 +208,7 @@ Inicializa el clúster y crea un bucket con **RAM limitada** y **política de ej
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ejecuta el siguiente comando para la creación del bucket con `--eviction-policy`.
+- **Paso 3.** Ejecuta el siguiente comando para la creación del bucket con `--eviction-policy`.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" couchbase-cli bucket-create \
@@ -227,7 +222,7 @@ Inicializa el clúster y crea un bucket con **RAM limitada** y **política de ej
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Ahora crea el *Scope* **shop**
+- **Paso 4.** Ahora crea el *Scope* **shop**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -236,7 +231,7 @@ Inicializa el clúster y crea un bucket con **RAM limitada** y **política de ej
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Con este comando crea el *Collection* **products**
+- **Paso 5.** Con este comando, crea el *Collection* **products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -245,7 +240,7 @@ Inicializa el clúster y crea un bucket con **RAM limitada** y **política de ej
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Crea el índice primario temporal para validaciones
+- **Paso 6.** Crea el índice primario temporal para validaciones.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" -q=false \
@@ -259,13 +254,11 @@ Inicializa el clúster y crea un bucket con **RAM limitada** y **política de ej
 
 ---
 
-### Tarea 4: Cargar documentos por oleadas (hasta provocar ejection)
+### Tarea 4. Cargar documentos por oleadas (hasta provocar ejection).
 
 Insertarás dos oleadas de documentos con tamaño aproximado `${DOC_SIZE_BYTES}` para crecer el working set y cruzar los watermarks.
 
-#### Tarea 4.1
-
-- **Paso 14.** Ejecuta la siguiente función bash para generar un payload de tamaño fijo
+- **Paso 1.** Ejecuta la siguiente función bash para generar un payload de tamaño fijo.
 
   ```bash
   mkpayload() {
@@ -283,9 +276,9 @@ Insertarás dos oleadas de documentos con tamaño aproximado `${DOC_SIZE_BYTES}`
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Carga el primer **Batch #1** (no debería eyectar aún, o muy poco)
+- **Paso 2.** Carga el primer **Batch #1** (no debería eyectar aún, o solo muy poco).
 
-  > **IMPORTANTE:** El proceso tardara varios minutos ya que debe insertar 20000 registros. No hara el ejection aun. Calcula 4 minutos y rompe el proceso con **CTRL+C**.
+  > **Importante.** El proceso tardará varios minutos, ya que debe insertar 20 000 registros. No hará el ejection aún. Calcula 4 minutos y rompe el proceso con **CTRL+C**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -301,12 +294,12 @@ Insertarás dos oleadas de documentos con tamaño aproximado `${DOC_SIZE_BYTES}`
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 16.** Revisa las métricas después o durante el Batch #1. Ejecuta los comandos 1 por 1.
+- **Paso 3.** Revisa las métricas después o durante el Batch #1. Ejecuta los comandos 1 por 1.
 
-  > **NOTA:** Realiza los siguientes pasos:
-  - Abre otra terminal en VSC
-  - Entra al directorio `cd practica23-ejection`
-  - Carga las variables `set -a; source .env; set +a`
+  > **Nota.** Realiza los siguientes pasos:
+  - Abre otra terminal en VSC.
+  - Entra al directorio `cd practica23-ejection`.
+  - Carga las variables `set -a; source .env; set +a`.
   - Ejecuta los comandos de abajo.
   {: .lab-note .info .compact}
 
@@ -324,12 +317,12 @@ Insertarás dos oleadas de documentos con tamaño aproximado `${DOC_SIZE_BYTES}`
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 17.** Realiza la carga del **Batch #2** (empuja a ejection)
+- **Paso 4.** Realiza la carga del **Batch #2** (empuja a ejection).
 
-  > **IMPORTANTE:**
-  - Con ese comando se inyectara mas payload size para que simule la saturación y realice la eyección.
-  - El proceso puede tardar mas de 20 minutos este laboratorio es una simulación.
-  - Si deseas avanzar puedes hacerlo sin problema. En otro momento puedes dejarlo mas de 30 minutos.
+  > **Importante.**
+  - Con ese comando se inyectará más payload size para que simule la saturación y realice la eyección.
+  - El proceso puede tardar más de 20 minutos. Este laboratorio es una simulación.
+  - Si deseas avanzar, puedes hacerlo sin problema. En otro momento puedes dejarlo más de 30 minutos.
   {: .lab-note .important .compact}
 
   ```bash
@@ -349,18 +342,16 @@ Insertarás dos oleadas de documentos con tamaño aproximado `${DOC_SIZE_BYTES}`
 
 ---
 
-### Tarea 5: Forzar lecturas aleatorias y observar **bg fetch**
+### Tarea 5. Forzar lecturas aleatorias y observar **bg fetch**.
 
-Realiza lecturas aleatorias; si el documento fue expulsado de RAM, el valor se trae desde disco (**background fetch**).
+Realiza lecturas aleatorias; si el documento fue expulsado de RAM, el valor se trae desde el disco (**background fetch**).
 
-#### Tarea 5.1
+- **Paso 1.** Realiza lecturas aleatorias para observar el comportamiento.
 
-- **Paso 18.** Realiza lecturas aleatorias para observar el comportamiento.
-
-  > **IMPORTANTE:** Si dejaste en ejecucion el comando anterior, realiza los siguientes pasos:
-  - Abre otra terminal en VSC
-  - Entra al directorio `cd practica23-ejection`
-  - Carga las variables `set -a; source .env; set +a`
+  > **Importante.** Si dejaste en ejecución el comando anterior, realiza los siguientes pasos:
+  - Abre otra terminal en VSC.
+  - Entra al directorio `cd practica23-ejection`.
+  - Carga las variables `set -a; source .env; set +a`.
   {: .lab-note .important .compact}
 
   ```bash
@@ -376,12 +367,12 @@ Realiza lecturas aleatorias; si el documento fue expulsado de RAM, el valor se t
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 19.** Observa las métricas de ejection y bg fetch
+- **Paso 2.** Observa las métricas de ejection y bg fetch.
 
-  > **IMPORTANTE:** Abre una tercera terminal y realiza los siguientes pasos:
-  - Abre otra terminal en VSC
-  - Entra al directorio `cd practica23-ejection`
-  - Carga las variables `set -a; source .env; set +a`
+  > **Importante.** Abre una tercera terminal y realiza los siguientes pasos:
+  - Abre otra terminal en VSC.
+  - Entra al directorio `cd practica23-ejection`.
+  - Carga las variables `set -a; source .env; set +a`.
   {: .lab-note .important .compact}
 
   ```bash
@@ -403,13 +394,11 @@ Realiza lecturas aleatorias; si el documento fue expulsado de RAM, el valor se t
 
 ---
 
-### Tarea 6: Acciones de mitigación.
+### Tarea 6. Acciones de mitigación.
 
-Aplicarás mitigaciones comunes: aumentar RAM del bucket o eliminar datos fríos, y compararás efectos en métricas.
+Aplicarás mitigaciones comunes: aumentar la RAM del bucket o eliminar datos fríos. Compararás sus efectos en las métricas.
 
-#### Tarea 6.1
-
-- **Paso 20.** Aumentar RAM del bucket (mitigación 1)
+- **Paso 1.** Aumentar RAM del bucket (mitigación 1).
 
   ```bash
   # Subir RAM a 512MB
@@ -419,9 +408,9 @@ Aplicarás mitigaciones comunes: aumentar RAM del bucket o eliminar datos fríos
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 21.** Eliminar registros fríos (mitigación 2)
+- **Paso 2.** Eliminar registros fríos (mitigación 2).
 
-  > **IMPORTANTE:** Este comando puede tardar varios minutos. Espera 3 minutos y ejecuta `CTRL + C`
+  > **Importante.** Este comando puede tardar varios minutos. Espera 3 minutos y ejecuta `CTRL + C`.
   {: .lab-note .important .compact}
 
   ```bash
@@ -439,9 +428,9 @@ Aplicarás mitigaciones comunes: aumentar RAM del bucket o eliminar datos fríos
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 22.** Obten de nuevo las metricas.
+- **Paso 3.** Obtén de nuevo las métricas.
 
-  > **IMPORTANTE:** El restultado puede variar recuerda que esta es una practica simulada.
+  > **Importante.** El restultado puede variar, recuerda que esta es una práctica simulada.
   {: .lab-note .important .compact}
 
   ```bash
@@ -461,15 +450,13 @@ Aplicarás mitigaciones comunes: aumentar RAM del bucket o eliminar datos fríos
 
 ---
 
-### Tarea 7: Limpieza
+### Tarea 7. Limpieza.
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 7.1
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-- **Paso 23.** En la terminal aplica el siguiente comando para detener el nodo.
-
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -477,11 +464,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 24.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
