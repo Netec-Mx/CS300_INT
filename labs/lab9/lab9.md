@@ -5,24 +5,23 @@ permalink: /lab9/lab9/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab9/img # CAMBIAR POR CADA PRACTICA
 duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
 objective: # CAMBIAR POR CADA PRACTICA
-  - Crear un bucket/colección y un usuario de aplicación con privilegios mínimos, e implementar una app **Node.js** que ejecute operaciones **CRUD completas** (Create/Read/Update/Delete) con el **SDK oficial de Couchbase**, incluyendo **control de errores**, **optimistic locking con CAS**, **subdocumentos** y **consultas N1QL**.
+  - Crear un bucket/colección y un usuario de aplicación con privilegios mínimos e implementar una app **Node.js** que ejecute operaciones **CRUD completas** (Create/Read/Update/Delete) con el **SDK oficial de Couchbase**, incluyendo **control de errores**, **optimistic locking con CAS**, **subdocumentos** y **consultas N1QL**.
 prerequisites:  # CAMBIAR POR CADA PRACTICA
   - Software **Docker Desktop** en ejecución.  
   - Software **Visual Studio Code** con terminal **Git Bash**.  
   - Lenguaje **Node.js 18+** y **npm** instalados.  
-  - Los **Puertos libres:** 8091–8096 (UI/REST), 11210 (KV no TLS).  
-  - Internet para descargar la imagen y paquetes npm.
+  - Los **puertos libres:** `8091-8096` (UI/REST), `11210` (KV no TLS).   - Internet para descargar la imagen y paquetes `npm`.
 introduction: | # CAMBIAR POR CADA PRACTICA
-  Vas a crear el entorno y código desde cero. Practicarás CRUD con características clave del SDK: **upsert/insert/get**, **replace/remove** con **CAS**, **mutateIn/lookupIn** (subdocumentos), y **N1QL** con parámetros. Verás validaciones y mensajes de error comunes (documento existente, no encontrado, CAS inválido).
+  Crearás el entorno y código desde cero. Practicarás CRUD con características clave del SDK: **`upsert/insert/get`**, **`replace`/`remove`** con **CAS**, **`mutateIn`/`lookupIn`** (subdocumentos) y **`N1QL`** con parámetros. Verás validaciones y mensajes de error comunes (documento existente, no encontrado, CAS inválido).
 slug: lab9 # CAMBIAR POR CADA PRACTICA
 lab_number: 9 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
   Has desplegado Couchbase y desarrollaste un script **CRUD** completo con **CAS** y **subdocumentos**, además de consultas **N1QL**, validaciones y manejo de errores comunes. Esto sienta las bases para aplicaciones reales que requieren consistencia y rendimiento.
 notes: | # CAMBIAR POR CADA PRACTICA
-  - **TLS**: para producción usa `couchbases://` (11207) con certificados de confianza.  
+  - **TLS**: para producción usa `couchbases://` (`11207`) con certificados de confianza.  
   - **Índices**: evita el índice primario en producción; crea índices adecuados a tus consultas.  
   - **CAS**: úsalo en updates críticos para evitar sobrescrituras perdidas.  
-  - **Durabilidad**: en clústeres con réplicas, considera `DurabilityLevel` para garantizar escritura replicada/persistida.  
+  - **Durabilidad**: en clústeres con réplicas, considera `DurabilityLevel` para garantizar escritura replicada o persistida.  
   - **Namespacing**: prefiere claves con prefijos (`prod::`) para facilitar particionamiento y mantenimiento.
 references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
   - text: Operaciones KV y CAS
@@ -41,22 +40,18 @@ next: /lab10/lab10/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 ---
 
-### Tarea 1: Estructura base del proyecto
-
-Crearás una carpeta aislada para esta práctica, con directorios para datos del contenedor, configuración y la app.
-
-#### Tarea 1.1
+### Tarea 1. Estructura base del proyecto
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **`cs300-labs`**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica9-crud/
@@ -67,9 +62,9 @@ Crearás una carpeta aislada para esta práctica, con directorios para datos del
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -93,10 +88,10 @@ Crearás una carpeta aislada para esta práctica, con directorios para datos del
   EOF
   ```
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
+- **Paso 5.** Ahora, crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente código en la terminal.
 
-  > **NOTA:**
-  - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
+  > **Nota.**
+  - El archivo `compose.yaml` mapea puertos `8091-8096` para la consola web y `11210` para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
 
@@ -126,11 +121,12 @@ Crearás una carpeta aislada para esta práctica, con directorios para datos del
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 6.** Inicia el servicio. Dentro de la terminal, ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante**
+  >
+  > Para agilizar los procesos, la imagen debe estar descargada en el ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -138,11 +134,11 @@ Crearás una carpeta aislada para esta práctica, con directorios para datos del
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
+- **Paso 7.** Inicializa el clúster, ejecuta el siguiente comando en la terminal.
 
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica9-crud**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la practica **`practica9-crud`**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -158,11 +154,11 @@ Crearás una carpeta aislada para esta práctica, con directorios para datos del
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 8.** Verifica que el clúster esté **healthy** y que se muestre el `json` con las propiedades del nodo.
 
-  > **NOTA:**
-  - Contenedor `cb-crud-node1` aparece **Up**.  
-  - `curl` devuelve JSON de la información del nodo.
+  > **Nota.**
+  - El contenedor `cb-crud-node1` aparece como **Up**.  
+  - `curl` devuelve el `JSON` de la información del nodo.
   - Esta conexion es mediante HTTP.
   {: .lab-note .info .compact}
 
@@ -178,13 +174,9 @@ Crearás una carpeta aislada para esta práctica, con directorios para datos del
 
 ---
 
-### Tarea 2: Crear bucket/scope/collection/
+### Tarea 2. Crear `bucket/scope/collection/`
 
-Crearás bucket/scope/collection, un índice primario para pruebas y un usuario de app con privilegios mínimos.
-
-#### Tarea 2.1
-
-- **Paso 9.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 1.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-create \
@@ -196,7 +188,7 @@ Crearás bucket/scope/collection, un índice primario para pruebas y un usuario 
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ahora crea el *Scope*.
+- **Paso 2.** Ahora crea el `Scope`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -205,7 +197,7 @@ Crearás bucket/scope/collection, un índice primario para pruebas y un usuario 
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Con este comando crea el *Collection*
+- **Paso 3.** Con este comando, crea el `Collection`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -214,7 +206,7 @@ Crearás bucket/scope/collection, un índice primario para pruebas y un usuario 
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.**  Crea los índices primarios para N1QL.
+- **Paso 4.**  Crea los índices primarios para `N1QL`.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq \
@@ -223,7 +215,7 @@ Crearás bucket/scope/collection, un índice primario para pruebas y un usuario 
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Verifica que el bucket este creado correctamente.
+- **Paso 5.** Verifica que el bucket se haya creado correctamente.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-list \
@@ -231,7 +223,7 @@ Crearás bucket/scope/collection, un índice primario para pruebas y un usuario 
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Verifica que el *Scope* este correctamente.
+- **Paso 6.** Verifica que el `Scope` sea correcto.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -239,7 +231,7 @@ Crearás bucket/scope/collection, un índice primario para pruebas y un usuario 
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Ahora crea el usuario de **app** (tendra menor privilegio: lectura/escritura/queries sobre la colección):
+- **Paso 7.** Ahora, crea el usuario de **`app`** (tendrá menor privilegio: lectura, escritura, _queries_ sobre la colección).
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli user-manage \
@@ -256,13 +248,9 @@ Crearás bucket/scope/collection, un índice primario para pruebas y un usuario 
 
 ---
 
-### Tarea 3: Crear la app Node.js (CRUD completo)
+### Tarea 3. Crear la app Node.js (CRUD completo)
 
-Implementarás un script `crud.js` que conecte, haga **insert**, **get** (con proyección), **replace** con **CAS**, **mutateIn/lookupIn** y **remove**; además, **N1QL** con parámetros.
-
-#### Tarea 3.1
-
-- **Paso 16.** Ahora dentro del directorio **app** se creara la variables de entorno que usara el usuario.
+- **Paso 1.** Ahora, dentro del directorio **`app`** se crearán la variables de entorno para el usuario.
 
   ```bash
   cd app
@@ -276,9 +264,9 @@ Implementarás un script `crud.js` que conecte, haga **insert**, **get** (con pr
   EOF
   ```
 
-- **Paso 17.** Ahora inicializa el proyecto de Node.js con los siguientes comandos.
+- **Paso 2.** Ahora, inicializa el proyecto de Node.js con los siguientes comandos.
 
-  > **NOTA:** Estos comandos se ejecutan en el directorio **app** puede tardar unos minutos. Espera
+  > **Nota.** Estos comandos se ejecutan en el directorio **app** puede tardar unos minutos. Espera
   {: .lab-note .info .compact}
 
   ```bash
@@ -286,7 +274,7 @@ Implementarás un script `crud.js` que conecte, haga **insert**, **get** (con pr
   npm install couchbase dotenv
   ```
 
-- **Paso 18.** Crea el archivo `crud.js` y la logica para las operaciones CRUD.
+- **Paso 3.** Crea el archivo `crud.js` y la lógica para las operaciones CRUD.
 
   ```bash
   cat > crud.js << 'EOF'
@@ -380,13 +368,13 @@ Implementarás un script `crud.js` que conecte, haga **insert**, **get** (con pr
   EOF
   ```
 
-- **Paso 19.** Ejecuta el script que realizara las operaciones.
+- **Paso 4.** Ejecuta el script que realizará las operaciones.
 
-  > **IMPORTANTE:**
-  - **Crear:** Inserta un documento nuevo con clave única; falla si existe (usa upsert para reemplazar).
-  - **Leer:** Recupera por clave; admite proyección de campos y control de concurrencia con CAS.
-  - **Actualizar:** Modifica campos del documento; usa replace/upsert o mutateIn; valida versiones con CAS.
-  - **Borrar:** Elimina el documento por clave; puede verificar existencia y manejar error si no está.
+  > **Importante**
+  - **Crear:** inserta un documento nuevo con clave única; falla si existe (usa `upsert` para reemplazar).
+  - **Leer:** recupera por clave; admite proyección de campos y control de concurrencia con CAS.
+  - **Actualizar:** modifica campos del documento; usa `replace`/`upsert` o `mutateIn`; valida versiones con CAS.
+  - **Borrar:** elimina el documento por clave; puede verificar la existencia y manejar el error si no está.
   {: .lab-note .important .compact}
 
   ```bash
@@ -400,13 +388,10 @@ Implementarás un script `crud.js` que conecte, haga **insert**, **get** (con pr
 
 ---
 
-### Tarea 4: Comprobaciones con N1QL y errores comunes
+### Tarea 4. Comprobaciones con N1QL y errores comunes
 
-Ejecutarás consultas de verificación y forzarás errores típicos para entender su diagnóstico.
 
-#### Tarea 4.1
-
-- **Paso 20.** Verificar el conteo con el siguiente comando y muestreo. Ejecuta uno por uno los comandos.
+- **Paso 1.** Verifica el conteo con el siguiente comando y muestreo. Ejecuta uno por uno los comandos.
 
   ```bash
   docker exec -it ${CB_CONTAINER} cbq -e http://127.0.0.1:8093 -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" \
@@ -419,14 +404,14 @@ Ejecutarás consultas de verificación y forzarás errores típicos para entende
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 21.** Forzar **DocumentNotFoundError** (buscar una clave inexistente).
+- **Paso 2.** Forza **`DocumentNotFoundError`** (buscar una clave inexistente).
 
   ```bash
   node -e "require('dotenv').config();const couchbase=require('couchbase');(async()=>{const c=await couchbase.connect(process.env.CB_CONNSTR,{username:process.env.CB_USERNAME,password:process.env.CB_PASSWORD});const coll=c.bucket(process.env.CB_BUCKET).scope(process.env.CB_SCOPE).collection(process.env.CB_COLLECTION);try{await coll.get('noexiste::1');}catch(e){console.log('Esperado:',e.constructor.name)}await c.close()})()"
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 22.** Forzar **DocumentExistsError** (insert de una clave existente).
+- **Paso 3.** Forza **`DocumentExistsError`** (insert de una clave existente).
 
   ```bash
   node -e "require('dotenv').config();const couchbase=require('couchbase');(async()=>{const c=await couchbase.connect(process.env.CB_CONNSTR,{username:process.env.CB_USERNAME,password:process.env.CB_PASSWORD});const coll=c.bucket(process.env.CB_BUCKET).scope(process.env.CB_SCOPE).collection(process.env.CB_COLLECTION);await coll.upsert('dup::1',{a:1});try{await coll.insert('dup::1',{a:2})}catch(e){console.log('Esperado:',e.constructor.name)}await c.close()})()"
@@ -439,19 +424,15 @@ Ejecutarás consultas de verificación y forzarás errores típicos para entende
 
 ---
 
-### Tarea 5: Limpieza
+### Tarea 5. Limpieza
 
-Borrar datos en el entorno para repetir pruebas.
+- **Paso 1.** Realiza el vaciado del bucket, el cual eliminará todos los documentos.
 
-#### Tarea 5.1
-
-- **Paso 23.** Realiza el vaciado del bucket eliminara todos los documentos.
-
-  > **NOTA:** Es normal que el comando mande un resultado vacio.
+  > **Nota.** Es normal que el comando mande un resultado vacío.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:**
-  - **OPCIONAL** Si quieres verificar puedes escribir este comando.
-  - `curl -s -u "${CB_ADMIN}:${CB_ADMIN_PASS}" "http://localhost:8091/pools/default/buckets/${CB_BUCKET}" | jq '.basicStats.itemCount'`
+  > **Opcional**
+  - Para verificar, puedes escribir este comando:
+    `curl -s -u "${CB_ADMIN}:${CB_ADMIN_PASS}" "http://localhost:8091/pools/default/buckets/${CB_BUCKET}" | jq '.basicStats.itemCount'`
   {: .lab-note .important .compact}
 
   ```bash
@@ -460,9 +441,9 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 30.** En la terminal aplica el siguiente comando para detener el nodo.
+- **Paso 2.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -470,11 +451,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 31.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 3.** Apaga y elimina el contenedor (se conservan los datos en `./data`)
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **`No resource found to remove`**.
   {: .lab-note .important .compact}
 
   ```bash
