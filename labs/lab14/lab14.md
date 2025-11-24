@@ -36,7 +36,7 @@ next: /lab15/lab15/ # CAMBIAR POR CADA práctica MENU DE NAVEGACION HACIA ADELAN
 
 ---
 
-### Tarea 1: Carpeta de práctica y variables
+### Tarea 1. Carpeta de práctica y variables
 
 Crearás una carpeta aislada con variables estándar.
 
@@ -44,14 +44,14 @@ Crearás una carpeta aislada con variables estándar.
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **`cs300-labs`**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica14-fts/
@@ -61,7 +61,7 @@ Crearás una carpeta aislada con variables estándar.
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
   > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
@@ -93,16 +93,16 @@ Crearás una carpeta aislada con variables estándar.
 
 ---
 
-### Tarea 2: Docker Compose y salud del nodo
+### Tarea 2. Docker Compose y salud del nodo
 
-Definirás un `compose.yaml` con un nodo único que expone `data,index,query,fts` y su *healthcheck*.
+Definirás un `compose.yaml` con un nodo único que expone `data,index,query,fts` y su `healthcheck`.
 
 
 
-- **Paso 1.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
+- **Paso 1.** Ahora, crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente código en la terminal.
 
   > **Nota.**
-  - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
+  - El archivo `compose.yaml` mapea puertos `8091-8096` para la consola web y `11210` para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
 
@@ -134,11 +134,11 @@ Definirás un `compose.yaml` con un nodo único que expone `data,index,query,fts
   YAML
   ```
 
-- **Paso 2.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio. Dentro de la terminal, ejecuta el siguiente comando.
 
-  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen debe estar descargada en el ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El `healthcheck` del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -162,9 +162,9 @@ Definirás un `compose.yaml` con un nodo único que expone `data,index,query,fts
 
 ---
 
-### Tarea 3: Inicializar clúster, keyspace y datos
+### Tarea 3. Inicializar clúster, keyspace y datos
 
-Inicializarás el clúster, crearás bucket/scope/collection y cargarás documentos con campos textuales.
+Inicializarás el clúster, crearás `bucket`, `scope`, `collection` y cargarás documentos con campos textuales.
 
 
 
@@ -172,7 +172,7 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás documen
 
   > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **Importante.** El comando se ejecuta desde el directorio de la práctica **practica14-fts**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **`practica14-fts`**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -188,12 +188,12 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás documen
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 2.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el `json` con las propiedades del nodo.
 
   > **Nota.**
-  - Contenedor `cb-index-n1` aparece **Up**.  
+  - El contenedor `cb-index-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
-  - está conexión es mediante HTTP.
+  - Esta conexión es mediante HTTP.
   {: .lab-note .info .compact}
 
   ```bash
@@ -214,7 +214,7 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás documen
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 4.** Ahora crea el *Scope*.
+- **Paso 4.** Ahora, crea el `Scope`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -223,7 +223,7 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás documen
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 5.** Con este comando crea el *Collection*.
+- **Paso 5.** Con este comando, crea el `Collection`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -232,9 +232,9 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás documen
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 6.** Cargar datos de ejemplo (12 documentos).
+- **Paso 6.** Carga datos de ejemplo (12 documentos).
 
-  > **Importante.** El resultado es iterativo para los 10 documentos la salida es muy grande, la imagen representa la sección de la inserción.
+  > **Importante.** El resultado es iterativo para los 10 documentos. La salida es muy grande, la imagen representa la sección de la inserción.
   {: .lab-note .important .compact}
 
   ```bash
@@ -288,7 +288,7 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás documen
 
 - **Paso 7.** Verificación rápida (índice primario temporal).
 
-  > **Importante.** El resultado seran 5 productos pero es un poco grande, la imagen presenta una parte de la salida
+  > **Importante.** El resultado serán cinco productos, pero es un poco grande. La imagen presenta una parte de la salida
   {: .lab-note .important .compact}
 
   ```bash
@@ -319,13 +319,13 @@ Inicializarás el clúster, crearás bucket/scope/collection y cargarás documen
 
 ---
 
-### Tarea 4: Crear índice FTS por REST (colección)
+### Tarea 4. Crear índice FTS por REST (colección)
 
-Crearás un índice FTS apuntando a la **colección** `products`, con *default mapping* habilitado y un *simple analyzer*.
+Crearás un índice FTS apuntando a la **colección** `products`, con `default mapping` habilitado y un `simple analyzer`.
 
 
 
-- **Paso 1.** Crea un archivo JSON con la definición del índice FTS apuntando a bucket/scope/collection específicos.
+- **Paso 1.** Crea un archivo JSON con la definición del índice FTS apuntando a `bucket`, `scope`, `collection` específicos.
 
   ```bash
   cat > scripts/${FTS_INDEX}.json << 'JSON'
@@ -363,7 +363,7 @@ Crearás un índice FTS apuntando a la **colección** `products`, con *default m
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 2.** Rellena el JSON sustituyendo los placeholders por tus variables reales.
+- **Paso 2.** Rellena el `JSON` sustituyendo los `placeholders` por tus variables reales.
 
   ```bash
   sed "s/IDX_PLACEHOLDER/${FTS_INDEX}/g; s/BUCKET_PLACEHOLDER/${CB_BUCKET}/g; s/SCOPE_PLACEHOLDER/${CB_SCOPE}/g; s/COLLECTION_PLACEHOLDER/${CB_COLLECTION}/g" \
@@ -371,7 +371,7 @@ Crearás un índice FTS apuntando a la **colección** `products`, con *default m
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 3.** Crea/actualiza el índice en el servicio FTS (puerto 8094) mediante REST PUT.
+- **Paso 3.** Crea o actualiza el índice en el servicio FTS (puerto `8094`) mediante `REST PUT`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -382,7 +382,7 @@ Crearás un índice FTS apuntando a la **colección** `products`, con *default m
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 4.** Consulta /stats del índice; deberías ver métricas iniciales (document count, pindexes, entre otros). Si ya hay documentos en products, el conteo empezará a subir conforme FTS procese el build inicial.
+- **Paso 4.** Consulta `/stats` del índice; deberías ver métricas iniciales (`document count`, `pindexes`, entre otros). Si ya hay documentos en `products`, el conteo empezará a subir conforme FTS procese el build inicial.
 
   ```bash
   for i in {1..5}; do
@@ -401,7 +401,7 @@ Crearás un índice FTS apuntando a la **colección** `products`, con *default m
 
 ### Tarea 5: Consultas FTS por REST
 
-Probarás consultas FTS por REST (con *explain* y *highlighting*) y con N1QL `SEARCH()` combinando texto con filtros estructurados.
+Probarás consultas FTS por REST (con `explain` y `highlighting`) y con N1QL `SEARCH()` combinando texto con filtros estructurados.
 
 
 
@@ -422,7 +422,7 @@ Probarás consultas FTS por REST (con *explain* y *highlighting*) y con N1QL `SE
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 2.** Búsqueda por frase exacta (query string con comillas). Usa el parser de query string para exigir la frase exacta "desk lamp".
+- **Paso 2.** Búsqueda por frase exacta (`query string` con comillas). Usa el `parser` de `query string` para exigir la frase exacta `"desk lamp"`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" -H "Content-Type: application/json" \
@@ -435,7 +435,7 @@ Probarás consultas FTS por REST (con *explain* y *highlighting*) y con N1QL `SE
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 3.** Búsqueda con filtro por campo (consulta booleana; REST). Interseca la frase "desk lamp" con tags:lighting.
+- **Paso 3.** Búsqueda con filtro por campo (consulta booleana; REST). Interseca la frase `"desk lamp"` con `tags:lighting`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" -H "Content-Type: application/json" \
@@ -450,13 +450,13 @@ Probarás consultas FTS por REST (con *explain* y *highlighting*) y con N1QL `SE
 
 ---
 
-### Tarea 6: Ajustes del índice y pruebas adicionales
+### Tarea 6. Ajustes del índice y pruebas adicionales
 
-Explorarás *analyzers* y *fuzziness* para tolerancia a errores tipográficos.
+Explorarás `analyzers` y `fuzziness` para tolerancia a errores tipográficos.
 
 
 
-- **Paso 1.** Consulta *fuzzy* (tolerancia a 1 edición). Busca términos similares a “wireless” permitiendo 1 edición (inserción/eliminación/sustitución).
+- **Paso 1.** Consulta `fuzzy` (tolerancia a una edición). Busca términos similares a “wireless” permitiendo una edición (inserción, eliminación o sustitución).
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" -H "Content-Type: application/json" \
@@ -469,7 +469,7 @@ Explorarás *analyzers* y *fuzziness* para tolerancia a errores tipográficos.
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 2.** *Prefix query* para autocompletar. Devuelve documentos con términos que empiezan con lam (ej. lamp, lamps).
+- **Paso 2.** `Prefix query` para autocompletar. Devuelve documentos con términos que empiezan con _lam_ (ej. _lamp_, _lamps_).
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" -H "Content-Type: application/json" \
@@ -488,15 +488,15 @@ Explorarás *analyzers* y *fuzziness* para tolerancia a errores tipográficos.
 
 ---
 
-### Tarea 7: Limpieza
+### Tarea 7. Limpieza
 
 Borrar datos en el entorno para repetir pruebas.
 
 
 
-- **Paso 1.** En la terminal aplica el siguiente comando para detener el nodo.
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -504,11 +504,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase22]({{ page.images_base | relative_url }}/22.png)
 
-- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
+- **Paso 2.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **`No resource found to remove`**.
   {: .lab-note .important .compact}
 
   ```bash
