@@ -1,7 +1,7 @@
 title: Learning Labs
 description: Plataforma de Laboratorios
 # Para project site:
-url: "https://netec-mx.github.io"
+url: https://netec-mx.github.io
 baseurl: "/CS300_INT"   # DEFINIR EL NOMBRE DEL REPOSITORIO PARA LAS PRACTICAS
 
 # Nombre completo del repo (owner/repo)
