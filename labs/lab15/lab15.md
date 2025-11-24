@@ -1,29 +1,29 @@
 ---
 layout: lab
-title: "Práctica 15: Eventing simple y consulta en Analytics" # CAMBIAR POR CADA PRACTICA
-permalink: /lab15/lab15/ # CAMBIAR POR CADA PRACTICA
-images_base: /labs/lab15/img # CAMBIAR POR CADA PRACTICA
-duration: "30 minutos" # CAMBIAR POR CADA PRACTICA
-objective: # CAMBIAR POR CADA PRACTICA
+title: "Práctica 15: Eventing simple y consulta en Analytics" # CAMBIAR POR CADA práctica
+permalink: /lab15/lab15/ # CAMBIAR POR CADA práctica
+images_base: /labs/lab15/img # CAMBIAR POR CADA práctica
+duration: "30 minutos" # CAMBIAR POR CADA práctica
+objective: # CAMBIAR POR CADA práctica
   - Desplegar Couchbase y configurar **Eventing** (función simple que audita mutaciones a otra colección) y **Analytics** (dataset y consulta SQL++ for Analytics) en un solo nodo. Validarás el flujo extremo a extremo **mutación → función Eventing → documento auditado → consulta en Analytics**.
-prerequisites:  # CAMBIAR POR CADA PRACTICA
+prerequisites:  # CAMBIAR POR CADA práctica
   - Software **Docker Desktop** en ejecución.  
   - Software **Visual Studio Code** con terminal **Git Bash**.  
   - Puertos libres para UI/REST por nodo `18091/28091/38091` (mapeados a `8091`).
   - Conectividad a Internet para descargar imágenes.  
   - 4–6 GB de RAM libres (servicios `kv,index,query`).
-introduction: | # CAMBIAR POR CADA PRACTICA
+introduction: | # CAMBIAR POR CADA práctica
   **Eventing** permite reaccionar a mutaciones (insert/update/delete) en tiempo casi real para ejecutar lógica (JavaScript) y escribir resultados en otros keyspaces. **Analytics** ejecuta SQL++ paralelo sobre datasets con ingesta continua desde buckets/colecciones, ideal para agregaciones sin impactar el plano transaccional. Aquí crearás una función Eventing que copia y enriquece documentos de `app.products` hacia `audit.products_audit`, y luego consultarás los auditados desde Analytics. (La API REST de Analytics usa el puerto `8095`; la de Eventing expone endpoints en `/api/v1` y puede accederse directo en `8096` o vía proxy en `8091`.)
-slug: lab15 # CAMBIAR POR CADA PRACTICA
-lab_number: 15 # CAMBIAR POR CADA PRACTICA
-final_result: | # CAMBIAR POR CADA PRACTICA
+slug: lab15 # CAMBIAR POR CADA práctica
+lab_number: 15 # CAMBIAR POR CADA práctica
+final_result: | # CAMBIAR POR CADA práctica
   Has creado una **función Eventing** que audita mutaciones desde `app.shop.products` a `audit.audit.products_audit` y consultaste esos datos con **Analytics** vía REST, validando ingesta y agregaciones. Dominas ahora el flujo básico **operacional → Eventing → analítico** en un solo nodo.
-notes: | # CAMBIAR POR CADA PRACTICA
+notes: | # CAMBIAR POR CADA práctica
   - En producción, **Eventing** suele escalar con múltiples *workers* y requiere plan de **metadata bucket** dedicado y backups del mismo. 
   - Puedes consumir Analytics también con **SDKs** usando el endpoint de Query de Analytics.  
   - Para procesar históricos además de `from_now`, usa `dcp_stream_boundary="everything"` (procesa backlog). 
   - La **API de Eventing** y la **API de Analytics** están documentadas oficialmente y son estables para automatización.
-references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
+references: # CAMBIAR POR CADA práctica LINKS ADICIONALES DE DOCUMENTACION
   - text: Eventing REST API (overview y endpoints)
     url: https://docs.couchbase.com/server/current/eventing-rest-api/index.html
   - text: Básicos de Eventing y ejemplos de código
@@ -34,8 +34,8 @@ references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
     url: https://docs.couchbase.com/server/current/analytics/rest-analytics.html
   - text: Terminología/metadata de Eventing
     url: https://docs.couchbase.com/server/current/eventing/eventing-Terminologies.html
-prev: /lab14/lab14/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ATRAS        
-next: /lab16/lab16/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
+prev: /lab14/lab14/ # CAMBIAR POR CADA práctica MENU DE NAVEGACION HACIA ATRAS        
+next: /lab16/lab16/ # CAMBIAR POR CADA práctica MENU DE NAVEGACION HACIA ADELANTE
 ---
 
 
@@ -45,14 +45,14 @@ next: /lab16/lab16/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 Crearás una carpeta aislada y un `.env` con variables para servicios y keyspaces.
 
-#### Tarea 1.1
+
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -68,7 +68,7 @@ Crearás una carpeta aislada y un `.env` con variables para servicios y keyspace
 
 - **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -111,11 +111,11 @@ Crearás una carpeta aislada y un `.env` con variables para servicios y keyspace
 
 Definirás un `compose.yaml` con un nodo único que expone `data,index,query,eventing,analytics` y healthcheck básico.
 
-#### Tarea 2.1
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-  > **NOTA:**
+- **Paso 1.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
+
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -147,11 +147,11 @@ Definirás un `compose.yaml` con un nodo único que expone `data,index,query,eve
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -159,7 +159,7 @@ Definirás un `compose.yaml` con un nodo único que expone `data,index,query,eve
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Verifica que el contenedor se haya creado correctamente.
+- **Paso 3.** Verifica que el contenedor se haya creado correctamente.
 
   {%raw%}
   ```bash
@@ -179,13 +179,13 @@ Definirás un `compose.yaml` con un nodo único que expone `data,index,query,eve
 
 Inicializarás el clúster, crearás los buckets `app`, `audit` y `meta` (metadata de Eventing) y los keyspaces necesarios.
 
-#### Tarea 3.1
 
-- **Paso 8.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
 
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+- **Paso 1.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
+
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica15-eventing-analytics**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **practica15-eventing-analytics**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -203,12 +203,12 @@ Inicializarás el clúster, crearás los buckets `app`, `audit` y `meta` (metada
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-evan-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
-  - Esta conexion es mediante HTTP.
+  - está conexión es mediante HTTP.
   {: .lab-note .info .compact}
 
   ```bash
@@ -217,7 +217,7 @@ Inicializarás el clúster, crearás los buckets `app`, `audit` y `meta` (metada
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ejecuta el siguiente comando para la creación de los bucket.
+- **Paso 3.** Ejecuta el siguiente comando para la creación de los bucket.
 
   ```bash
   for B in "${APP_BUCKET}" "${AUDIT_BUCKET}" "${META_BUCKET}"; do
@@ -228,7 +228,7 @@ Inicializarás el clúster, crearás los buckets `app`, `audit` y `meta` (metada
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Ahora crea el *Scope* **app.shop.products**
+- **Paso 4.** Ahora crea el *Scope* **app.shop.products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -237,7 +237,7 @@ Inicializarás el clúster, crearás los buckets `app`, `audit` y `meta` (metada
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.** Con este comando crea el *Collection* **app.shop.products**
+- **Paso 5.** Con este comando crea el *Collection* **app.shop.products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -246,7 +246,7 @@ Inicializarás el clúster, crearás los buckets `app`, `audit` y `meta` (metada
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 13.** Ahora crea el *Scope* **audit.audit.products_audit**
+- **Paso 6.** Ahora crea el *Scope* **audit.audit.products_audit**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -255,7 +255,7 @@ Inicializarás el clúster, crearás los buckets `app`, `audit` y `meta` (metada
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Con este comando crea el *Collection* **audit.audit.products_audit**
+- **Paso 7.** Con este comando crea el *Collection* **audit.audit.products_audit**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -274,11 +274,11 @@ Inicializarás el clúster, crearás los buckets `app`, `audit` y `meta` (metada
 
 Insertarás documentos con campos básicos que activarán la función Eventing.
 
-#### Tarea 4.1
 
-- **Paso 15.** Crea 8 documentos de prueba (UPSERT vía N1QL)
 
-  > **IMPORTANTE:** El resultado es iterativo para los 8 documentos la salida es muy grande, la imagen representa la sección de la inserción.
+- **Paso 1.** Crea 8 documentos de prueba (UPSERT vía N1QL).
+
+  > **Importante.** El resultado es iterativo para los 8 documentos la salida es muy grande, la imagen representa la sección de la inserción.
   {: .lab-note .important .compact}
 
   ```bash
@@ -305,7 +305,7 @@ Insertarás documentos con campos básicos que activarán la función Eventing.
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 16.** Verificar conteo (índice primario temporal)
+- **Paso 2.** Verificar conteo (índice primario temporal).
 
   ```bash
   docker exec -i "${CB_CONTAINER}" cbq \
@@ -326,9 +326,9 @@ Insertarás documentos con campos básicos que activarán la función Eventing.
 
 Definirás una función Eventing que se activa en mutaciones de `app.shop.products`, enriquece y **escribe** a `audit.audit.products_audit`. La crearás y desplegarás por REST.
 
-#### Tarea 5.1
 
-- **Paso 17.** Definir el código de la función (JavaScript Eventing) crea el handler OnUpdate/OnDelete que construye un documento de auditoría y lo escribe en el binding dst.
+
+- **Paso 1.** Definir el código de la función (JavaScript Eventing) crea el handler OnUpdate/OnDelete que construye un documento de auditoría y lo escribe en el binding dst.
 
   ```bash
   cat > scripts/${EV_FUNC}.js << 'JS'
@@ -355,9 +355,9 @@ Definirás una función Eventing que se activa en mutaciones de `app.shop.produc
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 18.** Plantilla JSON del **Function Definition** con bindings que define el keyspace de origen, el bucket de metadata para Eventing y el binding dst con acceso rw.
+- **Paso 2.** Plantilla JSON del **Function Definition** con bindings que define el keyspace de origen, el bucket de metadata para Eventing y el binding dst con acceso rw.
 
-  > **NOTA:** Este Python arma el JSON final con el formato correcto (source_keyspace, metadata_keyspace, buckets) y mete el JS en appcode.
+  > **Nota.** Este Python arma el JSON final con el formato correcto (source_keyspace, metadata_keyspace, buckets) y mete el JS en appcode.
   {: .lab-note .info .compact}
 
   ```bash
@@ -402,9 +402,9 @@ Definirás una función Eventing que se activa en mutaciones de `app.shop.produc
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 19.** Publicar la función (un solo POST). Usa el proxy de 8091 que respondera “Successfully stored”.
+- **Paso 3.** Publicar la función (un solo POST). Usa el proxy de 8091 que respondera “Successfully stored”.
 
-  > **IMPORTANTE:** Si algo ocurre puedes borrar la funcion con este comando: `curl -fsS -u "$CB_ADMIN:$CB_ADMIN_PASS" -X DELETE "$EVENT_API/functions/${EV_FUNC}" >/dev/null 2>&1 || true`
+  > **Importante.** Si algo ocurre puedes borrar la funcion con este comando: `curl -fsS -u "$CB_ADMIN:$CB_ADMIN_PASS" -X DELETE "$EVENT_API/functions/${EV_FUNC}" >/dev/null 2>&1 || true`
   {: .lab-note .important .compact}
 
   ```bash
@@ -427,9 +427,9 @@ Definirás una función Eventing que se activa en mutaciones de `app.shop.produc
 
 Configurarás un dataset en Analytics sobre la colección de auditoría y ejecutarás SQL++ for Analytics por REST (`8095`).
 
-#### Tarea 6.1
 
-- **Paso 20.** Probar que Analytics responde
+
+- **Paso 1.** Probar que Analytics responde.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -438,7 +438,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 21.**Crear dataverse (idempotente)
+- **Paso 2.**Crear dataverse (idempotente)
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -447,7 +447,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 22.** Validar que existe en metadatos
+- **Paso 3.** Validar que existe en metadatos.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -458,7 +458,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 23.** Crear dataset sobre la colección de auditoría que define el dataset ds_audit que apunta a `${AUDIT_BUCKET}`.`${AUDIT_SCOPE}`.`${AUDIT_COLL}`.
+- **Paso 4.** Crear dataset sobre la colección de auditoría que define el dataset ds_audit que apunta a `${AUDIT_BUCKET}`.`${AUDIT_SCOPE}`.`${AUDIT_COLL}`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -469,7 +469,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 24.** Valida que se liste el dataset recién creado
+- **Paso 5.** Valida que se liste el dataset recién creado.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -480,7 +480,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 
-- **Paso 25.** Conecta el link Local (inicia ingesta) e inicia la ingesta continua desde data hacia Analytics.
+- **Paso 6.** Conecta el link Local (inicia ingesta) e inicia la ingesta continua desde data hacia Analytics.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -489,7 +489,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase22]({{ page.images_base | relative_url }}/22.png)
 
-- **Paso 26.** Verifica el estado del link
+- **Paso 7.** Verifica el estado del link.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -508,11 +508,11 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 7.1
 
-- **Paso 27.** En la terminal aplica el siguiente comando para detener el nodo.
 
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+- **Paso 1.** En la terminal aplica el siguiente comando para detener el nodo.
+
+  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -520,11 +520,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase24]({{ page.images_base | relative_url }}/24.png)
 
-- **Paso 28.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
