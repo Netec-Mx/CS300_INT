@@ -7,7 +7,7 @@ duration: "20 minutos" # CAMBIAR POR CADA PRACTICA
 objective: # CAMBIAR POR CADA PRACTICA
   - Levantar un nodo de Couchbase en Docker (local), crear un bucket/colecciones y un usuario de aplicación con permisos mínimos, e implementar una app **Node.js** (SDK oficial de Couchbase) que realice operaciones básicas *upsert/get*, *query N1QL* y *subdocumentos*.
 prerequisites: # CAMBIAR POR CADA PRACTICA
-  - Visual Studio Code con terminal **Git Bash**.
+  - Visual Studio Code con terminal **Git Ba``sh**.
   - 6–8 GB de RAM libres recomendados para 3 nodos (mínimo ~5 GB).  
   - Puertos locales disponibles **8091–8096**, **11210** (se publicarán solo desde el nodo 1).
   - Node.js 18+ (recomendado) y **npm** disponibles en el host.
@@ -48,14 +48,14 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **`cs300-labs`**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica7-sdk/
@@ -67,9 +67,9 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -93,10 +93,10 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
   EOF
   ```
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
+- **Paso 5.** Ahora, crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente código en la terminal.
 
-  > **NOTA:**
-  - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
+  > **Nota**
+  - El archivo `compose.yaml` mapea puertos `8091–8096` para la consola web y `11210` para `clientes`.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
 
@@ -126,23 +126,24 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 6.** Inicia el servicio. Dentro de la terminal, ejecuta el siguiente comando.
 
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante**
+  > Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
-  {: .lab-note .important .compact}
+
 
   ```bash
   docker compose up -d
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
+- **Paso 7.** Inicializa el clúster y ejecuta el siguiete comando en la terminal.
 
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para `Index` es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica7-sdk**
+  > **Importante.** El comando se ejecuta desde el directorio **`practica7-sdk`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -158,10 +159,10 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 8.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
-  - Contenedor `cb-sdk-node1` aparece **Up**.  
+  > **Nota.**
+  - Contenedor `cb-sdk-node1` aparece **`Up`**.  
   - `curl` devuelve JSON de la información del nodo.
   - Esta conexion es mediante HTTP.
   {: .lab-note .info .compact}
@@ -178,13 +179,10 @@ Organizarás carpetas para aislar datos, configuración, logs y el código de la
 
 ---
 
-### Tarea 2: Crear bucket/colección y usuario de app
+### Tarea 2. Crear un bucket, una colección y un usuario de app
 
-Crearás un bucket y una colección, y un usuario con permisos mínimos para la app.
 
-#### Tarea 2.1
-
-- **Paso 9.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 1.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-create \
@@ -196,7 +194,7 @@ Crearás un bucket y una colección, y un usuario con permisos mínimos para la 
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 10.** Ahora crea el *Scope*.
+- **Paso 2.** Ahora, crea el *Scope*.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -205,7 +203,7 @@ Crearás un bucket y una colección, y un usuario con permisos mínimos para la 
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 11.** Con este comando crea el *Collection*
+- **Paso 3.** Con este comando, crea el `Collection`.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -214,7 +212,7 @@ Crearás un bucket y una colección, y un usuario con permisos mínimos para la 
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 12.**  Crea el índice primario para N1QL.
+- **Paso 4.**  Crea el índice primario para N1QL.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq \
@@ -223,7 +221,7 @@ Crearás un bucket y una colección, y un usuario con permisos mínimos para la 
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
  
-- **Paso 13.** Crea el usuario de aplicación con permisos mínimos sobre la colección:
+- **Paso 5.** Crea el usuario de aplicación con permisos mínimos sobre la colección.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" couchbase-cli user-manage \
@@ -234,7 +232,7 @@ Crearás un bucket y una colección, y un usuario con permisos mínimos para la 
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 14.** Verifica que el bucket este creado correctamente.
+- **Paso 6.** Verifica que el bucket esté creado correctamente.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-list \
@@ -242,7 +240,7 @@ Crearás un bucket y una colección, y un usuario con permisos mínimos para la 
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 15.** Verifica que el *Scope* este correctamente.
+- **Paso 15.** Verifica que el `Scope` sea correcto.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -256,15 +254,11 @@ Crearás un bucket y una colección, y un usuario con permisos mínimos para la 
 
 ---
 
-### Tarea 3: Inicializar proyecto Node.js e instalar SDK
+### Tarea 3. Inicializar proyecto Node.js e instalar SDK
 
-Crearás un proyecto Node.js, instalarás el SDK oficial y `dotenv`, y configurarás variables.
+- **Paso 1.** Crea el proyecto e instala las dependencias del SDK Node.js.
 
-#### Tarea 3.1
-
-- **Paso 16.** Crea el proyecto e instala las dependencias del SDK Node.js.
-
-  > **IMPORTANTE:** Es posible que tarde un par de minutos, espera a que termine antes de avanzar.
+  > **Importante.** Es posible que tarde un par de minutos, espera a que termine antes de avanzar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -273,9 +267,9 @@ Crearás un proyecto Node.js, instalarás el SDK oficial y `dotenv`, y configura
   npm install couchbase dotenv
   ```
 
-- **Paso 17.** Ahora crea el archivo `.env` de la app (en `app/.env`):
+- **Paso 2.** Ahora, crea el archivo `.env` de la app (en `app/.env`):
 
-  > **NOTA:** Este archivo se crea en el directorio **app**.
+  > **Nota.** Este archivo se crea en el directorio **app**.
   {: .lab-note .info .compact}
 
     ```bash
@@ -289,9 +283,9 @@ Crearás un proyecto Node.js, instalarás el SDK oficial y `dotenv`, y configura
   EOF
   ```
 
-- **Paso 18.** Crea el archivo `index.js` de ejemplo.
+- **Paso 3.** Crea el archivo `index.js` de ejemplo.
 
-  > **NOTA:** Este archivo se crea en el directorio **app**.
+  > **Nota.** Este archivo se crea en el directorio **`app`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -353,9 +347,9 @@ Crearás un proyecto Node.js, instalarás el SDK oficial y `dotenv`, y configura
   })();
   EOF
   ```
-- **Paso 19.** Ejecuta la aplicación.
+- **Paso 4.** Ejecuta la aplicación.
 
-  > **NOTA:** El comando se ejecuta dentro del directorio **app**
+  > **Nota.** El comando se ejecuta dentro del directorio **`app`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -371,18 +365,14 @@ Crearás un proyecto Node.js, instalarás el SDK oficial y `dotenv`, y configura
 
 ### Tarea 4: Pruebas adicionales y troubleshooting
 
-Harás pruebas de error controladas y revisarás diagnósticos básicos.
-
-#### Tarea 4.1
-
-- **Paso 20.**  Realiza una prueba con las credenciales erróneas (se espera error de auth).
+- **Paso 1.**  Realiza una prueba con las credenciales erróneas (se espera error de `auth`).
 
   ```bash
   CB_PASSWORD='Wrong!2025' node index.js || echo "Fallo esperado de autenticación."
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 21.** Comprueba los puertos y la salud del contenedor de Couchbase.
+- **Paso 2.** Comprueba los puertos y la salud del contenedor de Couchbase.
 
   {%raw%}
   ```bash
@@ -394,7 +384,7 @@ Harás pruebas de error controladas y revisarás diagnósticos básicos.
   {%endraw%}
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 22.** Revisa los logs del contenedor como parte de los pasos de investigación.
+- **Paso 3.** Revisa los logs del contenedor como parte de los pasos de investigación.
 
   ```bash
   docker logs --tail=100 ${CB_CONTAINER}
@@ -407,15 +397,13 @@ Harás pruebas de error controladas y revisarás diagnósticos básicos.
 
 ---
 
-### Tarea 5: Limpieza
+### Tarea 5. Limpieza
 
 Opcionalmente, puedes bajar el servicio y borrar datos para repetir la práctica desde cero.
 
-#### Tarea 5.1
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-- **Paso 23.** En la terminal aplica el siguiente comando para detener el nodo.
-
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -423,11 +411,11 @@ Opcionalmente, puedes bajar el servicio y borrar datos para repetir la práctica
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 24.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **`No resource found to remove`**.
   {: .lab-note .important .compact}
 
   ```bash
