@@ -13,15 +13,15 @@ prerequisites:  # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar imágenes.  
   - 6–8 GB de RAM libres (2×2 nodos con `data,index,query`).  
 introduction: | # CAMBIAR POR CADA PRACTICA
-  **XDCR** permite replicar datos entre clústeres. En modo **bidireccional**, cada clúster envía y recibe cambios del otro. Para evitar bucles y resolver diferencias, Couchbase aplica **resolución de conflictos** (por *seqno* o por **LWW**). En esta práctica definiremos el bucket con **LWW** para que el documento con **timestamp mayor** prevalezca cuando se actualice la **misma clave** en ambos clústeres.
+  **XDCR** permite replicar datos entre clústeres. En modo **bidireccional**, cada clúster envía y recibe cambios del otro. Para evitar bucles y resolver diferencias, Couchbase aplica **resolución de conflictos** (por *seqno* o por **LWW**). En esta práctica, verás el bucket con **LWW** para que el documento con **timestamp mayor** prevalezca cuando se actualice la **misma clave** en ambos clústeres.
 slug: lab17 # CAMBIAR POR CADA PRACTICA
 lab_number: 17 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
-  Has levantado **dos clústeres** y configurado **XDCR bidireccional**. Probaste replicación en ambos sentidos, ejecutaste un **conflicto controlado** y confirmaste la **resolución LWW** y la **convergencia**
+  Has levantado **dos clústeres** y configurado **XDCR bidireccional**. Probaste la replicación en ambos sentidos, ejecutaste un **conflicto controlado** y confirmaste la **resolución LWW** y la **convergencia**.
 notes: | # CAMBIAR POR CADA PRACTICA
   - En producción, habilita **TLS**, **certificados** y **Alternate Addresses** cuando uses LB o redes mixtas.  
   - Ajusta parámetros de XDCR (tamaño de lote, *checkpoint intervals*, compresión) según latencia/throughput.  
-  - Si tu modelo de datos lo permite, usa **filtros** o **mapeos de colecciones** para reducir volumen y evitar ruido.  
+  - Si tu modelo de datos lo permite, usa **filtros** o **mapeos de colecciones** para reducir el volumen y evitar ruido. 
   - Para *disaster recovery*, prueba *promotion* y *fallback* de roles con pruebas de *failover* y *backfill* controlado.
 references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
   - text: Visión general de XDCR
@@ -39,20 +39,20 @@ next: /lab18/lab18/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 ---
 
-### Tarea 1: Carpeta de práctica y variables
+### Tarea 1. Carpeta de práctica y variables.
 
 Crearás una carpeta aislada con un `.env` que define puertos, nombres de contenedores y keyspaces.
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el ícono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica17-xdcr-bidi/
@@ -63,7 +63,7 @@ Crearás una carpeta aislada con un `.env` que define puertos, nombres de conten
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
   > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
@@ -115,11 +115,11 @@ Crearás una carpeta aislada con un `.env` que define puertos, nombres de conten
 
 ---
 
-### Tarea 2: Docker Compose con **dos clústeres (1 nodo c/u)**
+### Tarea 2. Docker Compose con **dos clústeres (1 nodo c/u)**.
 
 Definirás un `compose.yaml` que levanta dos nodos Couchbase (Origen y Destino) con *healthcheck* y puertos diferenciados.
 
-- **Paso 1.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
+- **Paso 1.** Ahora, crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
 
   > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
@@ -179,9 +179,9 @@ Definirás un `compose.yaml` que levanta dos nodos Couchbase (Origen y Destino) 
   YAML
   ```
 
-- **Paso 2.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 2.** Inicia el servicio, dentro de la terminal, ejecuta el siguiente comando.
 
-  > **Importante.** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
   > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
@@ -207,11 +207,11 @@ Definirás un `compose.yaml` que levanta dos nodos Couchbase (Origen y Destino) 
 
 ---
 
-### Tarea 3: Inicializar los clústeres y crear buckets/colecciones (LWW)
+### Tarea 3. Inicializar los clústeres y crear buckets/colecciones (LWW).
 
 Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en ambos con **LWW** para facilitar la prueba de conflicto controlado.
 
-#### Tarea 3.1
+#### Tarea 3.1.
 
 - **Paso 1.** Inicializa el clúster con el nodo **cb-src1**, ejecuta el siguiete comando en la terminal.
 
@@ -233,12 +233,12 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
   ```
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 2.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster este **healthy** y que se muestre el json con las propiedades del nodo.
 
   > **Nota.**
   - Contenedor `cb-src1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
-  - Esta conexion es mediante HTTP.
+  - Esta conexión es mediante HTTP.
   {: .lab-note .info .compact}
 
   ```bash
@@ -247,7 +247,7 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 3.** Ahora ejecuta el siguiente comando para la creación del bucket con **LWW**
+- **Paso 3.** Ahora, ejecuta el siguiente comando para la creación del bucket con **LWW**.
 
   > **Nota.** **LWW (timestamp)** hace que el documento con **timestamp mayor** gane cuando hay conflicto por la misma clave.
   {: .lab-note .info .compact}
@@ -261,7 +261,7 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 4.** Ahora crea el *Scope* **inv**
+- **Paso 4.** Ahora, crea el *Scope* **inv**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -270,7 +270,7 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
   ``` 
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 5.** Con este comando crea el *Collection* **products**
+- **Paso 5.** Con este comando, crea el *Collection* **products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -296,7 +296,7 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 2.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
   ```bash
   docker ps --filter "name=cb-dst1"
@@ -304,7 +304,7 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 3.** Ahora ejecuta el siguiente comando para la creación del bucket con **LWW**
+- **Paso 3.** Ahora, ejecuta el siguiente comando para la creación del bucket con **LWW**.
 
   > **Nota.** **LWW (timestamp)** hace que el documento con **timestamp mayor** gane cuando hay conflicto por la misma clave.
   {: .lab-note .info .compact}
@@ -318,7 +318,7 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 4.** Ahora crea el *Scope* **inv**
+- **Paso 4.** Ahora, crea el *Scope* **inv**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -327,7 +327,7 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
   ``` 
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 5.** Con este comando crea el *Collection* **products**
+- **Paso 5.** Con este comando, crea el *Collection* **products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -344,7 +344,7 @@ Inicializarás cada clúster y crearás el **mismo bucket/scope/collection** en 
 
 ### Tarea 4. Configurar **XDCR bidireccional** (referencias + replicaciones).
 
-Crearás una **referencia remota** en cada clúster apuntando al otro y dos **replicaciones**: Origen→Destino y Destino→Origen.
+Crearás una **referencia remota** en cada clúster, apuntando al otro, y dos **replicaciones**: Origen→Destino y Destino→Origen.
 
 #### Tarea 4.1.
 
@@ -361,7 +361,7 @@ Crearás una **referencia remota** en cada clúster apuntando al otro y dos **re
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 2.** Ahora crea la **referencia destino** en el nodo Destino.
+- **Paso 2.** Ahora, crea la **referencia destino** en el nodo Destino.
 
   ```bash
   docker exec -it ${DST_NODE} couchbase-cli xdcr-setup \
@@ -389,7 +389,7 @@ Crearás una **referencia remota** en cada clúster apuntando al otro y dos **re
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 2.** Ahora crea la **replicación** Destino -> Origen.
+- **Paso 2.** Ahora, crea la **replicación** Destino -> Origen.
 
   ```bash
   docker exec -it ${DST_NODE} couchbase-cli xdcr-replicate \
@@ -402,14 +402,14 @@ Crearás una **referencia remota** en cada clúster apuntando al otro y dos **re
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 3.** Verifica que la replicación en el Origen este correcta.
+- **Paso 3.** Verifica que la replicación en el Origen esté correcta.
 
   ```bash
   docker exec -it ${SRC_NODE} couchbase-cli xdcr-replicate -c ${SRC_HOST} -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" --list
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 4.** Verifica que la replicación en el Destino este correcta.
+- **Paso 4.** Verifica que la replicación en el Destino esté correcta.
 
   ```bash
   docker exec -it ${DST_NODE} couchbase-cli xdcr-replicate -c ${DST_HOST} -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" --list
@@ -503,7 +503,7 @@ Actualizarás **la misma clave** en ambos clústeres con *timestamps distintos*,
   ```
   ![cbase26]({{ page.images_base | relative_url }}/26.png)
 
-- **Paso 3.** Ahora, realiza una actualizaciones divergente (con `ts` diferente). Ejecuta todo el bloque junto para simular la concurrencia.
+- **Paso 3.** Ahora, realiza una actualización divergente (con `ts` diferente). Ejecuta todo el bloque junto para simular la concurrencia.
 
   ```bash
   # Update en ORIGEN (ts visible en el doc, solo para inspección)
@@ -558,7 +558,7 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase29]({{ page.images_base | relative_url }}/29.png)
 
-- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
+- **Paso 2.** Apagar y eliminar el contenedor (se conservan los datos en ./data).
 
   > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
