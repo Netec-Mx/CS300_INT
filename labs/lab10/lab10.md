@@ -5,25 +5,25 @@ permalink: /lab10/lab10/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab10/img # CAMBIAR POR CADA PRACTICA
 duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
 objective: # CAMBIAR POR CADA PRACTICA
-  - Desplegar un clúster multinodo de Couchbase en Docker, **configurar Server Groups (Rack/Zone Awareness)** para aislar réplicas por “rack”, **migrar nodos a grupos**, **re‐balancear** y **validar alta disponibilidad** simulando la caída de un rack.
+  - Desplegar un clúster multinodo de Couchbase en Docker, **configurar Server Groups (Rack/Zone Awareness)** para aislar réplicas por “rack”, **migrar nodos a grupos**, **rebalancear** y **validar alta disponibilidad** simulando la caída de un rack.
 prerequisites:  # CAMBIAR POR CADA PRACTICA
   - Software **Docker Desktop** en ejecución.  
   - Software **Visual Studio Code** con terminal **Git Bash**.  
   - Puertos locales disponibles `18091/28091/38091` (UI/REST), `11210` (solo para depuración si se requiere mapear KV).  
   - Conectividad a Internet para descargar imágenes.  
-  - 4–6 GB de RAM libres (3 nodos con servicios `kv,index,query`).
+  - 4-6 GB de RAM libres (3 nodos con servicios `kv,index,query`).
 introduction: | # CAMBIAR POR CADA PRACTICA
-  **Rack Awareness** en Couchbase se implementa mediante **Server Groups**, lo que permite que **réplicas** y **particiones** (vBuckets) se distribuyan entre grupos lógicos (racks/zonas). Así, la falla total de un “rack” no causa pérdida de datos ni indisponibilidad, siempre que existan suficientes réplicas distribuidas en otros grupos. En esta práctica crearás 3 nodos, formarás un clúster, definirás 2–3 grupos (p. ej., `RackA`, `RackB`, `RackC`), moverás nodos y **re‐balancearás** para garantizar la colocación cruzada de réplicas.
+  **Rack Awareness** en Couchbase se implementa mediante **Server Groups**, lo que permite que **réplicas** y **particiones** (vBuckets) se distribuyan entre grupos lógicos (racks/zonas). Así, la falla total de un “rack” no causa pérdida de datos ni indisponibilidad, siempre que existan suficientes réplicas distribuidas en otros grupos. En esta práctica crearás tres nodos, formarás un clúster, definirás de 2 a 3 grupos (p. ej., `RackA`, `RackB`, `RackC`), moverás nodos y **rebalancearás** para garantizar la colocación cruzada de réplicas.
 slug: lab10 # CAMBIAR POR CADA PRACTICA
 lab_number: 10 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
   Levantaste un clúster de 3 nodos, creaste **Server Groups (Rack Awareness)**, distribuíste nodos entre racks y realizaste un **rebalance**. Luego configuraste un **bucket con réplicas=2**, insertaste y consultaste datos, simulaste la **caída de un rack** y comprobaste la **continuidad del servicio**, consolidando prácticas de alta disponibilidad con Couchbase.
 notes: | # CAMBIAR POR CADA PRACTICA
-  - **Réplicas**: configura `--replica` acorde al número de racks (p. ej., 2 réplicas en 3 nodos/racks).  
-  - **Rebalance**: siempre que cambies grupos o agregues/elimines nodos.  
-  - **Durabilidad**: en producción usa **DurabilityLevel** para confirmar persistencia/replicación de escrituras.  
-  - **Auto-Failover**: ajusta timeouts de *Cluster Settings* según tu SLO.  
-  - **Topologías**: en *clouds*, mapea Server Groups a **zones/AZ** para resiliencia regional.  
+  - **Réplicas**: configura `--replica` acorde al número de racks (p. ej., dos réplicas en tres nodos/racks).  
+  - **Rebalance**: siempre que cambies grupos o agregues y elimines nodos.  
+  - **Durabilidad**: en producción usa **`DurabilityLevel`** para confirmar la persistencia o replicación de escrituras.  
+  - **Auto-Failover**: ajusta timeouts de `Cluster Settings` según tu SLO.  
+  - **Topologías**: en `clouds`, mapea `Server Groups` a **`zones/AZ`** para resiliencia regional.  
   - **Seguridad**: considera TLS (ver Práctica 6) y RBAC mínima necesaria.
 references: # CAMBIAR POR CADA PRACTICA LINKS ADICIONALES DE DOCUMENTACION
   - text: Server Groups (Rack/Zone Awareness)
@@ -40,18 +40,14 @@ next: /lab11/lab11/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 ---
 
-### Tarea 1: Estructura base del proyecto
-
-Crearás la carpeta de la práctica, un `compose.yaml` con 3 servicios (nodos) en la misma red y mapeos de puertos de UI distintos por nodo para acceso desde el host.
-
-#### Tarea 1.1
+### Tarea 1. Estructura base del proyecto
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -65,9 +61,9 @@ Crearás la carpeta de la práctica, un `compose.yaml` con 3 servicios (nodos) e
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** Ahora en el arbol de directorios lateral derecho verifica los directorios `node1`, `node2`, `node3` existen con `data/`, `logs/`, `config/` dentro y el directorio `scripts`.
+- **Paso 4.** Ahora, en el árbol de directorios lateral derecho verifica los directorios `node1`, `node2`, `node3` existen con `data/`, `logs/`, `config/` dentro y el directorio `scripts`.
 
-  > **NOTA:** Mantener datos/losgs por nodo permite borrar o recrear nodos de forma independiente sin perder claridad.
+  > **Nota.** Mantener `datos/logs` por nodo permite borrar o recrear nodos de forma independiente sin perder claridad.
   {: .lab-note .info .compact}
 
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
@@ -78,15 +74,14 @@ Crearás la carpeta de la práctica, un `compose.yaml` con 3 servicios (nodos) e
 
 ---
 
-### Tarea 2: Variables de entorno y Docker Compose (3 nodos)
+### Tarea 2. Variables de entorno y Docker Compose (3 nodos)
 
 Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **nodo 1** expondrá puertos hacia el host. Cada servicio tendrá healthcheck.
 
-#### Tarea 2.1
 
-- **Paso 5.** Crea el archivo `.env` dentro del directorio **practica10-rack**
+- **Paso 1.** Crea el archivo `.env` dentro del directorio **`practica10-rack`**.
 
-  > **IMPORTANTE:** El comando se ejecuta dentro del directorio **practica10-rack** 
+  > **Importante.** El comando se ejecuta dentro del directorio **`practica10-rack`**. 
   {: .lab-note .important .compact}
 
   ```bash
@@ -104,12 +99,12 @@ Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **no
   EOF
   ```
 
-- **Paso 6.** Ahora con mucho cuidado ejecuta este comando que creara el archivo `compose.yaml` donde se definen los 3 nodos de couchbase.:
+- **Paso 2.** Ahora, con mucho cuidado, ejecuta este comando que creará el archivo `compose.yaml` donde se definen los tres nodos de Couchbase.
 
-  > **NOTA:**
+  > **Notas**
   - Una red bridge compartida permite que los nodos se resuelvan por `hostname` (`couchbase1`, `couchbase2`, `couchbase3`).  
-  - Publicar puertos solo en el nodo 1 simplifica el acceso desde el host.
-  - Stack de 3 servicios listo para ser levantado.
+  - Publicar puertos solo en el nodo 1 simplifica el acceso desde el `host`.
+  - El stack de 3 servicios está listo para levantarse.
   {: .lab-note .info .compact}
 
   ```bash
@@ -194,9 +189,8 @@ Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **no
 
 Subirás los 3 contenedores y confirmarás que los healthchecks respondan.
 
-#### Tarea 3.1
 
-- **Paso 7.** Ahora ejecuta el comando para levantar los 3 nodos mediante el docker compose y cargar las variables.
+- **Paso 1.** Ahora, ejecuta el comando para levantar los 3 nodos mediante el docker `compose` y cargar las variables.
 
   ```bash
   set -a; source .env; set +a
@@ -204,7 +198,7 @@ Subirás los 3 contenedores y confirmarás que los healthchecks respondan.
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Espera unos minutos en lo que se levantan los nodos y ejecuta el siguiente comando.
+- **Paso 2.** Espera unos minutos en lo que se levantan los nodos y ejecuta el siguiente comando.
 
   {%raw%}
   ```bash
@@ -213,10 +207,10 @@ Subirás los 3 contenedores y confirmarás que los healthchecks respondan.
   {%endraw%}
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 9.** Ahora verifica el status particularmente de cada nodo.
+- **Paso 3.** Ahora, verifica el status particularmente de cada nodo.
   
-  > **NOTA:**
-  - Los 3 contenedores deben estar `Up`. Health puede tardar ~1–2 min en quedar `healthy` la primera vez.
+  > **Nota.**
+  - Los 3 contenedores deben estar `Up`. `Health` puede tardar ~1–2 min en quedar `healthy` la primera vez.
   - El endpoint `/pools` es una sonda rápida para saber que el proceso de Couchbase está arriba (aunque no inicializado).
   {: .lab-note .info .compact}
 
@@ -235,15 +229,14 @@ Subirás los 3 contenedores y confirmarás que los healthchecks respondan.
 
 ---
 
-### Tarea 4: Inicializar clúster, unir nodos y rebalancear
+### Tarea 4. Inicializar clúster, unir nodos y rebalancear
 
 Inicializarás el clúster en el nodo 1, agregarás nodos 2 y 3 con los servicios definidos y lanzarás un rebalanceo.
 
-#### Tarea 4.1
 
-- **Paso 10.** De manera mas eficiente crearas un script para la inicializcion de los nodos, copia y pega el siguiente comando.
+- **Paso 1.** De manera más eficiente, crea un script para la inicializcion de los nodos. Copia y pega el siguiente comando.
 
-  > **NOTA:** El comando se ejecuta dentro de la carpeta **practica10-rack**
+  > **Nota.** El comando se ejecuta dentro de la carpeta **`practica10-rack`**.
   {: .lab-note .info .compact}
 
   {%raw%}
@@ -380,7 +373,7 @@ Inicializarás el clúster en el nodo 1, agregarás nodos 2 y 3 con los servicio
     --index-storage-setting default; then
     ok "Cluster initialized en $FQDN1"
   else
-    warn "Cluster ya inicializado o parámetros ya aplicados; continuamos…"
+    warn "Clúster ya inicializado o parámetros ya aplicados; continuamos…"
   fi
 
   # ----------------- 4) Agregar nodos por FQDN -----------------
@@ -437,9 +430,9 @@ Inicializarás el clúster en el nodo 1, agregarás nodos 2 y 3 con los servicio
   ```
   {%endraw%}
 
-- **Paso 11.** Ahora ejecuta el script para levantar los nodos.
+- **Paso 2.** Ahora, ejecuta el script para levantar los nodos.
 
-  > **NOTA:**
+  > **Notas**
   - `server-list` debe reportar **3 nodos** con servicios `data,index,query`.  
   - `bucket-list` debe mostrar el bucket `test`.  
   - `rebalance` no debe devolver errores.
@@ -456,15 +449,13 @@ Inicializarás el clúster en el nodo 1, agregarás nodos 2 y 3 con los servicio
 
 ---
 
-### Tarea 5: Crear Server Groups (Rack Awareness) y mover los nodos
+### Tarea 5. Crear Server Groups (Rack Awareness) y mover los nodos
 
 Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server-group-manage`** para crear, listar y mover.
 
-#### Tarea 5.1
+- **Paso 1.** Lista los grupos existentes con el siguiente comando.
 
-- **Paso 13.** Lista con el siguiente comando los grupos existentes.
-
-  > **NOTA:** *Por defecto existe un grupo **Group 1**.*
+  > **Nota.** Por defecto, existe un **`Group 1`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -473,7 +464,7 @@ Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 13.** Crea el primer grupo llamado **RackA**
+- **Paso 2.** Crea el primer grupo llamado **`RackA`**.
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli group-manage \
@@ -482,7 +473,7 @@ Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 14.** Crea el segundo grupo llamado **RackB**
+- **Paso 3.** Crea el segundo grupo llamado **RackB**.
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli group-manage \
@@ -491,7 +482,7 @@ Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 15.** Mueve el nodo **couchbase2** al grupo **RackA**.
+- **Paso 4.** Mueve el nodo **`couchbase2`** al grupo **`RackA`**.
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli group-manage \
@@ -502,7 +493,7 @@ Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 16.** Ahora mueve el nodo **couchbase3** al grupo **RackB**.
+- **Paso 5.** Ahora, mueve el nodo **`couchbase3`** al grupo **`RackB`**.
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli group-manage \
@@ -513,7 +504,7 @@ Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 17.** Confirma que los nodos esten correctamente en los grupos.
+- **Paso 6.** Confirma que los nodos estén correctamente en los grupos.
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli group-manage \
@@ -521,7 +512,7 @@ Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 18.** Ahora si ejecuta el **rebalance** para aplicar cambios de colocación. 
+- **Paso 7.** Ahora, ejecuta el **`rebalance`** para aplicar cambios de colocación. 
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli rebalance \
@@ -535,13 +526,11 @@ Crearás grupos lógicos (racks) y moverás nodos entre ellos. Usarás **`server
 
 ---
 
-### Tarea 6: Crear bucket con réplicas y validar distribución
+### Tarea 6. Crear bucket con réplicas y validar distribución
 
 Crearás un bucket con réplicas para permitir disponibilidad ante la caída de un rack. Luego probarás inserciones y lectura.
 
-#### Tarea 6.1
-
-- **Paso 19.** Ajusta el bucket creado con **réplicas=2**.
+- **Paso 1.** Ajusta el bucket creado con **`réplicas=2`**.
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli bucket-edit \
@@ -552,9 +541,9 @@ Crearás un bucket con réplicas para permitir disponibilidad ante la caída de 
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 20.** Aplica el Rebalance para el nuevo factor de réplica.
+- **Paso 2.** Aplica `Rebalance` para el nuevo factor de réplica.
 
-  > **NOTA:** Puede tardar en promedio 1 minuto.
+  > **Nota.** Puede tardar 1 minuto en promedio.
   {: .lab-note .info .compact}
 
   ```bash
@@ -563,9 +552,9 @@ Crearás un bucket con réplicas para permitir disponibilidad ante la caída de 
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 21.** Crea el indice primario y luego inserta el documento para despues consultarlo, ejecuta los 2 comandos uno por uno.
+- **Paso 3.** Crea el índice primario y, luego, inserta el documento para después consultarlo. Ejecuta los dos comandos uno por uno.
 
-  > **NOTA:** La salida es extensa, la imagen representa una parte de la salida.
+  > **Nota.** La salida es extensa, la imagen representa una parte de la salida.
   {: .lab-note .info .compact}
 
   ```bash
@@ -582,7 +571,7 @@ Crearás un bucket con réplicas para permitir disponibilidad ante la caída de 
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 22.** Con el siguiente comando verificaras la distribucion.
+- **Paso 4.** Con el siguiente comando, verifica la distribución.
 
   ```bash
   docker exec -it ${CB_CONTAINER_PREFIX}1 couchbase-cli bucket-list \
@@ -596,13 +585,11 @@ Crearás un bucket con réplicas para permitir disponibilidad ante la caída de 
 
 ---
 
-### Tarea 7: Simular la caída de un rack y validar HA
+### Tarea 7. Simular la caída de un rack y validar HA
 
-Detendrás uno de los nodos de un rack y validarás que los datos siguen accesibles (failover/rebalance según sea necesario).
+Detendrás uno de los nodos de un rack y validarás que los datos siguen accesibles (failover/rebalance, según sea necesario).
 
-#### Tarea 7.1
-
-- **Paso 23.** Primero detendras temporalmente el **n3** para simular la caida del rack.
+- **Paso 1.** Primero, detendrás temporalmente el **`n3`** para simular la caída del rack.
 
   {%raw%}
   ```bash
@@ -613,9 +600,9 @@ Detendrás uno de los nodos de un rack y validarás que los datos siguen accesib
   {%endraw%}
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 24.** Ahora realiza la lectura de datos desde `n1` (consulta N1QL)
+- **Paso 2.** Ahora, realiza la lectura de datos desde `n1` (consulta N1QL).
 
-  > **NOTA:** Si el comando se queda pegado, espera unos minutos a que termine, probablemente dara error por que no encuentra como rutear la solicitud, vuele a ejecutar el comando y deberia responder el nodo.
+  > **Nota.** Si el comando se queda pegado, espera unos minutos a que termine. Probablemente, dará error por que no encuentra como rutear la solicitud. Vuelve a ejecutar el comando, el nodo debería responder .
   {: .lab-note .info .compact}
 
   ```bash
@@ -626,7 +613,7 @@ Detendrás uno de los nodos de un rack y validarás que los datos siguen accesib
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 25.** Ahora recupera el rack/nodo caido.
+- **Paso 3.** Ahora, recupera el `rack/nodo` caído.
 
   ```bash
   docker start ${CB_CONTAINER_PREFIX}3
@@ -640,15 +627,13 @@ Detendrás uno de los nodos de un rack y validarás que los datos siguen accesib
 
 ---
 
-### Tarea 8: Limpieza
+### Tarea 8. Limpieza
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 8.1
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-- **Paso 26.** En la terminal aplica el siguiente comando para detener el nodo.
-
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -656,11 +641,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   
 
-- **Paso 27.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **`No resource found to remove`**.
   {: .lab-note .important .compact}
 
   ```bash
