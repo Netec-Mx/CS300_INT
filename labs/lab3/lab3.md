@@ -46,14 +46,14 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando, debes estar en el directorio **`cs300-labs`**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica3-buckets/
@@ -62,7 +62,7 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
   > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
@@ -81,10 +81,10 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
   EOF
   ```
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
+- **Paso 5.** Ahora, crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente código en la terminal.
 
   > **Nota.**
-  - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
+  - El archivo `compose.yaml` mapea puertos `8091–8096` para la consola web y `11210` para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
 
@@ -118,7 +118,7 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
 
   > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -131,7 +131,7 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
 
   > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
-  > **Importante.** El comando se ejecuta desde el directorio de la práctica **practica3-buckets**
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **`practica3-buckets`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -155,11 +155,11 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
 
 ### Tarea 2. Crear buckets (Couchbase, Ephemeral)
 
-Crearás 2 buckets con diferentes configuraciones para observar su comportamiento y ajustes disponibles.
+Crearás dos buckets con diferentes configuraciones para observar su comportamiento y ajustes disponibles.
 
 #### Tarea 2.1. Bucket tipo *Couchbase* (`orders`)
 
-- **Paso 1.** Crear bucket *Couchbase* con **256MB**, **replicas=1** y *flush* habilitado.
+- **Paso 1.** Crear bucket *Couchbase* con **256 MB**, **replicas=1** y `flush` habilitado.
 
   > **Nota.** **Couchbase**: persistente, soporta replicas, índices y Query.  
   {: .lab-note .info .compact}
@@ -178,7 +178,7 @@ Crearás 2 buckets con diferentes configuraciones para observar su comportamient
 
 #### Tarea 2.2. Bucket *Ephemeral* **(`cache`)**
 
-- **Paso 2.** Crear bucket *Ephemeral* **128MB** con política de expulsión por NRU (recomendado para cache).
+- **Paso 2.** Crear bucket `Ephemeral` **128MB** con política de expulsión por NRU (recomendado para caché).
 
   > **Nota.** **Ephemeral**: solo memoria (sin disco), ideal para cache con políticas de expulsión.  
   {: .lab-note .info .compact}
@@ -203,12 +203,12 @@ Crearás 2 buckets con diferentes configuraciones para observar su comportamient
 
 ### Tarea 3. Scopes y Collections (en bucket `orders`)
 
-Crearás un *scope* y *collections* lógicas para organizar datos por dominio (p. ej., ventas/clientes).
+Crearás un `Scope` y `collections` lógicas para organizar datos por dominio (p. ej., ventas/clientes).
 
 
-- **Paso 1.** Crear un **scope** `sales`, **collections** `orders` y `customers` (vía REST Management API).
+- **Paso 1.** Crear un **scope** `sales`, **collections** `orders` y `customers` (vía `REST Management API`).
 
-  > **Nota.** Scopes/collections permiten aislar lógicamente datos dentro de un bucket sin necesitar múltiples buckets.
+  > **Nota.** `Scopes`/`collections` permiten aislar lógicamente datos dentro de un bucket sin necesitar múltiples buckets.
   {: .lab-note .info .compact}
 
   ```bash
@@ -230,7 +230,7 @@ Crearás un *scope* y *collections* lógicas para organizar datos por dominio (p
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 2.** Ahora ejecuta el siguiente comando para listar los **scopes/collections**.
+- **Paso 2.** Ahora, ejecuta el siguiente comando para listar los **`scopes`/`collections`**.
 
   > **Nota.** El JSON listado debe incluir el `scope` **sales** con `collections` **orders** y **customers**.
   {: .lab-note .info .compact}
@@ -252,7 +252,7 @@ Crearás un *scope* y *collections* lógicas para organizar datos por dominio (p
 Crearás índices primarios para poder consultar con N1QL y cargarás documentos de ejemplo en las nuevas collections.
 
 
-- **Paso 1.** Crea el siguiente índice primario **`orders`._default._default**.
+- **Paso 1.** Crea el siguiente índice primario **`orders._default._default`**.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://127.0.0.1:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -260,7 +260,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 2.** Crea el siguiente índice primario **`orders`.sales.orders**.
+- **Paso 2.** Crea el siguiente índice primario **`orders.sales.orders`**.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://127.0.0.1:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -268,14 +268,14 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 3.** Crea el siguiente índice primario **`orders`.sales.customers**.
+- **Paso 3.** Crea el siguiente índice primario **`orders.sales.customers`**.
   ```bash
   docker exec -it cbnode1 cbq -e http://127.0.0.1:8093 -u "${CB_USER}" -p "${CB_PASS}" \
     -s 'CREATE PRIMARY INDEX ON `'${CB_BUCKET1:-orders}'`.sales.customers;'
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 4.** Ahora el siguiente paso es insertar un documento de datos para **`orders`.sales.orders**, escribe el siguiente comando en la terminal.
+- **Paso 4.** Ahora el siguiente paso es insertar un documento de datos para **`orders.sales.orders`**, escribe el siguiente comando en la terminal.
 
   ```bash
   # orders
@@ -287,7 +287,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 5.** Continua con el siguiente paso para insertar un documento de datos en **`orders`.sales.customers**, escribe el siguiente comando en la terminal.
+- **Paso 5.** Continua con el siguiente paso para insertar un documento de datos en **`orders.sales.customers`**, escribe el siguiente comando en la terminal.
 
   ```bash
   # customers
@@ -299,7 +299,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 6.** Ahora realiza está consulta para verificar que se haya almacenado todo correctamente para **`orders`.sales.orders**.
+- **Paso 6.** Ahora, realiza estA consulta para verificar que se haya almacenado todo correctamente para **`orders`.sales.orders**.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://127.0.0.1:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -307,7 +307,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 7.** Ahora realiza está consulta para verificar que se haya almacenado todo correctamente para **`orders`.sales.customers**.
+- **Paso 7.** Ahora, realiza esta consulta para verificar que se haya almacenado todo correctamente para **`orders.sales.customers`**.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://127.0.0.1:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -325,7 +325,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
 
 ### Tarea 5. Compresión y políticas de expulsión
 
-Revisarás las configuraciones de compresión/eviction en cada bucket.
+Revisarás las configuraciones de compresión o eviction en cada bucket.
 
 
 - **Paso 1.** Revisa las configuraciones en los buckets creados.
@@ -368,7 +368,7 @@ Revisarás las configuraciones de compresión/eviction en cada bucket.
 
 ### Tarea 6. Limpieza
 
-Aprenderás a apagar/encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
+Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
 
 
 - **Paso 1.** Ejecuta el siguiente comando para eliminar los buckets creados.
@@ -398,9 +398,9 @@ Aprenderás a apagar/encender el servicio y a limpiar volúmenes si necesitas em
   ```
   ![cbase22]({{ page.images_base | relative_url }}/22.png)
 
-- **Paso 3.** Ahora en la terminal de **Git Bash** aplica el siguiente comando.
+- **Paso 3.** Ahora, en la terminal de **Git Bash**, aplica el siguiente comando.
 
-  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -408,9 +408,9 @@ Aprenderás a apagar/encender el servicio y a limpiar volúmenes si necesitas em
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 4.** Apagar y eliminar contenedor (se conservan los datos en ./data).
+- **Paso 4.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
 
   ```bash
