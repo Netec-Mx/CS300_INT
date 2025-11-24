@@ -44,8 +44,6 @@ next: /lab8/lab8/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 
 Organizarás carpetas para aislar datos, configuración, logs y el código de la app; abrirás VS Code y validarás Docker.
 
-#### Tarea 1.1
-
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
   > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
