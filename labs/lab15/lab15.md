@@ -402,9 +402,9 @@ Definirás una función `Eventing` que se activa en mutaciones de `app.shop.prod
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 3.** Publicar la función (un solo POST). Usa el proxy de 8091 que respondera “Successfully stored”.
+- **Paso 3.** Publica la función (un solo POST). Usa el proxy de `8091` que responderá `“Successfully stored”`.
 
-  > **Importante.** Si algo ocurre puedes borrar la funcion con este comando: `curl -fsS -u "$CB_ADMIN:$CB_ADMIN_PASS" -X DELETE "$EVENT_API/functions/${EV_FUNC}" >/dev/null 2>&1 || true`
+  > **Importante.** Si algo ocurre, puedes borrar la funcion con este comando: `curl -fsS -u "$CB_ADMIN:$CB_ADMIN_PASS" -X DELETE "$EVENT_API/functions/${EV_FUNC}" >/dev/null 2>&1 || true`
   {: .lab-note .important .compact}
 
   ```bash
@@ -423,13 +423,13 @@ Definirás una función `Eventing` que se activa en mutaciones de `app.shop.prod
 
 ---
 
-### Tarea 6: Crear **dataset de Analytics** y consultar
+### Tarea 6. Crear **dataset de Analytics** y consultar
 
 Configurarás un dataset en Analytics sobre la colección de auditoría y ejecutarás SQL++ for Analytics por REST (`8095`).
 
 
 
-- **Paso 1.** Probar que Analytics responde.
+- **Paso 1.** Prueba que Analytics responde.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -438,7 +438,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 2.**Crear dataverse (idempotente)
+- **Paso 2.**Crea el dataverse (idempotente).
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -447,7 +447,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 3.** Validar que existe en metadatos.
+- **Paso 3.** Valida que existe en metadatos.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -469,7 +469,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 5.** Valida que se liste el dataset recién creado.
+- **Paso 5.** Valida que se liste el `dataset` recién creado.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -480,7 +480,7 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 
-- **Paso 6.** Conecta el link Local (inicia ingesta) e inicia la ingesta continua desde data hacia Analytics.
+- **Paso 6.** Conecta el link local (inicia ingesta) e inicia la ingesta continua desde data hacia Analytics.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -504,15 +504,15 @@ Configurarás un dataset en Analytics sobre la colección de auditoría y ejecut
 
 ---
 
-### Tarea 7: Limpieza
+### Tarea 7. Limpieza
 
 Borrar datos en el entorno para repetir pruebas.
 
 
 
-- **Paso 1.** En la terminal aplica el siguiente comando para detener el nodo.
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
