@@ -32,8 +32,8 @@ lab4:
     - "**Resultado esperado.** Bucket/scope/collections e índices primarios preparados para RBAC."
     - "**Resultado esperado.** Tres usuarios locales creados con roles granulares acordes a su función."
     - "**Resultado esperado.** Comportamientos coherentes con los roles asignados (permitidos/denegados)"
-    - "**Resultado esperado.** La API REST es útil para auditorías, automatización y reportes de cumplimiento. Se confirmo por API la configuración RBAC y del *schema* lógico del bucket."
-    - "**Resultado esperado.** Mantener el entorno limpio facilita repetir la práctica y evita “fugas” de permisos en sesiones posteriores. Usuarios/índice retirados y nodo eliminado."
+    - "**Resultado esperado.** La `API REST` es útil para auditorías, automatización y reportes de cumplimiento. Se confirmó por API la configuración RBAC y del *schema* lógico del bucket."
+    - "**Resultado esperado.** Mantener el entorno limpio facilita repetir la práctica y evita “fugas” de permisos en sesiones posteriores. Usuarios o índice retirados y nodo eliminado."
 lab5:
   results:
     - "**Resultado esperado.** Workspace en VS Code y entorno verificado para avanzar con la configuración de la auditoría."
