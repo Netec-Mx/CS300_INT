@@ -13,7 +13,7 @@ prerequisites: # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: > # CAMBIAR POR CADA PRACTICA
-  La auditoría (Audit Logging) registra “quién, qué, cuándo y desde dónde” ante eventos de seguridad y administración: inicios de sesión, cambios de roles, creación de buckets/colecciones, modificaciones de índices y ejecución de consultas, entre otros. En está práctica activarás la auditoría, generarás eventos intencionales (éxitos y fallos) y validarás la información almacenada en los archivos de log y endpoints REST.
+  La auditoría (Audit Logging) registra “quién, qué, cuándo y desde dónde” ante eventos de seguridad y administración: inicios de sesión, cambios de roles, creación de buckets/colecciones, modificaciones de índices y ejecución de consultas, entre otros. En esta práctica, activarás la auditoría, generarás eventos intencionales (éxitos y fallos) y validarás la información almacenada en los archivos de log y endpoints REST.
 slug: lab5 # CAMBIAR POR CADA PRACTICA
 lab_number: 5 # CAMBIAR POR CADA PRACTICA
 final_result: > # CAMBIAR POR CADA PRACTICA
@@ -42,7 +42,7 @@ next: /lab6/lab6/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 
 ### Tarea 1. Preparación del entorno y variables
 
-Organizarás la carpeta de está práctica, definirás variables de entorno y verificarás el contenedor/servicio antes de configurar la auditoría.
+Organizarás la carpeta de esta práctica, definirás variables de entorno y verificarás el contenedor o servicio antes de configurar la auditoría.
 
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
@@ -168,7 +168,7 @@ Organizarás la carpeta de está práctica, definirás variables de entorno y ve
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 8.** Verifica que el clúster esté **healthy** y que se muestre el `json` con las propiedades del nodo.
 
   > **Nota.**
   - Contenedor `cbnode1` aparece **Up**.  
@@ -232,7 +232,7 @@ Activarás la auditoría, configurarás la ruta de logs, el tamaño de rotación
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 4.** Verifica tambien los archivos creados con el siguiente comando.
+- **Paso 4.** Verifica también los archivos creados con el siguiente comando.
 
   ```bash
   docker exec cbnode1 sh -lc "ls -l /opt/couchbase/var/lib/couchbase/logs/audit"
@@ -292,7 +292,7 @@ Crearás el bucket `orders`, el *scope* `sales` y la *collections* `orders`.
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 5.** Ejectua el siguiente comando para listar **sales** con **orders** correctamente.
+- **Paso 5.** Ejecuta el siguiente comando para listar **sales** con **orders** correctamente.
 
   > **Nota.** Configuraste el *keyspace* `orders.sales.orders` para probar permisos granulares por *collection*.
   {: .lab-note .info .compact}
@@ -388,7 +388,7 @@ Crearás y eliminarás temporalmente un usuario para registrar eventos de cambio
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 3.** Ahora elimina el usuario `temp_audit` para registrar el evento de borrado:.
+- **Paso 3.** Ahora, elimina el usuario `temp_audit` para registrar el evento de borrado.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -397,7 +397,7 @@ Crearás y eliminarás temporalmente un usuario para registrar eventos de cambio
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 
-- **Paso 4.** Revisar los eventos del uusuario creado y eliminado:.
+- **Paso 4.** Revisar los eventos del usuario creado y eliminado.
 
   > **Nota.** Entradas en `audit.log` con acciones de creación/borrado de usuario.  
   {: .lab-note .info .compact}
@@ -427,7 +427,7 @@ eso a datos y Query (N1QL).
 
 - **Paso 1.** Abre la consola web, y verifica que todo este correctamente. Abre la siguiente URL en el navegador **Google Chrome**.
 
-  > **Importante.** Usa los siguientes datos par autenticarte.
+  > **Importante.** Usa los siguientes datos para autenticarte.
   - **Usuario:** `admin`
   - **Contraseña:** `adminlab`
   {: .lab-note .important .compact}
@@ -437,7 +437,7 @@ eso a datos y Query (N1QL).
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 2.** En la interfaz da clic en la opción lateral izquierda **Security** expante la propiedad **Query and Index Service** y activala.
+- **Paso 2.** En la interfaz da clic en la opción lateral izquierda **Security** expande la propiedad **Query and Index Service** y actívala.
 
   ![cbase24]({{ page.images_base | relative_url }}/24.png)
 
@@ -516,7 +516,7 @@ Revertirás exclusiones y dejarás la auditoría activada, o la desactivarás se
 
   > **Nota.** Espera unos segundos, es normal que tarde en eliminarse.
   {: .lab-note .info .compact}
-  > **Importante.** Si te llegase a marcar algún error en el borrado, pude deberse a que aun está ocupado en alguna tarea, inténtalo nuevamente. En ocasiones se borra aunque mande el mensaje de error.
+  > **Importante.** Si te llegase a marcar algún error en el borrado, puede deberse a que aun está ocupado en alguna tarea, inténtalo nuevamente. En ocasiones se borra aunque muestre el mensaje de error.
   {: .lab-note .important .compact}
 
   ```bash
@@ -535,7 +535,7 @@ Revertirás exclusiones y dejarás la auditoría activada, o la desactivarás se
   ```
   ![cbase30]({{ page.images_base | relative_url }}/30.png)
 
-- **Paso 4.** Apagar y eliminar contenedor (se conservan los datos en ./data).
+- **Paso 4.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
   > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
