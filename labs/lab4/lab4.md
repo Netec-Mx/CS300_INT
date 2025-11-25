@@ -1,6 +1,6 @@
 ---
 layout: lab
-title: "Práctica 4: Creación de roles personalizados" # CAMBIAR POR CADA PRACTICA
+title: "Práctica 4. Creación de roles personalizados" # CAMBIAR POR CADA PRACTICA
 permalink: /lab4/lab4/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab4/img # CAMBIAR POR CADA PRACTICA
 duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
@@ -48,7 +48,7 @@ next: /lab5/lab5/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 
 ---
 
-### Tarea 1: Preparación del entorno y variables
+### Tarea 1. Preparación del entorno y variables
 
 Organizarás la carpeta de la práctica, cargarás variables y verificarás que el contenedor esté arriba. Si aún no existen `orders/sales/{orders,customers}`, se crearán.
 
@@ -141,9 +141,9 @@ Organizarás la carpeta de la práctica, cargarás variables y verificarás que 
 
 - **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  {: .lab-note .important .compact}
-  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.**
+  > - Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > - El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -191,12 +191,12 @@ Organizarás la carpeta de la práctica, cargarás variables y verificarás que 
 
 ---
 
-### Tarea 2: Asegurar bucket/scope/collections
+### Tarea 2. Asegurar `bucket`, `scope` y `collections`
 
-Crearás el bucket `orders`, el *scope* `sales` y las *collections* `orders` y `customers`. También crearás índices primarios necesarios para las consultas.
+Crearás el bucket `orders`, el `Scope` `sales` y las *collections* `orders` y `customers`. También crearás índices primarios necesarios para las consultas.
 
 
-- **Paso 1.** Crear el bucket `orders` con **256MB** y *flush* habilitado.
+- **Paso 1.** Crear el bucket `orders` con **256 MB** y *flush* habilitado.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli bucket-create \
@@ -210,7 +210,7 @@ Crearás el bucket `orders`, el *scope* `sales` y las *collections* `orders` y `
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 2.** Crea el *scope* **sales** vía REST, copia y pega el comando en la terminal.
+- **Paso 2.** Crea el `Scope` **`sales`** vía `REST`, copia y pega el comando en la terminal.
 
   ```bash
   # Scope
@@ -220,7 +220,7 @@ Crearás el bucket `orders`, el *scope* `sales` y las *collections* `orders` y `
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 3.** Crea el *collections* **orders** vía REST, copia y pega el comando en la terminal.
+- **Paso 3.** Crea el `collections` `orders` vía `REST`, copia y pega el comando en la terminal.
 
   ```bash
   # Collection: orders
@@ -230,7 +230,7 @@ Crearás el bucket `orders`, el *scope* `sales` y las *collections* `orders` y `
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 4.** Crea el *collections* **customers** vía REST, copia y pega el comando en la terminal.
+- **Paso 4.** Crea el *`collections`* **`customers`** vía `REST`, copia y pega el comando en la terminal.
 
   ```bash
   # Collection: customers
@@ -240,7 +240,7 @@ Crearás el bucket `orders`, el *scope* `sales` y las *collections* `orders` y `
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 5.** Crea el índice primario para **orders** y realizar las pruebas de N1QL.
+- **Paso 5.** Crea el índice primario para **`orders`** y realizar las pruebas de N1QL.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://${CB_HOST}:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -248,7 +248,7 @@ Crearás el bucket `orders`, el *scope* `sales` y las *collections* `orders` y `
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 6.** Crea el índice primario para **customers** y realizar las pruebas de N1QL.
+- **Paso 6.** Crea el índice primario para **`customers`** y realizar las pruebas de `N1QL`.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://${CB_HOST}:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -256,7 +256,7 @@ Crearás el bucket `orders`, el *scope* `sales` y las *collections* `orders` y `
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 7.** Ejectua el siguiente comando para listar **sales** con **orders** y **customers** correctamente.
+- **Paso 7.** Ejecuta el siguiente comando para listar **`sales`** con **`orders`** y **`customers`** correctamente.
 
   > **Nota.** Configuraste el *keyspace* `orders.sales.orders` y `orders.sales.customers` para probar permisos granulares por *collection*.
   {: .lab-note .info .compact}
@@ -278,7 +278,7 @@ Crearás el bucket `orders`, el *scope* `sales` y las *collections* `orders` y `
 Definirás tres usuarios locales con combinaciones de roles predefinidos acotados por bucket/scope/collection.
 
 
-- **Paso 1.** Ahora crea el usuario **analyst_ro** (solo lectura en `orders.sales.orders`), copia y pega el siguiente comando en la terminal.
+- **Paso 1.** Ahora, crea el usuario **`analyst_ro`** (solo lectura en `orders.sales.orders`), copia y pega el siguiente comando en la terminal.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -289,7 +289,7 @@ Definirás tres usuarios locales con combinaciones de roles predefinidos acotado
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 2.** Crea el usuario **writer_app** (escritura en `orders.sales.orders`, sin permisos de lectura/SELECT):.
+- **Paso 2.** Crea el usuario **`writer_app`** (escritura en `orders.sales.orders`, sin permisos de lectura/SELECT):.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -300,7 +300,7 @@ Definirás tres usuarios locales con combinaciones de roles predefinidos acotado
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 3.** Crear **dba_scope** (admin de bucket + gestión de índices en `orders`).
+- **Paso 3.** Crear **`dba_scope`** (admin de bucket + gestión de índices en `orders`).
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -333,10 +333,10 @@ Definirás tres usuarios locales con combinaciones de roles predefinidos acotado
 
 ### Tarea 4: Cargar datos de ejemplo y probar permisos
 
-Insertarás datos con `writer_app`, intentarás y validarás operaciones permitidas/denegadas para cada usuario.
+Insertarás datos con `writer_app`, intentarás y validarás operaciones permitidas o denegadas para cada usuario.
 
 
-- **Paso 1.** Inserta un documento con el usuario **writer_app** (permitido):.
+- **Paso 1.** Inserta un documento con el usuario **`writer_app`** (permitido).
 
   ```bash
   docker exec -i cbnode1 cbq \
@@ -348,9 +348,9 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 2.** Ahora con `writer_app` intenta realizar un **SELECT** (debería **fallar** por falta de `query_select`):.
+- **Paso 2.** Ahora con `writer_app`, intenta realizar un **`SELECT`** (debería **fallar** por falta de `query_select`):.
 
-  > **Importante.** Cuando ejecutas el **SELECT** con el usuario **writer** (sin el rol query_select), el servicio de Query responde HTTP 401 (no autorizado). Es normal el mensaje **ERROR 174...**
+  > **Importante.** Cuando ejecutas el **`SELECT`** con el usuario **writer** (sin el rol `query_select`), el servicio de Query responde `HTTP 401` (no autorizado). Es normal el mensaje **`ERROR 174...`**
   {: .lab-note .important .compact}
 
   ```bash
@@ -360,7 +360,7 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
   ```
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
-- **Paso 3.** Ahora prueba con `analyst_ro` ejecuta **SELECT** (debe permitido).
+- **Paso 3.** Ahora, prueba con `analyst_ro` ejecuta **`SELECT`** (debe permitirlo).
 
   ```bash
   docker exec -it cbnode1 cbq -e http://${CB_HOST}:8093 -u "${RBAC_ANALYST}" -p ${RBAC_ANALYST_PASS} \
@@ -368,9 +368,9 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 4.** Ahora prueba con `analyst_ro` ejecuta **INSERT** (debe **fallar**).
+- **Paso 4.** Ahora, prueba con `analyst_ro` ejecuta **`INSERT`** (debe **fallar**).
 
-  > **Importante.** Cuando ejecutas el **INSERT** con el usuario **analyst_ro** (sin el rol writer), el servicio de insert responde HTTP 401 (no autorizado). Es normal el mensaje **ERROR 174...**
+  > **Importante.** Cuando ejecutas el **`INSERT`** con el usuario **`analyst_ro`** (sin el _rol writer_), el servicio de `insert` responde `HTTP 401` (no autorizado). Es normal el mensaje **`ERROR 174...`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -387,10 +387,10 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 
-- **Paso 6.** Con el usuario `dba_scope` consulta el indice secundario.
+- **Paso 6.** Con el usuario `dba_scope` consulta el índice secundario.
 
   > **Importante.**
-  - El primer comando le da permiso de lectura al **dba_scope**
+  - El primer comando le da permiso de lectura al **`dba_scope`**.
   - El segundo realiza la consulta.
   {: .lab-note .important .compact}
 
@@ -413,12 +413,12 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
 
 ---
 
-### Tarea 5: Auditoría de permisos y REST
+### Tarea 5. Auditoría de permisos y REST
 
-Consultarás por REST los usuarios y sus roles, y verificarás el *scope map* del bucket.
+Consultarás por `REST` los usuarios y sus roles, y verificarás el `scope map` del bucket.
 
 
-- **Paso 1.** Lista los usuarios locales mediante las operaciones REST.
+- **Paso 1.** Lista los usuarios locales mediante las operaciones `REST`.
 
   > **Nota.** Debes ver a `analyst_ro`, `writer_app`, `dba_scope` con los roles configurados.
   {: .lab-note .info .compact}
@@ -436,9 +436,9 @@ Consultarás por REST los usuarios y sus roles, y verificarás el *scope map* de
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 2.** Revisa los scopes/collections del bucket, ejecuta el siguiente comando.
+- **Paso 2.** Revisa los `scopes`/`collections` del bucket, ejecuta el siguiente comando.
 
-  > **Nota.** El mapa de scopes/collections coincide con lo creado.
+  > **Nota.** El mapa de `scopes`/`collections` coincide con lo creado.
   {: .lab-note .info .compact}
 
   ```bash
@@ -461,12 +461,12 @@ Consultarás por REST los usuarios y sus roles, y verificarás el *scope map* de
 
 ---
 
-### Tarea 6: Limpieza
+### Tarea 6. Limpieza
 
-Eliminarás usuarios creados en está práctica y el toda la configuración creada.
+Eliminarás usuarios creados en está práctica y toda la configuración creada.
 
 
-- **Paso 1.** Borrar los usuarios RBAC creados para la práctica.
+- **Paso 1.** Borra los usuarios RBAC creados para la práctica.
 
   ```bash
   for U in "${RBAC_ANALYST}" "${RBAC_WRITER}" "${RBAC_DBA}"; do
@@ -477,7 +477,7 @@ Eliminarás usuarios creados en está práctica y el toda la configuración crea
   ```
   ![cbase25]({{ page.images_base | relative_url }}/25.png)
 
-- **Paso 2.** Ahora borra el índice secundario.
+- **Paso 2.** Ahora, borra el índice secundario.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://${CB_HOST}:8093 -u "$CB_USER" -p "$CB_PASS" -s \
@@ -485,11 +485,11 @@ Eliminarás usuarios creados en está práctica y el toda la configuración crea
   ```
   ![cbase26]({{ page.images_base | relative_url }}/26.png)
 
-- **Paso 3.** Ahora elimina el bucket con el siguiente comando.
+- **Paso 3.** Ahora, elimina el bucket con el siguiente comando.
 
   > **Nota.** Espera unos segundos, es normal que tarde en eliminarse.
   {: .lab-note .info .compact}
-  > **Importante.** Si te llegase a marcar algún error en el borrado, pude deberse a que aun está ocupado en alguna tarea, inténtalo nuevamente. En ocasiones se borra aunque mande el mensaje de error.
+  > **Importante.** Si llegase a marcar algún error en el borrado, puede deberse a que aun está ocupado en alguna tarea, inténtalo nuevamente. En ocasiones, se borra aunque mande el mensaje de error.
   {: .lab-note .important .compact}
 
   ```bash
@@ -499,9 +499,9 @@ Eliminarás usuarios creados en está práctica y el toda la configuración crea
   ```
   ![cbase27]({{ page.images_base | relative_url }}/27.png)
 
-- **Paso 4.** Ahora en la terminal aplica el siguiente comando para detener el nodo.
+- **Paso 4.** Ahora, en la terminal, aplica el siguiente comando para detener el nodo.
 
-  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -509,9 +509,9 @@ Eliminarás usuarios creados en está práctica y el toda la configuración crea
   ```
   ![cbase28]({{ page.images_base | relative_url }}/28.png)
 
-- **Paso 5.** Apagar y eliminar contenedor (se conservan los datos en ./data).
+- **Paso 5.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
   {: .lab-note .info .compact}
 
   ```bash
