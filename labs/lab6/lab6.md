@@ -1,15 +1,15 @@
 ---
 layout: lab
-title: "Práctica 6: TLS con certificados autofirmados" # CAMBIAR POR CADA PRACTICA
+title: "Práctica 6. TLS con certificados autofirmados" # CAMBIAR POR CADA PRACTICA
 permalink: /lab6/lab6/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab6/img # CAMBIAR POR CADA PRACTICA
 duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
 objective: # CAMBIAR POR CADA PRACTICA
-  - Implementar y configurar TLS (Transport Layer Security) utilizando certificados autofirmados en un entorno Docker con Couchbase, proporcionando una comprensión práctica de la seguridad en comunicaciones y la configuración de certificados SSL/TLS en contenedores.
+  - Implementar y configurar Transport Layer Security (TLS) utilizando certificados autofirmados en un entorno Docker con Couchbase, proporcionando una comprensión práctica de la seguridad en comunicaciones y la configuración de certificados SSL/TLS en contenedores.
 prerequisites: # CAMBIAR POR CADA PRACTICA
   - Visual Studio Code con terminal **Git Bash**.
-  - 6–8 GB de RAM libres recomendados para 3 nodos (mínimo ~5 GB).  
-  - Puertos locales disponibles **8091–8096**, **11210** (se publicarán solo desde el nodo 1).
+  - 6–8 GB de RAM libres recomendados para tres nodos (mínimo ~5 GB).  
+  - Puertos locales disponibles **`8091-8096`**, **`11210`** (se publicarán solo desde el nodo 1).
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: | # CAMBIAR POR CADA PRACTICA
@@ -25,15 +25,15 @@ lab_number: 6 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
   Al completar está práctica, habrás logrado:
 
-  1. **Configuración completa de TLS**: Un entorno Docker con Couchbase ejecutándose con certificados TLS autofirmados
-  2. **Comprensión práctica**: Experiencia hands-on con generación de certificados, configuración de servicios y validación de TLS
-  3. **Habilidades transferibles**: Conocimientos aplicables a otros servicios y entornos de producción
-  4. **Entorno funcional**: Un sistema completamente operativo con conexiones seguras verificadas
+  - **Configuración completa de TLS**: un entorno Docker con Couchbase ejecutándose con certificados TLS autofirmados.
+  - **Comprensión práctica**: experiencia hands-on con generación de certificados, configuración de servicios y validación de TLS.
+  - **Habilidades transferibles**: conocimientos aplicables a otros servicios y entornos de producción.
+  - **Entorno funcional**: un sistema completamente operativo con conexiones seguras verificadas.
 notes: | # CAMBIAR POR CADA PRACTICA
   Seguridad
-  - **Certificados autofirmados**: Solo para desarrollo y aprendizaje
-  - **Contraseñas**: Cambiar credenciales por defecto en entornos reales
-  - **Permisos**: Los archivos de claves privadas deben tener permisos restrictivos
+  - **Certificados autofirmados**: solo para desarrollo y aprendizaje.
+  - **Contraseñas**: cambiar credenciales por defecto en entornos reales.
+  - **Permisos**: los archivos de claves privadas deben tener permisos restrictivos.
 
   Limitaciones
   - Los navegadores mostrarán advertencias de seguridad
@@ -62,7 +62,7 @@ Crearás una carpeta para la práctica, validarás que el contenedor `cbnode1` e
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
 - **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal. **Se encuentra en la parte superior derecha.**.
@@ -153,9 +153,9 @@ Crearás una carpeta para la práctica, validarás que el contenedor `cbnode1` e
 
 - **Paso 6.** Inicia el servicio. Dentro de la terminal, ejecuta el siguiente comando.
 
-  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  {: .lab-note .important .compact}
-  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
+  > **Importante**
+  > - Para agilizar los procesos, la imagen debe estar descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > - El `docker compose up -d` corre en segundo plano. El _healthcheck_ del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -164,7 +164,7 @@ Crearás una carpeta para la práctica, validarás que el contenedor `cbnode1` e
 
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Inicializa el clúster, ejecuta el siguiente comando en la terminal.
+- **Paso 7.** Inicializa el clúster y ejecuta el siguiente comando en la terminal.
 
   > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
@@ -184,7 +184,7 @@ Crearás una carpeta para la práctica, validarás que el contenedor `cbnode1` e
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Verifica que el clúster esté **healthy** y que se muestre el JSON con las propiedades del nodo.
+- **Paso 8.** Verifica que el clúster esté **_healthy_** y que se muestre el JSON con las propiedades del nodo.
 
   > **Nota.**
   - El contenedor `cbnode1` aparece **Up**.  
@@ -209,7 +209,7 @@ Crearás una carpeta para la práctica, validarás que el contenedor `cbnode1` e
 Activarás la auditoría, configurarás la ruta de logs, el tamaño de rotación y revisarás la configuración vía `REST`.
 
 
-- **Paso 1.** Primero, accede al directorio **`certs`**, con el siguiente comando.
+- **Paso 1.** Primero, accede al directorio **`certs`** con el siguiente comando.
 
   ```bash
   cd certs
@@ -282,7 +282,7 @@ Activarás la auditoría, configurarás la ruta de logs, el tamaño de rotación
   EOF
   ```
 
-- **Paso 7.** Ahora, se debe firmar el certificado del servidor con nuestra CA.
+- **Paso 7.** Ahora, se debe firmar el certificado del servidor con la CA.
 
   > **Importante.** El comando no tendrá salida, pero puedes ejecutar **`ls`** para verificar.
   {: .lab-note .important .compact}
@@ -312,7 +312,7 @@ Activarás la auditoría, configurarás la ruta de logs, el tamaño de rotación
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 10.** Verifica ahora la cadena de confianza entre **`ca.crt`** y **`server.crt`**.
+- **Paso 10.** Verifica la cadena de confianza entre **`ca.crt`** y **`server.crt`**.
 
   > **Nota.** La salida del comando es muy extensa, la imagen solo representa parte de la salida.
   {: .lab-note .info .compact}
@@ -403,7 +403,7 @@ Configurar Docker Compose para ejecutar Couchbase con soporte TLS, utilizando lo
   EOF
   ```
 
-- **Paso 4.** Corre el contenedor, escribe el siguiente comando.
+- **Paso 4.** Corre el contenedor y escribe el siguiente comando.
 
   > **Nota.** Puede tardar unos minutos en lo que descarga la imagen.
   {: .lab-note .info .compact}
@@ -412,14 +412,14 @@ Configurar Docker Compose para ejecutar Couchbase con soporte TLS, utilizando lo
   docker compose -f docker-composehttps.yml up -d
   ```
 
-- **Paso 5.** Verifica con el siguiente comando que el contenedor esté **healthy**.
+- **Paso 5.** Verifica con el siguiente comando que el contenedor esté **_healthy_**.
 
   ```bash
   docker compose ps
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 6.** Ahora, crea el script de configuración inicial.
+- **Paso 6.** Ahora, crea el _script_ de configuración inicial.
 
   ```bash
   cat > scripts/init-cluster.sh << 'EOF'
@@ -467,7 +467,7 @@ Configurarás Couchbase para usar TLS con los certificados generados.
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 2.** Verifica la disponibilidad de los servicios de couchbase debe retornar un JSON con la información.
+- **Paso 2.** Verifica la disponibilidad de los servicios de Couchbase. Debe retornar un JSON con la información.
 
   ```bash
   curl -s http://localhost:8091/pools
@@ -488,7 +488,7 @@ Configurarás Couchbase para usar TLS con los certificados generados.
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 4.** Ahora, verifica la configuración del clúster.
+- **Paso 4.** Verifica la configuración del clúster.
 
   > **Nota.** La salida del comando es un poco extensa, la imagen es representativa.
   {: .lab-note .info .compact}
@@ -510,7 +510,7 @@ Configurarás Couchbase para usar TLS con los certificados generados.
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 6.** Carga el certificado del servidor TLS al contenedor de couchbase.
+- **Paso 6.** Carga el certificado del servidor TLS al contenedor de Couchbase.
 
   ```bash
   docker exec couchbase-tls curl -X POST http://localhost:8091/node/controller/reloadCertificate \
@@ -586,7 +586,7 @@ Verifica que la implementación TLS funciona correctamente mediante diferentes m
   ```
   ![cbase25]({{ page.images_base | relative_url }}/25.png)
 
-- **Paso 5.** Prueba la API REST con HTTPS.
+- **Paso 5.** Prueba la `API REST` con `HTTPS`.
 
   ```bash
   curl -k -u admin:adminhttps https://localhost:18091/pools
@@ -606,7 +606,7 @@ Eliminarás el clúster para reutilizar los recursos en las próximas prácticas
 
 - **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -614,9 +614,9 @@ Eliminarás el clúster para reutilizar los recursos en las próximas prácticas
   ```
   ![cbase27]({{ page.images_base | relative_url }}/27.png)
 
-- **Paso 2.** Apagar y eliminar el contenedor (se conservan los datos en `./data`).
+- **Paso 2.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
   > **Importante.** Es normal el mensaje del objeto de red **`No resource found to remove`**.
   {: .lab-note .important .compact}
