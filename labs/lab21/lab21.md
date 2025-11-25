@@ -5,7 +5,7 @@ permalink: /lab21/lab21/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab21/img # CAMBIAR POR CADA PRACTICA
 duration: "35 minutos" # CAMBIAR POR CADA PRACTICA
 objective: # CAMBIAR POR CADA PRACTICA
-  - Desplegar Couchbase en Docker y **exponer métricas** hacia **Prometheus**, visualizándolas en **Grafana** con un dashboard básico. Configurarás `prometheus.yml`, levantarás tres contenedores (Couchbase, Prometheus y Grafana), **validarás el scraping**, crearás **carga sintética** y construirás **paneles** para KPIs de KV/Query/Recursos.
+  - Desplegar Couchbase en Docker y **exponer métricas** hacia **Prometheus**, visualizándolas en **Grafana** con un dashboard básico. Configurarás `prometheus.yml`, levantarás tres contenedores (Couchbase, Prometheus y Grafana), **validarás el scraping**, crearás **carga sintética** y construirás **paneles** para KPI de KV/Query/Recursos.
 prerequisites:  # CAMBIAR POR CADA PRACTICA
   - Software **Docker Desktop** en ejecución.  
   - Software **Visual Studio Code** con terminal **Git Bash**.  
@@ -13,11 +13,11 @@ prerequisites:  # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar imágenes.  
   - 4–6 GB de RAM libres (Couchbase + Prometheus + Grafana).  
 introduction: | # CAMBIAR POR CADA PRACTICA
-  Couchbase Server expone **métricas tipo Prometheus** via HTTP en el puerto de administración. Prometheus ejecuta *scrapes* periódicos y almacena series temporales; Grafana consulta ese repositorio para construir **dashboards** interactivos. En esta práctica configurarás el scraping directo del **endpoint de métricas** de Couchbase y prepararás un panel inicial con gráficos de **operaciones KV**, **latencias**, **documentos por segundo** y **recursos**.
+  Couchbase Server expone **métricas tipo Prometheus** via HTTP en el puerto de administración. Prometheus ejecuta *scrapes* periódicos y almacena series temporales; Grafana consulta ese repositorio para construir **dashboards** interactivos. En esta práctica, configurarás el scraping directo del **endpoint de métricas** de Couchbase y prepararás un panel inicial con gráficos de **operaciones KV**, **latencias**, **documentos por segundo** y **recursos**.
 slug: lab21 # CAMBIAR POR CADA PRACTICA
 lab_number: 21 # CAMBIAR POR CADA PRACTICA
 final_result: | # CAMBIAR POR CADA PRACTICA
-  Levantaste un stack **Couchbase + Prometheus + Grafana**, configuraste el **scraping** del endpoint de métricas de Couchbase, generaste **carga sintética** y construiste un **dashboard** con KPIs básicos. 
+  Levantaste un stack **Couchbase + Prometheus + Grafana**, configuraste el **scraping** del endpoint de métricas de Couchbase, generaste **carga sintética** y construiste un **dashboard** con KPI básicos. 
 notes: | # CAMBIAR POR CADA PRACTICA
   - Para producción, protege Grafana con SSO/RBAC y preserva su almacenamiento en un volumen dedicado.  
   - Considera **TLS** y *reverse proxies* si expones Prometheus/Grafana fuera de la red local.  
@@ -39,18 +39,16 @@ next: /lab22/lab22/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 ---
 
-### Tarea 1: Estructura base y variables
+### Tarea 1.Estructura base y variables-
 
 Crearás una carpeta aislada con subdirectorios para Couchbase, Prometheus y Grafana, además de un `.env` reutilizable.
 
-#### Tarea 1.1
-
 - **Paso 1.** Abre el software de **Visual Studio Code**.
 
-  > **NOTA:** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -66,9 +64,9 @@ Crearás una carpeta aislada con subdirectorios para Couchbase, Prometheus y Gra
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 4.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
-  > **NOTA:** El archivo `.env` estandariza credenciales y memoria.
+  > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
 
   ```bash
@@ -116,15 +114,13 @@ Crearás una carpeta aislada con subdirectorios para Couchbase, Prometheus y Gra
 
 ---
 
-### Tarea 2: Configuración de Prometheus (scrape Couchbase)
+### Tarea 2. Configuración de Prometheus (scrape Couchbase).
 
 Crearás `prometheus.yml` apuntando al endpoint de métricas del contenedor de Couchbase.
 
-#### Tarea 2.1
+- **Paso 1.** Crea el archivo de Prometheus llamado `prometheus/prometheus.yml` con el siguiente contenido para las métricas.
 
-- **Paso 5.** Crea el archivo de prometheus llamado `prometheus/prometheus.yml` con el siguiente contenido para las metricas.
-
-  > **NOTA:** El comando se ejecuta desde el directorio **practica21-observability**
+  > **Nota.** El comando se ejecuta desde el directorio **practica21-observability**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -190,15 +186,13 @@ Crearás `prometheus.yml` apuntando al endpoint de métricas del contenedor de C
 
 ---
 
-### Tarea 3: Docker Compose (Couchbase + Prometheus + Grafana)
+### Tarea 3. Docker Compose (Couchbase + Prometheus + Grafana).
 
 Definirás `compose.yaml` para los tres servicios, con volúmenes y puertos adecuados.
 
-#### Tarea 3.1
+- **Paso 1.** Crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
 
-- **Paso 6.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente codigo en la terminal.
-
-  > **NOTA:**
+  > **Nota.**
   - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
@@ -264,7 +258,7 @@ Definirás `compose.yaml` para los tres servicios, con volúmenes y puertos adec
   YAML
   ```
 
-- **Paso 7.** Configura el **datasource** y **dashboard provider** para Grafana.
+- **Paso 2.** Configura el **datasource** y **dashboard provider** para Grafana.
 
   ```bash
   # Datasource Prometheus
@@ -299,17 +293,15 @@ Definirás `compose.yaml` para los tres servicios, con volúmenes y puertos adec
 
 ---
 
-### Tarea 4: Levantar el stack y validar salud
+### Tarea 4. Levantar el stack y validar salud.
 
 Arrancarás los servicios y validarás que Prometheus y Grafana están operativos.
 
-#### Tarea 4.1
+- **Paso 1.** Inicia el servicio, dentro de la terminal, ejecuta el siguiente comando.
 
-- **Paso 8.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
-
-  > **IMPORTANTE:** Para agilizar los procesos, la imagen ya esta descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
   {: .lab-note .important .compact}
-  > **IMPORTANTE:** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -318,7 +310,7 @@ Arrancarás los servicios y validarás que Prometheus y Grafana están operativo
   ```
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 9.** Verifica que el contenedor se haya creado correctamente.
+- **Paso 2.** Verifica que el contenedor se haya creado correctamente.
 
   {%raw%}
   ```bash
@@ -328,7 +320,7 @@ Arrancarás los servicios y validarás que Prometheus y Grafana están operativo
   {%endraw%}
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 10.** Valida que Prometheus este disponible y listo para trabajar.
+- **Paso 3.** Valida que Prometheus esté disponible y listo para trabajar.
 
   {%raw%}
   ```bash
@@ -343,17 +335,15 @@ Arrancarás los servicios y validarás que Prometheus y Grafana están operativo
 
 ---
 
-### Tarea 5: Inicializar Couchbase, crear datos y generar carga
+### Tarea 5. Inicializar Couchbase, crear datos y generar carga.
 
 Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/N1QL para que las métricas cambien.
 
-#### Tarea 5.1
+- **Paso 1.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
 
-- **Paso 11.** Inicializa el clúster, ejecuta el siguiete comando en la terminal.
-
-  > **NOTA:** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
+  > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** El comando se ejecuta desde el directorio de la practica **practica21-observavility**. Puede tardar unos segundos en inicializar.
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **practica21-observavility**. Puede tardar unos segundos en inicializar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -369,9 +359,9 @@ Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/
   ```
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 12.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 2.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
-  > **NOTA:**
+  > **Nota.**
   - Contenedor `cb-obsv-n1` aparece **Up**.  
   - `curl` devuelve JSON de la información del nodo.
   - Esta conexion es mediante HTTP.
@@ -383,7 +373,7 @@ Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/
   ```
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 13.** Ejecuta el siguiente comando para la creación del bucket.
+- **Paso 3.** Ejecuta el siguiente comando para la creación del bucket.
 
   ```bash
   docker exec -it ${CB_CONTAINER} couchbase-cli bucket-create \
@@ -393,7 +383,7 @@ Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/
   ```
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
-- **Paso 14.** Ahora crea el *Scope* **shop**
+- **Paso 4.** Ahora, crea el *Scope* **shop**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -402,7 +392,7 @@ Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/
   ```
   ![cbase9]({{ page.images_base | relative_url }}/9.png)
 
-- **Paso 15.** Con este comando crea el *Collection* **products**
+- **Paso 5.** Con este comando crea el *Collection* **products**.
 
   ```bash
   curl -fsS -u "${CB_ADMIN}:${CB_ADMIN_PASS}" \
@@ -411,7 +401,7 @@ Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/
   ```
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 16.** Crea el índice primario temporal para validaciones
+- **Paso 6.** Crea el índice primario temporal para validaciones.
 
   ```bash
   docker exec -it "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "${CB_ADMIN}" -p "${CB_ADMIN_PASS}" -q=false \
@@ -419,9 +409,9 @@ Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/
   ```
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
-- **Paso 17.** Carga 500 documentos (loop con N1QL)
+- **Paso 7.** Carga 500 documentos (loop con N1QL).
 
-  > **IMPORTANTE:** Es normal que la terminal se quede en espera, ya que esta insertando los 500 registros. El proceso finalizara solo, espera unos minutos.
+  > **Importante.** Es normal que la terminal se quede en espera, ya que está insertando los 500 registros. El proceso finalizará solo. Espera unos minutos.
   {: .lab-note .important .compact}
 
   ```bash
@@ -445,7 +435,7 @@ Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/
   ```
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 18.** Verifica que se hayan cargado correctamente, realiza la consulta de conteo.
+- **Paso 8.** Verifica que se hayan cargado correctamente, realiza la consulta de conteo.
 
   ```bash
   docker exec -i "${CB_CONTAINER}" cbq -e "http://127.0.0.1:8093" -u "$CB_ADMIN" -p "$CB_ADMIN_PASS" -q=false \
@@ -461,15 +451,13 @@ Inicializarás el clúster, crearás un bucket/colección y generarás carga KV/
 
 ---
 
-### Tarea 6: Dashboard en Grafana (provisionado) y validaciones
+### Tarea 6. Dashboard en Grafana (provisionado) y validaciones.
 
 Crearás un dashboard JSON mínimo con gráficas típicas (KV ops rate, latencias y uso de memoria) y lo provisionarás.
 
-#### Tarea 6.1
+- **Paso 1.** Ahora, define el archivo que creará el **Dashboard** para couchbase (`grafana/dashboards/couchbase-kv.json`).
 
-- **Paso 19.** Ahora define el archivo que creara el **Dashboard** para couchbase (`grafana/dashboards/couchbase-kv.json`)
-
-  > **NOTA:** Los nombres exactos de métricas pueden variar por versión. Si alguna no aparece en Prometheus, en la UI de Prometheus usa **“/graph” → “Insert metric at cursor”**
+  > **Nota.** Los nombres exactos de métricas pueden variar por versión. Si alguna no aparece en Prometheus, en la UI de Prometheus usa **“/graph” → “Insert metric at cursor”**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -532,11 +520,11 @@ Crearás un dashboard JSON mínimo con gráficas típicas (KV ops rate, latencia
   JSON
   ```
 
-- **Paso 20.** Tambien reiniciar sólo Grafana para cargar el dashboard correctamente.
+- **Paso 2.** Reiniciar solo Grafana para cargar el dashboard correctamente.
 
-  > **IMPORTANTE:**
+  > **Importante.**
   - En Grafana → *Dashboards* → *Couchbase Lab* aparece **“Couchbase — Lab CS300”**.
-  - Los paneles muestran series (si alguna está vacía, ajustar la query con la métrica disponible).
+  - Los paneles muestran series (si alguna está vacía, ajusta la query con la métrica disponible).
   - Grafana recarga dashboards provisionados al reiniciar el contenedor o cambiar archivos.
   {: .lab-note .important .compact}
 
@@ -551,37 +539,35 @@ Crearás un dashboard JSON mínimo con gráficas típicas (KV ops rate, latencia
 
 ---
 
-### Tarea 7: Visualizacion del Dashboard en Grafana
+### Tarea 7. Visualizacion del Dashboard en Grafana.
 
-Accederas a la interfaz grafica de grafana para identificar las metricas recoletadas por Prometheus.
+Accederás a la interfaz gráfica de Grafana para identificar las métricas recoletadas por Prometheus.
 
-#### Tarea 7.1
-
-- **Paso 21.** Ahora abre la siguiente URL para entrar al panel de **Grafana**, puedes usar Google Chrome u otro navegador disponible.
+- **Paso 1.** Ahora, abre la siguiente URL para entrar al panel de **Grafana**, puedes usar Google Chrome u otro navegador disponible.
 
   ```bash
   http://localhost:3000
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 22.** Usa los siguientes datos para ingresar a Grafana.
+- **Paso 2.** Usa los siguientes datos para ingresar a Grafana.
 
   - **Usuario:** `admin`
   - **Contraseña:** `adminlab`
 
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 23.** Ahora da clic en la opcion lateral izquierdo **Dashboards**
+- **Paso 3.** Ahora, da clic en la opción lateral izquierdo **Dashboards**.
   
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 24.** Ahora da clic en la opcion lateral izquierdo **Dashboards**
+- **Paso 4.** Ahora, da clic en la opción lateral izquierdo **Dashboards**.
 
-- **Paso 25.** Entra a **Couchbase Lab** y luego a **Couchbase - Lab CS300...**
+- **Paso 5.** Entra a **Couchbase Lab** y luego a **Couchbase - Lab CS300...**
   
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 26.** Observaras las 4 metricas de ejemplo que recolecto Prometheus y las envio a Grafana para su visualización.
+- **Paso 6.** Observarás las 4 métricas de ejemplo que Prometheus recolectó y envió a Grafana para su visualización.
 
   ![cbase18]({{ page.images_base | relative_url }}/18.png)
 
@@ -591,15 +577,13 @@ Accederas a la interfaz grafica de grafana para identificar las metricas recolet
 
 ---
 
-### Tarea 8: Limpieza
+### Tarea 8. Limpieza.
 
 Borrar datos en el entorno para repetir pruebas.
 
-#### Tarea 8.1
+- **Paso 1.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-- **Paso 27.** En la terminal aplica el siguiente comando para detener el nodo.
-
-  > **NOTA:** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -607,11 +591,11 @@ Borrar datos en el entorno para repetir pruebas.
   ```
   ![cbase20]({{ page.images_base | relative_url }}/20.png)
 
-- **Paso 28.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data).
 
-  > **NOTA:** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
-  > **IMPORTANTE:** Es normal el mensaje del objeto de red **No resource found to remove**.
+  > **Importante.** Es normal el mensaje del objeto de red **No resource found to remove**.
   {: .lab-note .important .compact}
 
   ```bash
