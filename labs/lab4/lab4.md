@@ -5,24 +5,24 @@ permalink: /lab4/lab4/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab4/img # CAMBIAR POR CADA PRACTICA
 duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
 objective: # CAMBIAR POR CADA PRACTICA
-  - Diseñar y aplicar *roles personalizados* (combinaciones de roles RBAC a nivel bucket/scope/collection) para distintos perfiles de usuario (analista de solo lectura, aplicación escritora y DBA de scope), verificando permisos permitidos/denegados mediante CLI, REST y N1QL.
+  - Diseñar y aplicar **roles personalizados** (combinaciones de roles RBAC a nivel `bucket`, `scope`, `collection`) para distintos perfiles de usuario (analista de solo lectura, aplicación escritora y DBA de scope), verificando permisos permitidos o denegados mediante CLI, REST y N1QL.
 prerequisites: # CAMBIAR POR CADA PRACTICA
   - Visual Studio Code con terminal **Git Bash**.
-  - 6–8 GB de RAM libres recomendados para 3 nodos (mínimo ~5 GB).  
-  - Puertos locales disponibles **8091–8096**, **11210** (se publicarán solo desde el nodo 1).
+  - 6–8 GB de RAM libres recomendados para tres nodos (mínimo ~5 GB).  
+  - Puertos locales disponibles **`8091-8096`**, **`11210`** (se publicarán solo desde el nodo 1).
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: | # CAMBIAR POR CADA PRACTICA
-  Couchbase implementa RBAC con **roles predefinidos** que pueden acotarse por *bucket/scope/collection*. No se “crean roles nuevos” arbitrarios; en su lugar, se **combinan** roles existentes con el alcance mínimo necesario (principio de **menor privilegio**). En esta práctica configuraremos tres perfiles:  
-  - 1) **analyst_ro** (solo lectura en una *collection*),  
-  - 2) **writer_app** (inserta/actualiza en una *collection* pero no puede leer),  
-  - 3) **dba_scope** (administra índices y el bucket `orders`).
+  Couchbase implementa RBAC con **roles predefinidos** que pueden acotarse por *`bucket`, `scope`, `collection`. No se “crean roles nuevos” arbitrarios; en su lugar, se **combinan** roles existentes con el alcance mínimo necesario (principio de **menor privilegio**). En esta práctica configuraremos tres perfiles:  
+  - 1) **`analyst_ro`** (solo lectura en una `collection`),  
+  - 2) **`writer_app`** (inserta/actualiza en una `collection` pero no puede leer),  
+  - 3) **`dba_scope`** (administra índices y el bucket `orders`).
 slug: lab4 # CAMBIAR POR CADA PRACTICA
 lab_number: 4 # CAMBIAR POR CADA PRACTICA
 final_result: > # CAMBIAR POR CADA PRACTICA
-  Has implementado RBAC granular con tres perfiles representativos y validado permisos permitidos/denegados sobre *collections* específicas. Queda un patrón reutilizable para diseñar combinaciones de roles de **menor privilegio** para distintos casos (BI, microservicios, administración).
+  Has implementado RBAC granular con tres perfiles representativos y validado permisos permitidos o denegados sobre *collections* específicas. Queda un patrón reutilizable para diseñar combinaciones de roles de **menor privilegio** para distintos casos (BI, microservicios, administración).
 notes: | # CAMBIAR POR CADA PRACTICA
-  En Couchbase 7.x+ los roles pueden restringirse hasta **collection-level** (`role[bucket:scope:collection]`).  
+  En Couchbase 7.x+ los roles pueden restringirse hasta **`collection-level`** (`role[bucket:scope:collection]`).  
   - Si recibes errores de permisos, valida 
     - 1) *keyspace* correcto en N1QL, 
     - 2) existencia de índices para SELECT
@@ -106,10 +106,10 @@ Organizarás la carpeta de la práctica, cargarás variables y verificarás que 
   EOF
   ```
 
-- **Paso 5.** Ahora crea el archivo **Docker Compose** llamado **compose.yaml**. Copia y pega el siguiente código en la terminal.
+- **Paso 5.** Crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente código en la terminal.
 
   > **Nota.**
-  - El archivo `compose.yaml` mapea puertos 8091–8096 para la consola web y 11210 para clientes.
+  - El archivo `compose.yaml` mapea puertos `8091-8096` para la consola web y `11210` para clientes.
   - El healthcheck consulta el endpoint `/pools` que responde cuando el servicio está arriba (aunque aún no inicializado).
   {: .lab-note .info .compact}
 
@@ -139,11 +139,11 @@ Organizarás la carpeta de la práctica, cargarás variables y verificarás que 
   YAML
   ```
 
-- **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
+- **Paso 6.** Inicia el servicio. Dentro de la terminal, ejecuta el siguiente comando.
 
-  > **Importante.**
-  > - Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  > - El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en 8091 antes de continuar.
+  > **Importante**
+  > - Para agilizar los procesos, la imagen debe estar descargada descargada en el ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > - El `docker compose up -d` corre en segundo plano. El *healthcheck* del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -152,7 +152,7 @@ Organizarás la carpeta de la práctica, cargarás variables y verificarás que 
 
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 7.** Inicializa el clúster, ejecuta el siguiente comando en la terminal.
+- **Paso 7.** Inicializa el clúster y ejecuta el siguiente comando en la terminal.
 
   > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
@@ -172,11 +172,11 @@ Organizarás la carpeta de la práctica, cargarás variables y verificarás que 
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 8.** Verifica que el clúster esté *healthy* y que se muestre el `json` con las propiedades del nodo.
 
-  > **Nota.**
-  - Contenedor `cbnode1` aparece **Up**.  
-  - `curl` devuelve JSON de la información del nodo.
+  > **Notas**
+  - El contenedor `cbnode1` aparece **`Up`**.  
+  - `curl` devuelve `JSON` de la información del nodo.
   {: .lab-note .info .compact}
 
   ```bash
@@ -273,12 +273,12 @@ Crearás el bucket `orders`, el `Scope` `sales` y las *collections* `orders` y `
 
 ---
 
-### Tarea 3: Crear usuarios y asignar roles (RBAC granular)
+### Tarea 3. Crear usuarios y asignar roles (RBAC granular)
 
-Definirás tres usuarios locales con combinaciones de roles predefinidos acotados por bucket/scope/collection.
+Definirás tres usuarios locales con combinaciones de roles predefinidos acotados por `bucket`, `scope` y `collection`.
 
 
-- **Paso 1.** Ahora, crea el usuario **`analyst_ro`** (solo lectura en `orders.sales.orders`), copia y pega el siguiente comando en la terminal.
+- **Paso 1.** Crea el usuario **`analyst_ro`** (solo lectura en `orders.sales.orders`), luego copia y pega el siguiente comando en la terminal.
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -289,7 +289,7 @@ Definirás tres usuarios locales con combinaciones de roles predefinidos acotado
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 2.** Crea el usuario **`writer_app`** (escritura en `orders.sales.orders`, sin permisos de lectura/SELECT).
+- **Paso 2.** Crea el usuario **`writer_app`** (escritura en `orders.sales.orders`, sin permisos de lectura/`SELECT`).
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -331,7 +331,7 @@ Definirás tres usuarios locales con combinaciones de roles predefinidos acotado
 
 ---
 
-### Tarea 4: Cargar datos de ejemplo y probar permisos
+### Tarea 4. Cargar datos de ejemplo y probar permisos
 
 Insertarás datos con `writer_app`, intentarás y validarás operaciones permitidas o denegadas para cada usuario.
 
@@ -348,7 +348,7 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
   ```
   ![cbase17]({{ page.images_base | relative_url }}/17.png)
 
-- **Paso 2.** Ahora con `writer_app`, intenta realizar un **`SELECT`** (debería **fallar** por falta de `query_select`):.
+- **Paso 2.** Ahora con `writer_app`, intenta realizar un **`SELECT`** (debería **fallar** por falta de `query_select`).
 
   > **Importante.** Cuando ejecutas el **`SELECT`** con el usuario **`writer`** (sin el rol `query_select`), el servicio de Query responde `HTTP 401` (no autorizado). Es normal el mensaje **`ERROR 174...`**
   {: .lab-note .important .compact}
@@ -387,9 +387,9 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 
-- **Paso 6.** Con el usuario `dba_scope` consulta el índice secundario.
+- **Paso 6.** Con el usuario `dba_scope`, consulta el índice secundario.
 
-  > **Importante.**
+  > **Importante**
   - El primer comando le da permiso de lectura al **`dba_scope`**.
   - El segundo realiza la consulta.
   {: .lab-note .important .compact}
@@ -413,14 +413,14 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
 
 ---
 
-### Tarea 5. Auditoría de permisos y REST
+### Tarea 5. Auditoría de permisos y `REST`
 
-Consultarás por `REST` los usuarios y sus roles, y verificarás el `scope map` del bucket.
+Consultarás por `REST` los usuarios y sus roles y verificarás el `scope map` del bucket.
 
 
 - **Paso 1.** Lista los usuarios locales mediante las operaciones `REST`.
 
-  > **Nota.** Debes ver a `analyst_ro`, `writer_app`, `dba_scope` con los roles configurados.
+  > **Nota.** Debes ver a `analyst_ro`, `writer_app` y `dba_scope` con los roles configurados.
   {: .lab-note .info .compact}
 
   ```bash
@@ -436,7 +436,7 @@ Consultarás por `REST` los usuarios y sus roles, y verificarás el `scope map` 
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 2.** Revisa los `scopes`/`collections` del bucket, ejecuta el siguiente comando.
+- **Paso 2.** Revisa los `scopes`/`collections` del bucket y ejecuta el siguiente comando.
 
   > **Nota.** El mapa de `scopes`/`collections` coincide con lo creado.
   {: .lab-note .info .compact}
@@ -485,7 +485,7 @@ Eliminarás usuarios creados en está práctica y toda la configuración creada.
   ```
   ![cbase26]({{ page.images_base | relative_url }}/26.png)
 
-- **Paso 3.** Ahora, elimina el bucket con el siguiente comando.
+- **Paso 3.** Elimina el bucket con el siguiente comando.
 
   > **Nota.** Espera unos segundos, es normal que tarde en eliminarse.
   {: .lab-note .info .compact}
@@ -499,9 +499,9 @@ Eliminarás usuarios creados en está práctica y toda la configuración creada.
   ```
   ![cbase27]({{ page.images_base | relative_url }}/27.png)
 
-- **Paso 4.** Ahora, en la terminal, aplica el siguiente comando para detener el nodo.
+- **Paso 4.** En la terminal, aplica el siguiente comando para detener el nodo.
 
-  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -511,7 +511,7 @@ Eliminarás usuarios creados en está práctica y toda la configuración creada.
 
 - **Paso 5.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
 
   ```bash
