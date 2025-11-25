@@ -1,6 +1,6 @@
 ---
 layout: lab
-title: "Práctica 2: Clúster multinodo en Docker Compose" # CAMBIAR POR CADA PRACTICA
+title: "Práctica 2. Clúster multinodo en Docker Compose" # CAMBIAR POR CADA PRACTICA
 permalink: /lab2/lab2/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab2/img # CAMBIAR POR CADA PRACTICA
 duration: "25 minutos" # CAMBIAR POR CADA PRACTICA
@@ -40,7 +40,7 @@ next: /lab3/lab3/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANTE
 ---
 ### Tarea 1. Estructura base del proyecto
 
-Crearás la carpeta de la práctica con subdirectorios por nodo para separar datos, logs y config, y abrirás el proyecto en VS Code.
+Crearás la carpeta de la práctica con subdirectorios por nodo para separar datos, logs y config y abrirás el proyecto en VS Code.
 
 
 - **Paso 1.** Abre el software de **Visual Studio Code**.
