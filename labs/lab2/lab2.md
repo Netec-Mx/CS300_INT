@@ -61,7 +61,7 @@ Crearás la carpeta de la práctica con subdirectorios por nodo para separar dat
   ```
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** Ahora, en el árbol de directorios lateral derecho verifica los directorios `node1`, `node2`, `node3` existen con `data/`, `logs/`, `config/` dentro y el directorio `scripts`.
+- **Paso 4.** Ahora, en el árbol de directorios lateral derecho, verifica que los directorios `node1`, `node2`, `node3` existen con `data/`, `logs/`, `config/` dentro y el directorio `scripts`.
 
   > **Nota.** Mantener datos/losgs por nodo permite borrar o recrear nodos de forma independiente sin perder claridad.
   {: .lab-note .info .compact}
@@ -76,7 +76,7 @@ Crearás la carpeta de la práctica con subdirectorios por nodo para separar dat
 
 ### Tarea 2. Variables de entorno y Docker Compose (tres nodos)
 
-Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **nodo 1** expondrá puertos hacia el host. Cada servicio tendrá healthcheck.
+Definirás variables en `.env` y un `compose.yaml` con tres servicios. Solo el **`nodo 1`** expondrá puertos hacia el host. Cada servicio tendrá healthcheck.
 
 
 - **Paso 1.** Crea el archivo `.env` dentro del directorio **`practica2-multinode`**.
@@ -104,7 +104,7 @@ Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **no
   > **Notas**
   - Una red bridge compartida permite que los nodos se resuelvan por `hostname` (`couchbase1`, `couchbase2`, `couchbase3`).  
   - Publicar puertos solo en el nodo 1 simplifica el acceso desde el host.
-  - Stack de 3 servicios listo para ser levantado.
+  - Stack de tres servicios listo para ser levantado.
   {: .lab-note .info .compact}
 
   ```bash
@@ -187,7 +187,7 @@ Definirás variables en `.env` y un `compose.yaml` con 3 servicios. Solo el **no
 <!-- ESTRUCTURA DE UNA TAREA COPIA Y PEGAR, MODIFICAR CUANTAS TAREAS SEAN NECESARIAS -->
 ### Tarea 3. Arrancar contenedores y verificar health
 
-Subirás los 3 contenedores y confirmarás que los healthchecks respondan.
+Subirás los tres contenedores y confirmarás que los healthchecks respondan.
 
 
 - **Paso 1.** Ahora, ejecuta el comando para levantar los tres nodos mediante el docker `compose` y cargar las variables.
@@ -459,7 +459,7 @@ Consultarás endpoints `REST` y validarás desde la consola web que existen tres
 
 - **Paso 1.** Valida los nodos mediante el endpoint `REST`.
 
-  > **Importante.** Recuerda que la salida de la inforamción es demasiada extensa, puedes analizarla o interrumpirla con **`CTRL + C`**
+  > **Importante.** Recuerda que la salida de la inforamción es demasiada extensa, puedes analizarla o interrumpirla con **`CTRL + C`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -483,7 +483,7 @@ Consultarás endpoints `REST` y validarás desde la consola web que existen tres
 
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 4.** Da clic en la opción de **Buckets** y verás que aplicó la distribución a los tres nodos.
+- **Paso 4.** Da clic en la opción de **`Buckets`** y verás que aplicó la distribución a los tres nodos.
 
   ![cbase11]({{ page.images_base | relative_url }}/11.png)
 
@@ -493,9 +493,9 @@ Consultarás endpoints `REST` y validarás desde la consola web que existen tres
 
 ---
 
-### Tarea 6. Validaciones por REST y Web Console
+### Tarea 6. Validaciones por `REST` y Web Console
 
-Crearás un índice primario para ejecutar una consulta rápida sobre el bucket `test`.
+Crearás un índice primario para ejecutar una consulta rápida sobre el `bucket test`.
 
 
 - **Paso 1.** Ejecuta el siguiente código para crear un índice primario.
@@ -526,9 +526,9 @@ Crearás un índice primario para ejecutar una consulta rápida sobre el bucket 
 Aprenderás a apagar o encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
 
 
-- **Paso 1.** Ahora regresa a la terminal de **Git Bash** para aplicar el siguiente comando.
+- **Paso 1.** Regresa a la terminal de **Git Bash** para aplicar el siguiente comando.
 
-  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
