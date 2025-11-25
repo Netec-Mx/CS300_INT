@@ -39,7 +39,7 @@ next: /lab22/lab22/ # CAMBIAR POR CADA PRACTICA MENU DE NAVEGACION HACIA ADELANT
 
 ---
 
-### Tarea 1.Estructura base y variables-
+### Tarea 1.Estructura base y variables.
 
 Crearás una carpeta aislada con subdirectorios para Couchbase, Prometheus y Grafana, además de un `.env` reutilizable.
 
