@@ -13,7 +13,7 @@ prerequisites: # CAMBIAR POR CADA PRACTICA
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: | # CAMBIAR POR CADA PRACTICA
-  Couchbase implementa RBAC con **roles predefinidos** que pueden acotarse por *bucket/scope/collection*. No se “crean roles nuevos” arbitrarios; en su lugar, se **combinan** roles existentes con el alcance mínimo necesario (principio de **menor privilegio**). En está práctica configuraremos tres perfiles:  
+  Couchbase implementa RBAC con **roles predefinidos** que pueden acotarse por *bucket/scope/collection*. No se “crean roles nuevos” arbitrarios; en su lugar, se **combinan** roles existentes con el alcance mínimo necesario (principio de **menor privilegio**). En esta práctica configuraremos tres perfiles:  
   - 1) **analyst_ro** (solo lectura en una *collection*),  
   - 2) **writer_app** (inserta/actualiza en una *collection* pero no puede leer),  
   - 3) **dba_scope** (administra índices y el bucket `orders`).
@@ -58,11 +58,11 @@ Organizarás la carpeta de la práctica, cargarás variables y verificarás que 
   > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
-- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **cs300-labs**, puedes guiarte de la imagen.
+- **Paso 3.** Para ejecutar el siguiente comando debes estar en el directorio **`cs300-labs`**, puedes guiarte de la imagen.
 
   ```bash
   mkdir -p practica4-rbac/
@@ -172,7 +172,7 @@ Organizarás la carpeta de la práctica, cargarás variables y verificarás que 
   ```
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 8.** Verifica que el cluster este **healthy** y que se muestre el json con las propiedades del nodo.
+- **Paso 8.** Verifica que el clúster esté **healthy** y que se muestre el json con las propiedades del nodo.
 
   > **Nota.**
   - Contenedor `cbnode1` aparece **Up**.  
@@ -289,7 +289,7 @@ Definirás tres usuarios locales con combinaciones de roles predefinidos acotado
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 2.** Crea el usuario **`writer_app`** (escritura en `orders.sales.orders`, sin permisos de lectura/SELECT):.
+- **Paso 2.** Crea el usuario **`writer_app`** (escritura en `orders.sales.orders`, sin permisos de lectura/SELECT).
 
   ```bash
   docker exec -it cbnode1 couchbase-cli user-manage \
@@ -350,7 +350,7 @@ Insertarás datos con `writer_app`, intentarás y validarás operaciones permiti
 
 - **Paso 2.** Ahora con `writer_app`, intenta realizar un **`SELECT`** (debería **fallar** por falta de `query_select`):.
 
-  > **Importante.** Cuando ejecutas el **`SELECT`** con el usuario **writer** (sin el rol `query_select`), el servicio de Query responde `HTTP 401` (no autorizado). Es normal el mensaje **`ERROR 174...`**
+  > **Importante.** Cuando ejecutas el **`SELECT`** con el usuario **`writer`** (sin el rol `query_select`), el servicio de Query responde `HTTP 401` (no autorizado). Es normal el mensaje **`ERROR 174...`**
   {: .lab-note .important .compact}
 
   ```bash
@@ -489,7 +489,7 @@ Eliminarás usuarios creados en está práctica y toda la configuración creada.
 
   > **Nota.** Espera unos segundos, es normal que tarde en eliminarse.
   {: .lab-note .info .compact}
-  > **Importante.** Si llegase a marcar algún error en el borrado, puede deberse a que aun está ocupado en alguna tarea, inténtalo nuevamente. En ocasiones, se borra aunque mande el mensaje de error.
+  > **Importante.** Si llegase a marcar algún error en el borrado, puede deberse a que aun está ocupado en alguna tarea, inténtalo nuevamente. En ocasiones, se borra aunque muestre el mensaje de error.
   {: .lab-note .important .compact}
 
   ```bash
