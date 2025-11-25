@@ -55,7 +55,7 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
 - **Paso 3.** Ya que tengas **Visual Studio Code** abierto, ahora da clic en `Open Folder`.
 
-  > **Nota.** Tambien puedes dar clic en **`File`** -> **`Open Folder`**.
+  > **Nota.** También puedes dar clic en **`File`** -> **`Open Folder`**.
   {: .lab-note .info .compact}
 
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
@@ -78,7 +78,7 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 9.** Se abrirá una ventana superior central. Ahí, selecciona la opcion **Git Bash** para la terminal predeterminada.
+- **Paso 9.** Se abrirá una ventana superior central. Ahí, selecciona la opción **Git Bash** para la terminal predeterminada.
 
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
@@ -101,13 +101,13 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
   cd ~/Desktop/cs300-labs/practica1-single-node
   ```
 
-- **Paso 14.** Verifica que se muestre correctamente el **directorio de la práctica 1 y los sudirectorios.**
+- **Paso 14.** Verifica que se muestre correctamente el **directorio de la práctica 1 y los subdirectorios.**
 
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
 - **Paso 15.** Verifica que Docker esté activo y accesible, copia y pega los siguientes comandos en la terminal.
 
-  > **Importante.** Si no está activo, puedes buscar el software de Docker en las aplicaciones del Windows.
+  > **Importante.** Si no está activo, puedes buscar el software de Docker en las aplicaciones de Windows.
   {: .lab-note .important .compact}
 
   ```bash
@@ -148,7 +148,7 @@ Generarás un archivo `.env` con variables (usuario, contraseña, tag de imagen,
 
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
-- **Paso 3.** Ahora, crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente codigo en la terminal.
+- **Paso 3.** Ahora, crea el archivo **Docker Compose** llamado **`compose.yaml`**. Copia y pega el siguiente código en la terminal.
 
   > **Notas**
   - El archivo `compose.yaml` mapea puertos `8091-8096` para la consola web y `11210` para clientes.
@@ -234,7 +234,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
   - El `curl` debe regresar JSON (sin HTML de error).
   - Puedes validar con cualquiera de las dos opciones **`jq`** o **`python`**.
   {: .lab-note .info .compact}
-  > **Importante.** La imagen **representa una parte del resultado** ya que es largo el **`json`**.
+  > **Importante.** La imagen **representa una parte del resultado** ya que el **`json`** es extenso.
   {: .lab-note .important .compact}
 
   ```bash
@@ -256,11 +256,11 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
 
 Usarás `couchbase-cli` dentro del contenedor para inicializar el clúster, definir cuotas de memoria, habilitar servicios y crear un bucket de prueba.
 
-- **Paso 1.** Inicializa el clúster ejecuta el siguiete comando en la terminal.
+- **Paso 1.** Inicializa el clúster ejecuta el siguiente comando en la terminal.
 
   > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
-  > **Importante.** El comando se ejecuta desde el directorio de la practica **`practica1-single-node`**.
+  > **Importante.** El comando se ejecuta desde el directorio de la práctica **`practica1-single-node`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -325,7 +325,7 @@ Probarás endpoints `REST` básicos, health del contenedor y accederás a la con
 
 - **Paso 2.** Verifica servicios vía `REST`, escribe el siguiente comando en la terminal.
 
-  > **Importante.** La salida de ambos comandos es muy extensa puedes tomarte unos segundos para analizarla.
+  > **Importante.** La salida de ambos comandos es muy extensa, puedes tomar unos segundos para analizarla.
   {: .lab-note .important .compact}
 
   ```bash
