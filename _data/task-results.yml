@@ -38,7 +38,7 @@ lab5:
   results:
     - "**Resultado esperado.** Workspace en VS Code y entorno verificado para avanzar con la configuración de la auditoría."
     - "**Resultado esperado.** Auditoría habilitada y escribiendo en el directorio esperado."
-    - "**Resultado esperado.** `Bucket`, `scope`, `collections` e índice primario preparados para la auditoria"
+    - "**Resultado esperado.** `Bucket`, `scope`, `collections` e índice primario preparados para la auditoría"
     - "**Resultado esperado.** Evidencia en `audit.log` de inicios de sesión correctos y fallidos."
     - "**Resultado esperado.** Registros claros de quién hizo qué cambios y cuándo."
     - "**Resultado esperado.** Auditoría capturando tanto mutaciones como lecturas de datos vía N1QL."
