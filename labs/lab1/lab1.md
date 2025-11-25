@@ -50,23 +50,23 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
 - **Paso 2.** Abre el software de **Visual Studio Code**.
 
-  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**
+  > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
 - **Paso 3.** Ya que tengas **Visual Studio Code** abierto, ahora da clic en `Open Folder`.
 
-  > **Nota.** Tambien puedes dar clic en **File** -> **Open Folder**.
+  > **Nota.** Tambien puedes dar clic en **`File`** -> **`Open Folder`**.
   {: .lab-note .info .compact}
 
   ![cbase2]({{ page.images_base | relative_url }}/2.png)
 
-- **Paso 4.** En la ventana del **Explorador de Windows** busca y selecciona la carpeta creada **`cs300-labs`**.
+- **Paso 4.** En la ventana del **Explorador de Windows**, busca y selecciona la carpeta creada **`cs300-labs`**.
 
 - **Paso 5.** Verifica que haya cargado correctamente el directorio raíz.
 
   ![cbase3]({{ page.images_base | relative_url }}/3.png)
 
-- **Paso 6.** Ahora da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
+- **Paso 6.** Ahora, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**
 
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
@@ -74,15 +74,15 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
   ![cbase5]({{ page.images_base | relative_url }}/5.png)
 
-- **Paso 8.** Selecciona del menú la opción **Select Default Profile**, como lo muestra la imagen.
+- **Paso 8.** Selecciona del menú la opción **`Select Default Profile`**, como lo muestra la imagen.
 
   ![cbase6]({{ page.images_base | relative_url }}/6.png)
 
-- **Paso 9.** Se abrira una ventana superior central, ahi selecciona la opcion **Git Bash** para la terminal predeterminada.
+- **Paso 9.** Se abrirá una ventana superior central. Ahí, selecciona la opcion **Git Bash** para la terminal predeterminada.
 
   ![cbase7]({{ page.images_base | relative_url }}/7.png)
 
-- **Paso 10.** Ahora cierra la terminal para que tome efecto, da clic en el botón del icono del **bote de basura**.
+- **Paso 10.** Ahora, cierra la terminal para que tome efecto, da clic en el botón del icono del **bote de basura**.
 
   ![cbase8]({{ page.images_base | relative_url }}/8.png)
 
@@ -101,11 +101,11 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
   cd ~/Desktop/cs300-labs/practica1-single-node
   ```
 
-- **Paso 14.** Verifica que se muestre correctamente el **directorio de la practica 1 y los sudirectorios.**
+- **Paso 14.** Verifica que se muestre correctamente el **directorio de la práctica 1 y los sudirectorios.**
 
   ![cbase10]({{ page.images_base | relative_url }}/10.png)
 
-- **Paso 15.** Verifica que Docker esté activo y accesible, copi y pega los siguientes comandos en la terminal.
+- **Paso 15.** Verifica que Docker esté activo y accesible, copia y pega los siguientes comandos en la terminal.
 
   > **Importante.** Si no está activo, puedes buscar el software de Docker en las aplicaciones del Windows.
   {: .lab-note .important .compact}
@@ -125,7 +125,7 @@ Crearás una carpeta dedicada a la práctica, abrirás el proyecto en VS Code y 
 
 Generarás un archivo `.env` con variables (usuario, contraseña, tag de imagen, memoria) y un `compose.yaml` que mapea puertos, volúmenes y declara la política de healthcheck.
 
-- **Paso 1.** En la terminal de **VSC** copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
+- **Paso 1.** En la terminal de **VSC**, copia y pega el siguiente comando que crea el archivo `.env` y carga el contenido de las variables necesarias.
 
   > **Nota.** El archivo `.env` estandariza credenciales y memoria.
   {: .lab-note .info .compact}
@@ -144,7 +144,7 @@ Generarás un archivo `.env` con variables (usuario, contraseña, tag de imagen,
   EOF
   ```
 
-- **Paso 2.** El comando no dara salida pero debes de ver correctamente la creación del archivo `.env`.
+- **Paso 2.** El comando no dará salida pero debes de ver correctamente la creación del archivo `.env`.
 
   ![cbase12]({{ page.images_base | relative_url }}/12.png)
 
@@ -218,7 +218,7 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
 
 - **Paso 3.** Valida con el comando de **`inspect`** que en efecto esté **_healthy_** el contenedor.
 
-  > **Nota.** El contenedor debe estar `Up` y el healthcheck en `healthy` (puede tardar 30–90s en la primera subida). 
+  > **Nota.** El contenedor debe estar `Up` y el healthcheck en `healthy` (puede tardar 30–90 s en la primera subida). 
   {: .lab-note .info .compact}
 
   {% raw %}
@@ -232,9 +232,9 @@ Levantarás el contenedor con Docker Compose y confirmarás que la imagen se des
 
   > **Nota.**
   - El `curl` debe regresar JSON (sin HTML de error).
-  - Puedes validar con cualquiera de las 2 opciones **jq** o **python**
+  - Puedes validar con cualquiera de las dos opciones **`jq`** o **`python`**.
   {: .lab-note .info .compact}
-  > **Importante.** La imagen **representa una parte del resultado** ya que es largo el **json**
+  > **Importante.** La imagen **representa una parte del resultado** ya que es largo el **`json`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -260,7 +260,7 @@ Usarás `couchbase-cli` dentro del contenedor para inicializar el clúster, defi
 
   > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
-  > **Importante.** El comando se ejecuta desde el directorio de la practica **practica1-single-node**
+  > **Importante.** El comando se ejecuta desde el directorio de la practica **`practica1-single-node`**.
   {: .lab-note .important .compact}
 
   ```bash
@@ -312,7 +312,7 @@ Usarás `couchbase-cli` dentro del contenedor para inicializar el clúster, defi
 
 ### Tarea 5. Validaciones de salud y acceso a la Web Console
 
-Probarás endpoints REST básicos, health del contenedor y accederás a la consola web para verificar servicios y bucket.
+Probarás endpoints `REST` básicos, health del contenedor y accederás a la consola web para verificar servicios y bucket.
 
 - **Paso 1.** Comprueba la salud del contenedor:
 
@@ -323,7 +323,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
   {% endraw %}
   ![cbase22]({{ page.images_base | relative_url }}/22.png)
 
-- **Paso 2.** Verifica servicios vía REST, escribe el siguiente comando en la terminal.
+- **Paso 2.** Verifica servicios vía `REST`, escribe el siguiente comando en la terminal.
 
   > **Importante.** La salida de ambos comandos es muy extensa puedes tomarte unos segundos para analizarla.
   {: .lab-note .important .compact}
@@ -335,7 +335,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
   curl -fsS -u "${CB_USER}:${CB_PASS}" http://localhost:8091/pools/default/buckets | jq '.'
   ```
 
-- **Paso 3.** Abre la consola web y verifica que todo funcione correctamente. Abre la siguiente URL en el navegador **Google Chrome**
+- **Paso 3.** Abre la consola web y verifica que todo funcione correctamente. Abre la siguiente URL en el navegador **Google Chrome**.
 
   > **Importante.** Usa los siguientes datos para autenticarte.
   - **Usuario:** `admin`
@@ -347,7 +347,7 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
   ```
   ![cbase23]({{ page.images_base | relative_url }}/23.png)
 
-- **Paso 4.** Ya dentro de la página web de **Couchbase** da clic en **Buckets** del menú lateral izquierdo.
+- **Paso 4.** Dentro de la página web de **Couchbase**, da clic en **Buckets** del menú lateral izquierdo.
 
   > **Nota.** Debes observar el bucket llamado **dev** creado previamente.
   {: .lab-note .info .compact}
@@ -364,9 +364,9 @@ Probarás endpoints REST básicos, health del contenedor y accederás a la conso
 
 Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas empezar desde cero.
 
-- **Paso 1.** Ahora regresa a la terminal de **Git Bash** para aplicar el siguiente comando.
+- **Paso 1.** Ahora, regresa a la terminal de **Git Bash** para aplicar el siguiente comando.
 
-  > **Nota.** Si es necesario puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
   {: .lab-note .info .compact}
 
   ```bash
@@ -374,9 +374,9 @@ Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas 
   ```
   ![cbase25]({{ page.images_base | relative_url }}/25.png)
 
-- **Paso 2.** Apagar y eliminar contenedor (se conservan los datos en ./data)
+- **Paso 2.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
 
   ```bash
