@@ -47,9 +47,9 @@ lab6:
   results:
     - "**Resultado esperado.** Todos los comandos deben ejecutarse sin errores."
     - "**Resultado esperado.** Los comandos deben mostrar información detallada de los certificados y confirmar que `server.crt: OK`."
-    - "**Resultado esperado.** Los archivos de docker compose y scripts creados correctamente."
+    - "**Resultado esperado.** Los archivos de _docker compose_ y _scripts_ creados correctamente."
     - "**Resultado esperado.** Los comandos deben ejecutarse sin errores y confirmar la configuración TLS."
-    - "**Resultado esperado.** Las API deben responder correctamente vía HTTPS."
+    - "**Resultado esperado.** Las API deben responder correctamente vía `HTTPS`."
     - "**Resultado esperado.** Entorno de la práctica limpio para las siguientes actividades."
 lab7:
   results:
