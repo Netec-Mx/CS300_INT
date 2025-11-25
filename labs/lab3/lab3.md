@@ -1,6 +1,6 @@
 ---
 layout: lab
-title: "Práctica 3: Creación y prueba de buckets" # CAMBIAR POR CADA PRACTICA
+title: "Práctica 3. Creación y prueba de buckets" # CAMBIAR POR CADA PRACTICA
 permalink: /lab3/lab3/ # CAMBIAR POR CADA PRACTICA
 images_base: /labs/lab3/img # CAMBIAR POR CADA PRACTICA
 duration: "20 minutos" # CAMBIAR POR CADA PRACTICA
@@ -8,16 +8,16 @@ objective: # CAMBIAR POR CADA PRACTICA
   - Crear y validar distintos tipos de buckets en Couchbase (Couchbase, Ephemeral) con sus principales parámetros (RAM, replicas, ejection/eviction, compresión), configurar scopes y collections, cargar datos de prueba y consultar con N1QL.
 prerequisites: # CAMBIAR POR CADA PRACTICA
   - Visual Studio Code con terminal **Git Bash**.
-  - 6–8 GB de RAM libres recomendados para 3 nodos (mínimo ~5 GB).  
-  - Puertos locales disponibles **8091–8096**, **11210** (se publicarán solo desde el nodo 1).
+  - 6–8 GB de RAM libres recomendados para tres nodos (mínimo ~5 GB).  
+  - Puertos locales disponibles **`8091-8096`**, **`11210`** (se publicarán solo desde el nodo 1).
   - Conectividad a Internet para descargar la imagen.
   - Opcional `jq` para mejorar salidas JSON.
 introduction: # CAMBIAR POR CADA PRACTICA
-  - En Couchbase, un *bucket* es la unidad lógica de almacenamiento. En está práctica crearás dos buckets de ejemplo (tipos **Couchbase**, **Ephemeral**), definirás opciones clave (memoria, replicas, políticas de expulsión, compresión), y practicarás operaciones básicas listar, crear/flush, scopes/collections y consultas con N1QL.
+  - En Couchbase, un *bucket* es la unidad lógica de almacenamiento. En está práctica crearás dos buckets de ejemplo (tipos **Couchbase**, **Ephemeral**), definirás opciones clave (memoria, replicas, políticas de expulsión, compresión) y practicarás operaciones básicas listar, crear/flush, scopes/collections y consultas con N1QL.
 slug: lab3 # CAMBIAR POR CADA PRACTICA
 lab_number: 3 # CAMBIAR POR CADA PRACTICA
 final_result: > # CAMBIAR POR CADA PRACTICA
-  Buckets **Couchbase**, **Ephemeral** creados, configurados y validados; con *scopes* y *collections* operativos en `orders`, datos de prueba insertados y consultas N1QL funcionando. Conocimiento práctico de compresión y políticas de expulsión.
+  Buckets **Couchbase**, **Ephemeral** creados, configurados y validados; con `Scopes` y `collections` operativos en `orders`, datos de prueba insertados y consultas N1QL funcionando. Conocimiento práctico de compresión y políticas de expulsión.
 notes: # CAMBIAR POR CADA PRACTICA
   - En **Community Edition** algunas opciones avanzadas (p.ej., **magma**) no están disponibles.  
   - Ajusta RAM por bucket según tu máquina. Si ves errores de cuota, libera memoria o reduce tamaños.  
@@ -49,7 +49,7 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
   > **Nota.** Puedes encontrarlo en el **Escritorio** o en las aplicaciones del sistema de **Windows**.
   {: .lab-note .info .compact}
 
-- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha.**.
+- **Paso 2.** Ya que tengas **Visual Studio Code** abierto, da clic en el icono de la imagen para abrir la terminal, **se encuentra en la parte superior derecha**.
 
   ![cbase1]({{ page.images_base | relative_url }}/1.png)
 
@@ -116,9 +116,9 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
 
 - **Paso 6.** Inicia el servicio, dentro de la terminal ejecuta el siguiente comando.
 
-  > **Importante.** Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
-  {: .lab-note .important .compact}
-  > **Importante.** El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
+  > **Importante**
+  > - Para agilizar los procesos, la imagen ya está descargada en tu ambiente de trabajo, ya que puede tardar hasta 10 minutos en descargarse.
+  > - El `docker compose up -d` corre en segundo plano. El healthcheck del servicio y la sonda de `compose.yaml` garantizan que Couchbase responda en `8091` antes de continuar.
   {: .lab-note .important .compact}
 
   ```bash
@@ -127,7 +127,7 @@ Organizarás la carpeta de la práctica y verificarás que el contenedor de Couc
 
   ![cbase4]({{ page.images_base | relative_url }}/4.png)
 
-- **Paso 7.** Inicializa el clúster, ejecuta el siguiente comando en la terminal.
+- **Paso 7.** Inicializa el clúster y ejecuta el siguiente comando en la terminal.
 
   > **Nota.** El `cluster-init` fija credenciales y cuotas de memoria (data/Index). Para un nodo local, 2 GB total y 512 MB para Index es razonable; ajusta según tu RAM. Habilitar `flush` permite vaciar el bucket desde la UI o CLI.
   {: .lab-note .info .compact}
@@ -159,9 +159,9 @@ Crearás dos buckets con diferentes configuraciones para observar su comportamie
 
 #### Tarea 2.1. Bucket tipo *Couchbase* (`orders`)
 
-- **Paso 1.** Crear bucket *Couchbase* con **256 MB**, **replicas=1** y `flush` habilitado.
+- **Paso 1.** Crear bucket *Couchbase* con **256 MB**, **`replicas=1`** y `flush` habilitado.
 
-  > **Nota.** **Couchbase**: persistente, soporta replicas, índices y Query.  
+  > **Nota.** **Couchbase** es persistente, soporta replicas, índices y Query.  
   {: .lab-note .info .compact}
 
   ```bash
@@ -178,9 +178,9 @@ Crearás dos buckets con diferentes configuraciones para observar su comportamie
 
 #### Tarea 2.2. Bucket *Ephemeral* **(`cache`)**
 
-- **Paso 2.** Crear bucket `Ephemeral` **128MB** con política de expulsión por NRU (recomendado para caché).
+- **Paso 2.** Crear bucket `Ephemeral` **128 MB** con política de expulsión por NRU (recomendado para caché).
 
-  > **Nota.** **Ephemeral**: solo memoria (sin disco), ideal para cache con políticas de expulsión.  
+  > **Nota.** **Ephemeral**: solo memoria (sin disco), es ideal para caché con políticas de expulsión.  
   {: .lab-note .info .compact}
 
   ```bash
@@ -249,7 +249,7 @@ Crearás un `Scope` y `collections` lógicas para organizar datos por dominio (p
 
 ### Tarea 4. Índices y datos de prueba (N1QL)
 
-Crearás índices primarios para poder consultar con N1QL y cargarás documentos de ejemplo en las nuevas collections.
+Crearás índices primarios para poder consultar con N1QL y cargarás documentos de ejemplo en las nuevas _collections_.
 
 
 - **Paso 1.** Crea el siguiente índice primario **`orders._default._default`**.
@@ -275,7 +275,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase13]({{ page.images_base | relative_url }}/13.png)
 
-- **Paso 4.** Ahora el siguiente paso es insertar un documento de datos para **`orders.sales.orders`**, escribe el siguiente comando en la terminal.
+- **Paso 4.** El siguiente paso es insertar un documento de datos para **`orders.sales.orders`**. Escribe el siguiente comando en la terminal.
 
   ```bash
   # orders
@@ -287,7 +287,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase14]({{ page.images_base | relative_url }}/14.png)
 
-- **Paso 5.** Continua con el siguiente paso para insertar un documento de datos en **`orders.sales.customers`**, escribe el siguiente comando en la terminal.
+- **Paso 5.** Continúa con el siguiente paso para insertar un documento de datos en **`orders.sales.customers`** y escribe el siguiente comando en la terminal.
 
   ```bash
   # customers
@@ -299,7 +299,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase15]({{ page.images_base | relative_url }}/15.png)
 
-- **Paso 6.** Ahora, realiza estA consulta para verificar que se haya almacenado todo correctamente para **`orders`.sales.orders**.
+- **Paso 6.** Ahora, realiza esta consulta para verificar que se haya almacenado todo correctamente para **`orders.sales.orders`**.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://127.0.0.1:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -307,7 +307,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
   ```
   ![cbase16]({{ page.images_base | relative_url }}/16.png)
 
-- **Paso 7.** Ahora, realiza esta consulta para verificar que se haya almacenado todo correctamente para **`orders.sales.customers`**.
+- **Paso 7.** Realiza esta consulta para verificar que se haya almacenado todo correctamente para **`orders.sales.customers`**.
 
   ```bash
   docker exec -it cbnode1 cbq -e http://127.0.0.1:8093 -u "${CB_USER}" -p "${CB_PASS}" \
@@ -325,7 +325,7 @@ Crearás índices primarios para poder consultar con N1QL y cargarás documentos
 
 ### Tarea 5. Compresión y políticas de expulsión
 
-Revisarás las configuraciones de compresión o eviction en cada bucket.
+Revisarás las configuraciones de compresión o `eviction` en cada bucket.
 
 
 - **Paso 1.** Revisa las configuraciones en los buckets creados.
@@ -351,7 +351,7 @@ Revisarás las configuraciones de compresión o eviction en cada bucket.
   ```
   ![cbase19]({{ page.images_base | relative_url }}/19.png)
 
-- **Paso 3.** Verifica que la compresión se haya activado correctamente, copia y pega el siguiente comando en al terminal.
+- **Paso 3.** Verifica que la compresión se haya activado correctamente. Copia y pega el siguiente comando en al terminal.
 
   ```bash
   curl -fsS -u "$CB_USER:$CB_PASS" \
@@ -387,7 +387,7 @@ Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas 
   ```
   ![cbase21]({{ page.images_base | relative_url }}/21.png)
 
-- **Paso 2.** Verifica que en efecto ya se hayan eliminado, con el siguiente comando.
+- **Paso 2.** Verifica que en efecto ya se hayan eliminado con el siguiente comando.
 
   > **Nota.** Se espera un resultado vacío dado que ya se eliminaron los buckets.
   {: .lab-note .info .compact}
@@ -400,7 +400,7 @@ Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas 
 
 - **Paso 3.** Ahora, en la terminal de **Git Bash**, aplica el siguiente comando.
 
-  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**
+  > **Nota.** Si es necesario, puedes volver a encender los contenedores con el comando **`docker compose start`**.
   {: .lab-note .info .compact}
 
   ```bash
@@ -410,7 +410,7 @@ Aprenderás a apagar y encender el servicio y a limpiar volúmenes si necesitas 
 
 - **Paso 4.** Apaga y elimina el contenedor (se conservan los datos en `./data`).
 
-  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**
+  > **Nota.** Si es necesario, puedes volver a activar los contenedores con el comando **`docker compose up -d`**.
   {: .lab-note .info .compact}
 
   ```bash
